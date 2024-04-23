@@ -27,3 +27,7 @@ export function factorial(n: number): number {
     }
     return n * factorial(n - 1);
 }
+
+fizzBuzz(15);
+average([1, 2, 3, 4, 5]);
+factorial(5);

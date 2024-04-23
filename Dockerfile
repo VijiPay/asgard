@@ -1,7 +1,8 @@
-FROM node:16.20.1
-WORKDIR /app
-COPY package.json /app
-RUN npm install
-COPY . /app
-EXPOSE 5000
+FROM node:20-slim as build
+WORKDIR /asgard
+COPY package.json  ./
+RUN yarn install
+COPY . .
+EXPOSE 4343
+
 CMD ["yarn", "start"]
