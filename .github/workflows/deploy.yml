@@ -16,14 +16,14 @@ jobs:
               - name: Build docker image
                 run: docker build -t asgard .
               - name: Push docker image to docker hub
-                run: docker push asgard:latest
+                run: docker push shemzz/asgard:latest
         
         deploy:
             needs: build
             runs-on: [aws-ec2]
             steps:
               - name: Pull image from docker hub
-                run: docker pull asgard:latest
+                run: docker pull shemzz/asgard:latest
               - name:  Delete old Container
                 run: docker rm -f asgard-container || true
               - name: Run new container
