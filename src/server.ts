@@ -1,33 +1,14 @@
-export function fizzBuzz(n: number): string {
-  if (n % 3 === 0 && n % 5 === 0) {
-    return 'FizzBuzz';
-  }
-  if (n % 3 === 0) {
-    return 'Fizz';
-  }
-  if (n % 5 === 0) {
-    return 'Buzz';
-  }
-  return n.toString();
-}
+import express from 'express';
+import morgan from 'morgan';
 
-export function average(arr: number[]): number {
-    if (arr.length === 0) {
-        return NaN;
-    }
-    return arr.reduce((acc, val) => acc + val, 0) / arr.length;
-}
+const app = express();
+app.use(morgan('dev'));
 
-export function factorial(n: number): number {
-    if (n === 0) {
-        return 1;
-    }
-    else if (n < 0) {
-        return undefined as unknown as number;
-    }
-    return n * factorial(n - 1);
-}
+app.get('/', (req, res) => {
+  res.send('Hello world');
+});
 
-fizzBuzz(15);
-average([1, 2, 3, 4, 5]);
-factorial(5);
+const PORT = Number(process.env.PORT || 4343);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});

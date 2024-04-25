@@ -1,8 +1,15 @@
 FROM node:20-slim as build
-WORKDIR /asgard
-COPY package.json  ./
-RUN yarn install
-COPY . .
-EXPOSE 4343
 
-CMD ["yarn", "start"]
+RUN npm i -g pnpm
+
+WORKDIR /asgard
+
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["pnpm", "start"]
