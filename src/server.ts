@@ -5,7 +5,8 @@ const app = express();
 app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
-  res.send('Hello world');
+  debugger;
+  res.send('Hello world we are testing tasks automatically. I watchy is super fast. ?' + new Date());
 });
 
 const PORT = Number(process.env.PORT || 4343);
