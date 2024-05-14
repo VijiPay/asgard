@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "restart asgard",
+      "type": "shell",
+      "command": "docker compose restart asgard",
+      "presentation": {
+        "reveal": "never"
+      }
+    }
+  ]
+}
