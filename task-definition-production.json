@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:717745051827:task-definition/asgard-prod:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:717745051827:task-definition/task-definition-production:1",
     "containerDefinitions": [
         {
             "name": "asgard",
@@ -7,7 +7,7 @@
             "cpu": 0,
             "portMappings": [
                 {
-                    "name": "asgard-4343-tcp",
+                    "name": "4343",
                     "containerPort": 4343,
                     "hostPort": 4343,
                     "protocol": "tcp",
@@ -24,7 +24,7 @@
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/asgard-prod",
+                    "awslogs-group": "/ecs/task-definition.prod.json",
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "ecs"
                 },
@@ -33,9 +33,10 @@
             "systemControls": []
         }
     ],
-    "family": "asgard-prod",
+    "family": "task-definition-production",
     "taskRoleArn": "arn:aws:iam::717745051827:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::717745051827:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
     "revision": 1,
     "volumes": [],
     "status": "ACTIVE",
@@ -62,12 +63,16 @@
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
         },
         {
+            "name": "ecs.capability.task-eni"
+        },
+        {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
         }
     ],
     "placementConstraints": [],
     "compatibilities": [
-        "EC2"
+        "EC2",
+        "FARGATE"
     ],
     "requiresCompatibilities": [
         "EC2"
@@ -78,7 +83,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-05-16T15:07:37.527Z",
+    "registeredAt": "2024-05-16T16:25:29.423Z",
     "registeredBy": "arn:aws:iam::717745051827:root",
     "tags": []
 }
