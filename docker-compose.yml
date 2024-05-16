@@ -32,9 +32,9 @@ services:
       - 4343:4343
       - 9229:9229  # debugger port
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/.pnpm-store
-      - /usr/src/app/node_modules
+      - .:/asgard
+      - /asgard/.pnpm-store
+      - /asgard/node_modules
     command: pnpm start:docker
     networks:
       - asgard_net

@@ -1,15 +1,13 @@
 name: Pull Request Workflow
 
 on:
-  push:
-    branches:
-      - develop
+  pull_request:
 
 jobs:
   build:
     name: Lint & Test
     runs-on: ubuntu-latest
-    environment: develop
+    # environment: development
 
     steps:
       - name: Checkout
@@ -18,14 +16,14 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: '20.x'
 
       - name: Run Tests
         run: |
-            yarn --frozen-lockfile
-            yarn build
-            yarn lint
-            yarn test:run
+            pnpm --frozen-lockfile
+            pnpm build
+            pnpm lint
+            pnpm start:dev
 
       - name: Build Image
         run: docker build -t asgard .

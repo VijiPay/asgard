@@ -2,7 +2,7 @@ FROM node:18
 
 RUN npm i -g pnpm
 
-WORKDIR /usr/src/app
+WORKDIR /asgard
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
