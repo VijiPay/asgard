@@ -18,7 +18,7 @@
 		"start:dev": "pnpm docker:db:migrate && pnpm docker:seed:dev && pnpm rebuild:be",
 		"start:docker": "pnpm build && node --inspect=0.0.0.0 dist/index.js",
 		"watch": "watchy --no-init-spawn --debounce 1 -w src -- docker-compose restart asgard",
-		"down": "docker-compose down --remove-orphans",
+		"stop": "docker-compose down --remove-orphans",
 		"lint": "pnpm biome format --write ./src",
 		"lint:fix": "pnpm biome check --apply ./src"
 	},
