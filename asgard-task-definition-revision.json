@@ -1,4 +1,5 @@
 {
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:717745051827:task-definition/asgard-task-definition:5",
     "containerDefinitions": [
         {
             "name": "asgard",
@@ -6,7 +7,7 @@
             "cpu": 0,
             "portMappings": [
                 {
-                    "name": "4343",
+                    "name": "asgard-4343-tcp",
                     "containerPort": 4343,
                     "hostPort": 4343,
                     "protocol": "tcp",
@@ -23,7 +24,7 @@
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/task-definition.prod.json",
+                    "awslogs-group": "/ecs/asgard-task-definition",
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "ecs"
                 },
@@ -32,13 +33,15 @@
             "systemControls": []
         }
     ],
-    "family": "task-definition-production",
+    "family": "asgard-task-definition",
     "taskRoleArn": "arn:aws:iam::717745051827:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::717745051827:role/ecsTaskExecutionRole",
-    "networkMode": "awsvpc",
-    "revision": 1,
+    "networkMode": "bridge",
     "volumes": [],
     "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ],
     "requiresCompatibilities": [
         "EC2"
     ],
