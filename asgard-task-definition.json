@@ -1,5 +1,4 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:717745051827:task-definition/asgard-task-definition:5",
     "containerDefinitions": [
         {
             "name": "asgard",
@@ -39,9 +38,6 @@
     "networkMode": "bridge",
     "volumes": [],
     "placementConstraints": [],
-    "compatibilities": [
-        "EC2"
-    ],
     "requiresCompatibilities": [
         "EC2"
     ],
