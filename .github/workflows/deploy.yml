@@ -44,7 +44,7 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition-production.json 
+          task-definition: asgard-task-definition.json 
           container-name: asgard
           image: ${{ steps.build-image.outputs.image }}
 
@@ -52,6 +52,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: asgard-service
+          service: asgard-production-service
           cluster: asgardCluster
           wait-for-service-stability: true    
