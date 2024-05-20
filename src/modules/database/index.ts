@@ -9,15 +9,6 @@ const nanoid = customAlphabet(alphabet, 12)
 const genId = () => nanoid()
 
 async function main() {
-  const user = await db.user.create({
-    data: {
-      name: 'Shemang david',
-      password: '#535fdvfvdfvetfverfv',
-      email: 'dav@gmdail.com',
-      isAdmin: true,
-    },
-  })
-  console.log(user)
 }
 
 main()
