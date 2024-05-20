@@ -13,7 +13,7 @@ async function main() {
     data: {
       name: 'Shemang david',
       password: '#535fdvfvdfvetfverfv',
-      email: 'dav@gmail.com',
+      email: 'dav@gmdail.com',
       isAdmin: true,
     },
   })
