@@ -1,15 +1,19 @@
+version: '3.8'
+
 services:
   postgres:
     container_name: asgard_db
     image: postgres:15-alpine
     ports:
-      - 5432:5432  # enables connecting locally via psql
+      - 5432:5432
     networks:
       - asgard_net
     environment:
       POSTGRES_DB: asgard_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ""
       POSTGRES_HOST_AUTH_METHOD: trust
-  
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -19,7 +23,6 @@ services:
       - asgard_net
     restart: always
     environment:
-      
       PGADMIN_DEFAULT_EMAIL: davidshemang@gmail.com
       PGADMIN_DEFAULT_PASSWORD: 123456de
 
@@ -30,16 +33,20 @@ services:
       - postgres
     ports:
       - 4343:4343
-      - 9229:9229  # debugger port
+      - 9229:9229
     volumes:
       - .:/asgard
       - /asgard/.pnpm-store
       - /asgard/node_modules
-    command: pnpm start:docker
+    command: ["./wait-for-it.sh", "postgres:5432", "--", "pnpm", "start:docker"]
     networks:
       - asgard_net
     environment:
-      DATABASE_URL: postgres://postgres@postgres/asgard_db
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: ""
+      DB_NAME: asgard_db
+      DB_PORT: 5432
       PORT: 4343
 
 networks:

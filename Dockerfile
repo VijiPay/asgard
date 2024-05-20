@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:20-slim as build
 
 RUN npm i -g pnpm
 
@@ -12,5 +12,7 @@ RUN pnpx prisma generate
 
 COPY . .
 
-EXPOSE 8080
-CMD [ "pnpm", "start" ]
+COPY wait-for-it.sh ./wait-for-it.sh
+
+EXPOSE 4343
+CMD ["./wait-for-it.sh", "postgres:5432", "--", "pnpm", "start:docker"]

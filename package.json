@@ -1,49 +1,48 @@
 {
-	"name": "asgard",
-	"version": "1.0.0",
-	"main": "src/index.js",
-	"license": "MIT",
-	"volta": {
-		"node": "18.15.0"
-	},
-	"scripts": {
-		"build": "rimraf dist && swc ./src -d dist",
-		"db:console": "docker compose run postgres psql -h localhost -U postgres -d asgard_db",
-		"db:migrate": "knex migrate:latest",
-		"docker:db:migrate": "docker compose run asgard pnpm db:migrate",
-		"docker:db:migrate:undo": "docker compose run asgard pnpx knex migrate:down",
-		"docker:seed:dev": "docker compose run asgard pnpm ts-node scripts/seed/dev.ts",
-		"rebuild:be": "docker compose build asgard && docker compose rm --force --stop asgard && docker compose up -d asgard",
-		"start": "pnpm docker:db:migrate && pnpm rebuild:be",
-		"start:dev": "pnpm docker:db:migrate && pnpm docker:seed:dev && pnpm rebuild:be",
-		"start:docker": "pnpm build && node --inspect=0.0.0.0 dist/index.js",
-		"watch": "watchy --no-init-spawn --debounce 1 -w src -- docker-compose restart asgard",
-		"stop": "docker-compose down --remove-orphans",
-		"lint": "pnpm biome format --write ./src",
-		"lint:fix": "pnpm biome check --apply ./src"
-	},
-	"dependencies": {
-		"@prisma/client": "^4.16.2",
-		"express": "^4.19.2",
-		"knex": "^2.5.1",
-		"morgan": "^1.10.0",
-		"nanoid": "^3.3.7",
-		"pg": "^8.11.5",
-		"typescript": "^5.4.5"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.7.3",
-		"@swc/cli": "^0.1.65",
-		"@swc/core": "^1.5.5",
-		"@tsconfig/node18": "^1.0.3",
-		"@types/express": "^4.17.21",
-		"@types/morgan": "^1.9.9",
-		"@types/node": "^18.19.33",
-		"@typescript-eslint/eslint-plugin": "^5.62.0",
-		"@typescript-eslint/parser": "^5.62.0",
-		"prisma": "^4.16.2",
-		"rimraf": "^4.4.1",
-		"ts-node": "^10.9.2",
-		"watchy": "^0.10.1"
-	}
+  "name": "asgard",
+  "version": "1.0.0",
+  "description": "Vijipay's Webservice",
+  "main": "src/index.js",
+  "license": "MIT",
+  "volta": {
+    "node": "20.12.2"
+  },
+  "scripts": {
+    "start": "pnpm build && pnpm db:migrate && node dist/index.js",
+    "build": "rimraf dist && swc ./src -d dist",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:undo": "knex migrate:down",
+    "docker:seed:dev": "docker compose run asgard pnpm ts-node scripts/seed/dev.ts",
+    "rebuild:be": "docker compose build asgard && docker compose rm --force --stop asgard && docker compose up -d asgard",
+    "start:dev": "pnpm db:migrate && pnpm docker:seed:dev && pnpm rebuild:be",
+    "watch": "watchy --no-init-spawn --debounce 1 -w src -- docker-compose restart asgard",
+    "stop": "docker-compose down --remove-orphans",
+    "lint": "pnpm biome format --write ./src",
+    "lint:fix": "pnpm biome check --apply ./src",
+    "knip": "knip"
+  },
+  "dependencies": {
+    "@prisma/client": "5.14.0",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "nanoid": "^3.3.7"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.7.3",
+    "@swc/cli": "^0.1.65",
+    "@swc/core": "^1.5.5",
+    "@swc/helpers": "0.5.11",
+    "@tsconfig/node18": "^1.0.3",
+    "@tsconfig/node20": "20.1.4",
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^18.19.33",
+    "knip": "^5.16.0",
+    "prisma": "5.14.0",
+    "rimraf": "^4.4.1",
+    "ts-node": "10.9.2",
+    "tslib": "2.6.2",
+    "typescript": "^5.4.5",
+    "watchy": "^0.10.1"
+  }
 }
