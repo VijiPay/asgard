@@ -6,7 +6,7 @@
       "cpu": 0,
       "portMappings": [
         {
-          "name": "asgard-4343-tcp",
+          "name": "4343",
           "containerPort": 4343,
           "hostPort": 4343,
           "protocol": "tcp",
