@@ -15,4 +15,4 @@ COPY . .
 COPY wait-for-it.sh ./wait-for-it.sh
 
 EXPOSE 4343
-CMD ["./wait-for-it.sh", "postgres:5432", "--", "pnpm", "start:docker"]
+CMD ["./wait-for-it.sh", "postgres:5432", "--", "pnpm", "start"]
