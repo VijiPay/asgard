@@ -1,51 +1,54 @@
 {
-    "containerDefinitions": [
+  "containerDefinitions": [
+    {
+      "name": "asgard",
+      "image": "717745051827.dkr.ecr.us-east-1.amazonaws.com/asgard:latest",
+      "cpu": 0,
+      "portMappings": [
         {
-            "name": "asgard",
-            "image": "717745051827.dkr.ecr.us-east-1.amazonaws.com/asgard:latest",
-            "cpu": 0,
-            "portMappings": [
-                {
-                    "name": "asgard-4343-tcp",
-                    "containerPort": 4343,
-                    "hostPort": 4343,
-                    "protocol": "tcp",
-                    "appProtocol": "http"
-                }
-            ],
-            "essential": true,
-            "environment": [],
-            "environmentFiles": [],
-            "mountPoints": [],
-            "volumesFrom": [],
-            "ulimits": [],
-            "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/asgard-task-definition",
-                    "awslogs-region": "us-east-1",
-                    "awslogs-stream-prefix": "ecs"
-                },
-                "secretOptions": []
-            },
-            "systemControls": []
+          "name": "asgard-4343-tcp",
+          "containerPort": 4343,
+          "hostPort": 4343,
+          "protocol": "tcp",
+          "appProtocol": "http"
         }
-    ],
-    "family": "asgard-task-definition",
-    "taskRoleArn": "arn:aws:iam::717745051827:role/ecsTaskExecutionRole",
-    "executionRoleArn": "arn:aws:iam::717745051827:role/ecsTaskExecutionRole",
-    "networkMode": "bridge",
-    "volumes": [],
-    "placementConstraints": [],
-    "requiresCompatibilities": [
-        "EC2"
-    ],
-    "cpu": "1024",
-    "memory": "3072",
-    "runtimePlatform": {
-        "cpuArchitecture": "X86_64",
-        "operatingSystemFamily": "LINUX"
-    },
-    "tags": []
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "DATABASE_URL",
+          "value": "postgresql://postgres:123456de@localhost:5432/asgard_db"
+        }
+      ],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/asgard-task-definition",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      },
+      "systemControls": []
+    }
+  ],
+  "family": "asgard-task-definition",
+  "taskRoleArn": "arn:aws:iam::717745051827:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::717745051827:role/ecsTaskExecutionRole",
+  "networkMode": "bridge",
+  "volumes": [],
+  "placementConstraints": [],
+  "requiresCompatibilities": ["EC2"],
+  "cpu": "1024",
+  "memory": "3072",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "tags": []
 }
