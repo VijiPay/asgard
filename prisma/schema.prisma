@@ -7,7 +7,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "postgresql://postgres:123456de@asgard-db.c0yldzgbhgud.us-east-1.rds.amazonaws.com:5432/asgard_db"
+  // url      = env("DATABASE_URL")
 }
 
 model User {

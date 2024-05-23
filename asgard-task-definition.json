@@ -18,7 +18,7 @@
       "environment": [
         {
           "name": "DATABASE_URL",
-          "value": "postgresql://postgres:123456de@localhost:5432/asgard_db"
+          "value": "postgresql://postgres:123456de@asgard-db.c0yldzgbhgud.us-east-1.rds.amazonaws.com:5432/asgard_db"
         }
       ],
       "environmentFiles": [],
