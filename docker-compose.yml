@@ -3,14 +3,13 @@ services:
     container_name: asgard_db
     image: postgres:15-alpine
     ports:
-      - 5432:5432
+      - 5800:5432
     networks:
       - asgard_net
     environment:
       POSTGRES_DB: asgard_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: "postres"
-      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_PASSWORD: "123456de"
 
   # pgadmin:
   #   container_name: pgadmin
@@ -42,7 +41,7 @@ services:
     environment:
       DB_HOST: postgres
       DB_USER: postgres
-      DB_PASSWORD: "123456"
+      DB_PASSWORD: "123456de"
       DB_NAME: asgard_db
       DB_PORT: 5432
       PORT: 4343
