@@ -3,25 +3,25 @@ services:
     container_name: asgard_db
     image: postgres:15-alpine
     ports:
-      - 5432:5432  # enables connecting locally via psql
+      - 5800:5432
     networks:
       - asgard_net
     environment:
       POSTGRES_DB: asgard_db
-      POSTGRES_HOST_AUTH_METHOD: trust
-  
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    ports:
-      - 5050:80
-    networks:
-      - asgard_net
-    restart: always
-    environment:
-      
-      PGADMIN_DEFAULT_EMAIL: davidshemang@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: 123456de
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "123456de"
+
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   ports:
+  #     - 5050:80
+  #   networks:
+  #     - asgard_net
+  #   restart: always
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: davidshemang@gmail.com
+  #     PGADMIN_DEFAULT_PASSWORD: 123456de
 
   asgard:
     container_name: asgard
@@ -30,16 +30,20 @@ services:
       - postgres
     ports:
       - 4343:4343
-      - 9229:9229  # debugger port
+      - 9229:9229
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/.pnpm-store
-      - /usr/src/app/node_modules
-    command: pnpm start:docker
+      - .:/asgard
+      - /asgard/.pnpm-store
+      - /asgard/node_modules
+    command: ["pnpm", "start"]
     networks:
       - asgard_net
     environment:
-      DATABASE_URL: postgres://postgres@postgres/asgard_db
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: "123456de"
+      DB_NAME: asgard_db
+      DB_PORT: 5432
       PORT: 4343
 
 networks:

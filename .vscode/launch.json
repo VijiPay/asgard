@@ -7,9 +7,9 @@
 			"name": "Node (Docker)",
 			"port": 9229,
 			"restart": true,
-			"remoteRoot": "/usr/src/app",
+			"remoteRoot": "/asgard",
 			"sourceMaps": true,
-			"skipFiles": ["/usr/src/app/node_modules/**/*.js", "<node_internals>/**"]
+			"skipFiles": ["/asgard/node_modules/**/*.js", "<node_internals>/**"]
 		}
 	]
 }

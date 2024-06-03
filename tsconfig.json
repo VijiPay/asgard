@@ -1,9 +1,17 @@
 {
-	"extends": "@tsconfig/node18/tsconfig.json",
-	"compilerOptions": {
-		"lib": ["ESNext"],
-		"outDir": "dist"
-	},
-	"include": ["src"],
-	"exclude": ["node_modules", "**/*.test.ts"]
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node"],
+    "lib": ["ESNext"],
+    "outDir": "dist",
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
+  "ts-node": {
+    "swc": true,
+    "transpileOnly": true,
+    "files": true
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "**/*.test.ts"]
 }

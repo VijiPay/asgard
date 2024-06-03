@@ -1,8 +1,11 @@
-FROM node:18
+FROM node:20-slim as build
+
+# Install OpenSSL
+RUN apt-get update && apt-get install -y openssl
 
 RUN npm i -g pnpm
 
-WORKDIR /usr/src/app
+WORKDIR /asgard
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
@@ -12,5 +15,5 @@ RUN pnpx prisma generate
 
 COPY . .
 
-EXPOSE 8080
-CMD [ "pnpm", "start" ]
+EXPOSE 4343
+CMD ["pnpm", "start"]
