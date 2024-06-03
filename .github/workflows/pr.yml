@@ -7,23 +7,27 @@ jobs:
   build:
     name: Lint & Test
     runs-on: ubuntu-latest
-    # environment: development
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      - name: Run Tests
-        run: |
-            pnpm --frozen-lockfile
-            pnpm build
-            pnpm lint
-            pnpm start:dev
+      - name: Install pnpm
+        run: pnpm install
 
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Lint
+        run: pnpm lint
+
+      - name: Build Project
+        run: pnpm build
+      
       - name: Build Image
         run: docker build -t asgard .
