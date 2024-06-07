@@ -8,10 +8,10 @@ class CreateUserRepository implements ICreateUserRepository {
   async save(user: UserEntity): Promise<IUser> {
     return await db.user.create({
       data: {
-        email: user.email,
-        password: user.password,
         firstName: user.firstName,
         lastName: user.lastName,
+        email: user.email,
+        password: user.password,
       },
     })
   }

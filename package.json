@@ -19,7 +19,8 @@
     "down": "docker compose down --remove-orphans",
     "lint": "pnpm biome format --write ./src",
     "lint:fix": "pnpm biome check --apply ./src",
-    "knip": "knip"
+    "knip": "knip",
+    "test": "pnpm vitest"
   },
   "dependencies": {
     "@prisma/client": "5.14.0",
@@ -39,6 +40,7 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^18.19.33",
     "knip": "^5.16.0",
+    "nock": "13.5.4",
     "prisma": "5.14.0",
     "rimraf": "^4.4.1",
     "swagger-jsdoc": "6.2.8",
