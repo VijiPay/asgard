@@ -5,7 +5,7 @@ import type { IUser } from '../interface/IUser.interface'
 
 
 class CreateUserRepository implements ICreateUserRepository {
-  async save(user: UserEntity): Promise<IUser> {
+  async create(user: UserEntity): Promise<IUser> {
     return await db.user.create({
       data: {
         firstName: user.firstName,

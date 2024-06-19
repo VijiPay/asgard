@@ -1,6 +1,5 @@
 FROM node:20-slim as build
 
-# Install OpenSSL
 RUN apt-get update && apt-get install -y openssl
 
 RUN npm i -g pnpm

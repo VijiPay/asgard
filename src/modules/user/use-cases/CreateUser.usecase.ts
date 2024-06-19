@@ -1,6 +1,7 @@
 import type User from '../entities/User.entity'
 import type { ICreateUserRepository } from '../interface/ICreateUserRepository'
 import type { IUserCreate } from '../interface/IUserCreate.interface'
+import createUserSchema, { YupError } from '../validators/userCreateSchema'
 
 class CreateUser {
   private userRepository: ICreateUserRepository
@@ -8,26 +9,24 @@ class CreateUser {
   constructor(userRepository: ICreateUserRepository) {
     this.userRepository = userRepository
   }
+
   async execute(data: IUserCreate): Promise<User> {
-    this.validateInput(data);
-    return await this.userRepository.save(data)
+    await this.validateInput(data)
+    const result = await this.userRepository.create(data)
+    // Inject welcome email service here if needed
+    return result
   }
 
-  private validateInput(data: IUserCreate) {
-    if (!data.email) throw new Error('Email is required')
-    if (!data.password) throw new Error('Password is required')
-    if (!data.firstName) throw new Error('First name is required')
-    if (!data.lastName) throw new Error('Last name is required')
-    if (typeof data.email !== 'string')
-      throw new Error('Email must be a string')
-    if (typeof data.password !== 'string')
-      throw new Error('Password must be a string')
-    if (typeof data.firstName !== 'string')
-      throw new Error('First name must be a string')
-    if (typeof data.lastName !== 'string')
-      throw new Error('Last name must be a string')
+  private async validateInput(data: IUserCreate) {
+    try {
+      await createUserSchema.validate(data, { abortEarly: false })
+    } catch (err) {
+      if (err instanceof YupError) {
+        throw new Error(err.errors[0])
+      }
+      throw err
+    }
   }
-
 }
 
 export default CreateUser
