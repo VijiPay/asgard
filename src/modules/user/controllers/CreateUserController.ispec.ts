@@ -1,35 +1,35 @@
-import { describe, expect, it, vi } from 'vitest'
-import type { Request, Response } from 'express'
-import type { IUserCreate } from "../interface/IUserCreate.interface"
-import  CreateUserController  from './CreateUserController'
-import type  CreateUser  from '../use-cases/CreateUser.usecase'
+import "reflect-metadata";
+import type { Request, Response } from "express";
+import { describe, expect, it, vi } from "vitest";
+import type { IUserCreate } from "../interface/IUserCreate.interface";
+import type { CreateUser } from "../use-cases/CreateUser.usecase";
+import { CreateUserController } from "./CreateUserController";
 
-describe('CreateUserController', () => {
-  it('should return 201 and create a new user', async () => {
-      const userCreate: IUserCreate = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: '',
-        password: '',
-        type: '',
-      }
+describe("CreateUserController", () => {
+  it("should return 201 and create a new user", async () => {
+    const userCreate: IUserCreate = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "",
+      password: "",
+      type: "",
+    };
     const createUserUseCase = {
-        execute: vi.fn().mockResolvedValue(userCreate),
-    } as unknown as CreateUser
+      execute: vi.fn().mockResolvedValue(userCreate),
+    } as unknown as CreateUser;
     const req = {
-        body: userCreate,
-    } as unknown as Request
+      body: userCreate,
+    } as unknown as Request;
     const res = {
-    status: vi.fn().mockReturnThis(),
-    json: vi.fn(),
-    } as unknown as Response
+      status: vi.fn().mockReturnThis(),
+      json: vi.fn(),
+    } as unknown as Response;
 
-    const createUserController = new CreateUserController(createUserUseCase)
-    await createUserController.createUser(req, res)
+    const createUserController = new CreateUserController(createUserUseCase);
+    await createUserController.createUser(req, res);
 
-    expect(createUserUseCase.execute).toHaveBeenCalledWith(req.body)
-    expect(res.status).toHaveBeenCalledWith(201)
-    expect(res.json).toHaveBeenCalledWith(userCreate)
-  })
-
-})
+    expect(createUserUseCase.execute).toHaveBeenCalledWith(req.body);
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledWith(userCreate);
+  });
+});

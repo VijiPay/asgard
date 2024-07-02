@@ -1,5 +1,7 @@
-import db from "./prisma_client";
-import { generateId } from "./generateID";
+import { generateId } from './generateID'
+import PrismaClientWrapper from './prismaClient'
 
-export { generateId };
-export default db;
+const db = PrismaClientWrapper
+
+export { generateId }
+export default db

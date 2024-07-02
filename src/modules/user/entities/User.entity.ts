@@ -9,7 +9,7 @@ class UserEntity {
   date_of_birth?: string
   role?: string
   status?: string // user status =  active, inactive, suspended, deleted
-  type?: string // user type  =  unknown, individual, business, broker, organization
+  type: string // user type  =  unknown, individual, business, broker, organization
   login_ip?: string
   platform_id?: string // assigned by the platform when the user is verified
   last_login?: Date
@@ -47,12 +47,12 @@ class UserEntity {
     password: string,
     firstName: string,
     lastName: string,
+    type: string,
     nickname?: string,
     phone?: string,
     date_of_birth?: string,
     role?: string,
     status?: string,
-    type?: string,
     login_ip?: string,
     platform_id?: string,
     last_login?: Date,
@@ -85,47 +85,47 @@ class UserEntity {
     country_code?: string,
     webhooks?: object[],
   ) {
-   this.email = email
-  this.password = password
-  this.firstName = firstName
-  this.lastName = lastName
-  this.nickname = nickname
-  this.phone = phone
-  this.date_of_birth = date_of_birth
-  this.role = role
-  this.status = status
-  this.type = type
-  this.login_ip = login_ip
-  this.platform_id = platform_id
-  this.last_login = last_login
-  this.password_reset = password_reset
-  this.password_reset_token = password_reset_token
-  this.password_reset_expires = password_reset_expires
-  this.user_locked = user_locked
-  this.user_locked_message = user_locked_message
-  this.user_locked_date = user_locked_date
-  this.user_locked_by = user_locked_by
-  this.api_key = api_key
-  this.authy_id = authy_id
-  this.phone_verified = phone_verified
-  this.phone_verify_code = phone_verify_code
-  this.phone_verify_expires = phone_verify_expires
-  this.phone_verify_date = phone_verify_date
-  this.email_verified = email_verified
-  this.email_verify_code = email_verify_code
-  this.email_verify_expires = email_verify_expires
-  this.email_verify_date = email_verify_date
-  this.payment_method = payment_method
-  this.address = address
-  this.organization = organization
-  this.business = business
-  this.broker = broker
-  this.individual = individual
-  this.metadata = metadata
-  this.fraud_score = fraud_score
-  this.tos_acceptance = tos_acceptance
-  this.country_code = country_code
-  this.webhooks = webhooks
+    this.email = email
+    this.password = password
+    this.firstName = firstName
+    this.lastName = lastName
+    this.nickname = nickname
+    this.phone = phone
+    this.date_of_birth = date_of_birth
+    this.role = role
+    this.status = status
+    this.type = type
+    this.login_ip = login_ip
+    this.platform_id = platform_id
+    this.last_login = last_login
+    this.password_reset = password_reset
+    this.password_reset_token = password_reset_token
+    this.password_reset_expires = password_reset_expires
+    this.user_locked = user_locked
+    this.user_locked_message = user_locked_message
+    this.user_locked_date = user_locked_date
+    this.user_locked_by = user_locked_by
+    this.api_key = api_key
+    this.authy_id = authy_id
+    this.phone_verified = phone_verified
+    this.phone_verify_code = phone_verify_code
+    this.phone_verify_expires = phone_verify_expires
+    this.phone_verify_date = phone_verify_date
+    this.email_verified = email_verified
+    this.email_verify_code = email_verify_code
+    this.email_verify_expires = email_verify_expires
+    this.email_verify_date = email_verify_date
+    this.payment_method = payment_method
+    this.address = address
+    this.organization = organization
+    this.business = business
+    this.broker = broker
+    this.individual = individual
+    this.metadata = metadata
+    this.fraud_score = fraud_score
+    this.tos_acceptance = tos_acceptance
+    this.country_code = country_code
+    this.webhooks = webhooks
   }
 }
 

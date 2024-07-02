@@ -1,20 +1,13 @@
-import db from '../../../config'
-import type UserEntity from '../entities/User.entity'
-import type { ICreateUserRepository } from '../interface/ICreateUserRepository'
-import type { IUser } from '../interface/IUser.interface'
+import { inject, injectable } from "tsyringe"
+import type { IPrismaClient } from "../../../shared/interfaces/IPrismaClient"
+import type UserEntity from "../entities/User.entity"
+import type { ICreateUserRepository } from "../interface/ICreateUserRepository"
 
-
-class CreateUserRepository implements ICreateUserRepository {
-  async create(user: UserEntity): Promise<IUser> {
-    return await db.user.create({
-      data: {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        password: user.password,
-      },
-    })
+@injectable()
+export class CreateUserRepository implements ICreateUserRepository {
+  constructor(@inject('IPrismaClient') private db: IPrismaClient) {
+  }
+  async create(user: UserEntity): Promise<UserEntity> {
+    return await this.db.user.create({ data: user })
   }
 }
-
-export default CreateUserRepository

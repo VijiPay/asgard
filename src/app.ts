@@ -1,31 +1,29 @@
-import express from 'express'
-import morgan from 'morgan'
-import UserController from './modules/user/controllers/CreateUserController'
-import UserRepository from './modules/user/repositories/CreateUser.repository'
-import CreateUser from './modules/user/use-cases/CreateUser.usecase'
-import errorHandler from './shared/middleware/error.handler'
+import "reflect-metadata";
+import express from "express";
+import morgan from "morgan";
+import { container } from "tsyringe";
+import { CreateUserController } from "./modules/user/controllers/CreateUserController";
+import errorHandler from "./shared/middleware/error.handler";
+import "./config/containers";
 
 //routes
-import userRouter from './routes/userRoutes'
+// import userRouter from "./routes/userRoutes";
 
-const app = express()
-app.use(express.json())
-app.use('/api/v1/user', userRouter)
+const app = express();
+app.use(express.json());
+// app.use("/api/v1/user", userRouter);
 
-const userRepository = new UserRepository()
-const createUser = new CreateUser(userRepository)
-const userController = new UserController(createUser)
+app.use(morgan("dev"));
 
-app.use(morgan('dev'))
+app.get("/", (req, res) => {
+  res.json({ message: "Hello, worldlyvv!" });
+});
 
-app.get('/', async (req, res) => {
-  res.json({ message: 'Hello, world!' })
-})
+const createUserController = container.resolve(CreateUserController);
+app.post("/users", createUserController.createUser.bind(createUserController));
 
 app.use((err, res) => {
-  errorHandler(err, res)
-})
+  errorHandler(err, res);
+});
 
-app.post('/user', (req, res) => userController.createUser(req, res))
-
-export default app
+export default app;

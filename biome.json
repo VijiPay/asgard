@@ -23,12 +23,14 @@
       "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",
       "trailingComma": "all",
-      "semicolons": "asNeeded",
       "arrowParentheses": "always",
       "bracketSpacing": true,
       "bracketSameLine": false,
-      "quoteStyle": "single",
+      "quoteStyle": "double",
       "attributePosition": "auto"
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
     }
   }
 }
