@@ -1,132 +1,334 @@
-class UserEntity {
-  id?: number
-  email: string
-  password: string
-  firstName: string
-  lastName: string
-  nickname?: string
-  phone?: string
-  date_of_birth?: string
-  role?: string
-  status?: string // user status =  active, inactive, suspended, deleted
-  type: string // user type  =  unknown, individual, business, broker, organization
-  login_ip?: string
-  platform_id?: string // assigned by the platform when the user is verified
-  last_login?: Date
-  password_reset?: boolean
-  password_reset_token?: string
-  password_reset_expires?: Date
-  user_locked?: boolean
-  user_locked_message?: string
-  user_locked_date?: Date
-  user_locked_by?: string
-  api_key?: string
-  authy_id?: number
-  phone_verified?: boolean
-  phone_verify_code?: string
-  phone_verify_expires?: Date
-  phone_verify_date?: Date
-  email_verified?: boolean
-  email_verify_code?: string
-  email_verify_expires?: Date
-  email_verify_date?: Date
-  payment_method?: object
-  address?: object
-  organization?: object
-  business?: object
-  broker?: object
-  individual?: object
-  metadata?: object //store any other information that is not covered by the above fields such as the user's preferences, profile picture, etc
-  fraud_score?: number
-  tos_acceptance?: object
-  country_code?: string
-  webhooks?: object[]
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
 
-  constructor(
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    type: string,
-    nickname?: string,
-    phone?: string,
-    date_of_birth?: string,
-    role?: string,
-    status?: string,
-    login_ip?: string,
-    platform_id?: string,
-    last_login?: Date,
-    password_reset?: boolean,
-    password_reset_token?: string,
-    password_reset_expires?: Date,
-    user_locked?: boolean,
-    user_locked_message?: string,
-    user_locked_date?: Date,
-    user_locked_by?: string,
-    api_key?: string,
-    authy_id?: number,
-    phone_verified?: boolean,
-    phone_verify_code?: string,
-    phone_verify_expires?: Date,
-    phone_verify_date?: Date,
-    email_verified?: boolean,
-    email_verify_code?: string,
-    email_verify_expires?: Date,
-    email_verify_date?: Date,
-    payment_method?: object,
-    address?: object,
-    organization?: object,
-    business?: object,
-    broker?: object,
-    individual?: object,
-    metadata?: object,
-    fraud_score?: number,
-    tos_acceptance?: object,
-    country_code?: string,
-    webhooks?: object[],
-  ) {
-    this.email = email
-    this.password = password
-    this.firstName = firstName
-    this.lastName = lastName
-    this.nickname = nickname
-    this.phone = phone
-    this.date_of_birth = date_of_birth
-    this.role = role
-    this.status = status
-    this.type = type
-    this.login_ip = login_ip
-    this.platform_id = platform_id
-    this.last_login = last_login
-    this.password_reset = password_reset
-    this.password_reset_token = password_reset_token
-    this.password_reset_expires = password_reset_expires
-    this.user_locked = user_locked
-    this.user_locked_message = user_locked_message
-    this.user_locked_date = user_locked_date
-    this.user_locked_by = user_locked_by
-    this.api_key = api_key
-    this.authy_id = authy_id
-    this.phone_verified = phone_verified
-    this.phone_verify_code = phone_verify_code
-    this.phone_verify_expires = phone_verify_expires
-    this.phone_verify_date = phone_verify_date
-    this.email_verified = email_verified
-    this.email_verify_code = email_verify_code
-    this.email_verify_expires = email_verify_expires
-    this.email_verify_date = email_verify_date
-    this.payment_method = payment_method
-    this.address = address
-    this.organization = organization
-    this.business = business
-    this.broker = broker
-    this.individual = individual
-    this.metadata = metadata
-    this.fraud_score = fraud_score
-    this.tos_acceptance = tos_acceptance
-    this.country_code = country_code
-    this.webhooks = webhooks
-  }
+@Entity("users")
+export class UserEntity {
+  @PrimaryGeneratedColumn({ name: "id" })
+  id: number;
+
+  @Column({
+    name: "email",
+    type: "varchar",
+    length: 255,
+    nullable: false,
+    unique: true,
+  })
+  email: string;
+
+  @Column({
+    name: "password",
+    type: "varchar",
+    length: 255,
+    nullable: false,
+  })
+  password: string;
+
+  @Column({
+    name: "first_name",
+    type: "varchar",
+    length: 255,
+    nullable: false,
+  })
+  firstName: string;
+
+  @Column({
+    name: "last_name",
+    type: "varchar",
+    length: 255,
+    nullable: false,
+  })
+  lastName: string;
+
+  @Column({
+    name: "type",
+    type: "varchar",
+    length: 50,
+    nullable: true,
+  })
+  type?: string;
+
+  @Column({
+    name: "nickname",
+    type: "varchar",
+    length: 255,
+    nullable: true,
+  })
+  nickname?: string;
+
+  @Column({
+    name: "phone",
+    type: "varchar",
+    length: 50,
+    nullable: true,
+  })
+  phone?: string;
+
+  @Column({
+    name: "date_of_birth",
+    type: "varchar",
+    length: 50,
+    nullable: true,
+  })
+  date_of_birth?: string;
+
+  @Column({
+    name: "role",
+    type: "varchar",
+    length: 50,
+    nullable: true,
+  })
+  role?: string;
+
+  @Column({
+    name: "status",
+    type: "varchar",
+    length: 50,
+    nullable: true,
+  })
+  status?: string;
+
+  @Column({
+    name: "login_ip",
+    type: "varchar",
+    length: 50,
+    nullable: true,
+  })
+  login_ip?: string;
+
+  @Column({
+    name: "platform_id",
+    type: "varchar",
+    length: 50,
+    nullable: true,
+  })
+  platform_id?: string;
+
+  @Column({
+    name: "last_login",
+    type: "datetime",
+    nullable: true,
+  })
+  last_login?: Date;
+
+  @Column({
+    name: "password_reset",
+    type: "boolean",
+    nullable: true,
+  })
+  password_reset?: boolean;
+
+  @Column({
+    name: "password_reset_token",
+    type: "varchar",
+    length: 255,
+    nullable: true,
+  })
+  password_reset_token?: string;
+
+  @Column({
+    name: "password_reset_expires",
+    type: "datetime",
+    nullable: true,
+  })
+  password_reset_expires?: Date;
+
+  @Column({
+    name: "user_locked",
+    type: "boolean",
+    nullable: true,
+  })
+  user_locked?: boolean;
+
+  @Column({
+    name: "user_locked_message",
+    type: "varchar",
+    length: 255,
+    nullable: true,
+  })
+  user_locked_message?: string;
+
+  @Column({
+    name: "user_locked_date",
+    type: "datetime",
+    nullable: true,
+  })
+  user_locked_date?: Date;
+
+  @Column({
+    name: "user_locked_by",
+    type: "varchar",
+    length: 255,
+    nullable: true,
+  })
+  user_locked_by?: string;
+
+  @Column({
+    name: "api_key",
+    type: "varchar",
+    length: 255,
+    nullable: true,
+  })
+  api_key?: string;
+
+  @Column({
+    name: "authy_id",
+    type: "int",
+    nullable: true,
+  })
+  authy_id?: number;
+
+  @Column({
+    name: "phone_verified",
+    type: "boolean",
+    nullable: true,
+  })
+  phone_verified?: boolean;
+
+  @Column({
+    name: "phone_verify_code",
+    type: "varchar",
+    length: 255,
+    nullable: true,
+  })
+  phone_verify_code?: string;
+
+  @Column({
+    name: "phone_verify_expires",
+    type: "datetime",
+    nullable: true,
+  })
+  phone_verify_expires?: Date;
+
+  @Column({
+    name: "phone_verify_date",
+    type: "datetime",
+    nullable: true,
+  })
+  phone_verify_date?: Date;
+
+  @Column({
+    name: "email_verified",
+    type: "boolean",
+    nullable: true,
+  })
+  email_verified?: boolean;
+
+  @Column({
+    name: "email_verify_code",
+    type: "varchar",
+    length: 255,
+    nullable: true,
+  })
+  email_verify_code?: string;
+
+  @Column({
+    name: "email_verify_expires",
+    type: "datetime",
+    nullable: true,
+  })
+  email_verify_expires?: Date;
+
+  @Column({
+    name: "email_verify_date",
+    type: "datetime",
+    nullable: true,
+  })
+  email_verify_date?: Date;
+
+  @Column({
+    name: "payment_method",
+    type: "json",
+    nullable: true,
+  })
+  payment_method?: object;
+
+  @Column({
+    name: "address",
+    type: "json",
+    nullable: true,
+  })
+  address?: object;
+
+  @Column({
+    name: "organization",
+    type: "json",
+    nullable: true,
+  })
+  organization?: object;
+
+  @Column({
+    name: "business",
+    type: "json",
+    nullable: true,
+  })
+  business?: object;
+
+  @Column({
+    name: "broker",
+    type: "json",
+    nullable: true,
+  })
+  broker?: object;
+
+  @Column({
+    name: "individual",
+    type: "json",
+    nullable: true,
+  })
+  individual?: object;
+
+  @Column({
+    name: "metadata",
+    type: "json",
+    nullable: true,
+  })
+  metadata?: object;
+
+  @Column({
+    name: "fraud_score",
+    type: "int",
+    nullable: true,
+  })
+  fraud_score?: number;
+
+  @Column({
+    name: "tos_acceptance",
+    type: "json",
+    nullable: true,
+  })
+  tos_acceptance?: object;
+
+  @Column({
+    name: "country_code",
+    type: "varchar",
+    length: 10,
+    nullable: true,
+  })
+  country_code?: string;
+
+  @Column({
+    name: "webhooks",
+    type: "json",
+    nullable: true,
+  })
+  webhooks?: object[];
+
+  @CreateDateColumn({
+    name: "created_date",
+    type: "datetime",
+    nullable: true,
+  })
+  createdDate: Date;
+
+  @UpdateDateColumn({
+    name: "last_modified_date",
+    type: "timestamp",
+    nullable: false,
+  })
+  lastModifiedDate: Date;
 }
-
-export default UserEntity

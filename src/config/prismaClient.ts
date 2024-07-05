@@ -1,4 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import type { IDatabase } from "../shared/interfaces/IDatabase";
 
-const prisma = new PrismaClient();
+export class PrismaClientWrapper extends PrismaClient implements IDatabase {
+  async $disconnect(): Promise<void> {
+    await this.$disconnect();
+  }
+}
+
+const prisma = new PrismaClientWrapper();
+
 export default prisma;

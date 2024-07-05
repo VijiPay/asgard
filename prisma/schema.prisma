@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:123456de@postgres:5432/asgard_db"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -13,12 +13,12 @@ model User {
   password               String
   firstName              String
   lastName               String
+  type                   Int
   nickname               String?
   phone                  String?
   date_of_birth          String?
   role                   String?
   status                 String?
-  type                   String?
   login_ip               String?
   platform_id            String?
   last_login             DateTime?

@@ -1,13 +1,17 @@
-import { inject, injectable } from "tsyringe"
-import type { IPrismaClient } from "../../../shared/interfaces/IPrismaClient"
-import type UserEntity from "../entities/User.entity"
-import type { ICreateUserRepository } from "../interface/ICreateUserRepository"
+import { injectable } from "tsyringe";
+import type { DataSource } from "typeorm";
+import { UserEntity } from "../entities/User.entity";
+import type { ICreateUserRepository } from "../interface/ICreateUserRepository";
 
 @injectable()
 export class CreateUserRepository implements ICreateUserRepository {
-  constructor(@inject('IPrismaClient') private db: IPrismaClient) {
+  private connection;
+
+  constructor(dataSource: DataSource) {
+    this.connection = dataSource.getRepository(UserEntity);
   }
-  async create(user: UserEntity): Promise<UserEntity> {
-    return await this.db.user.create({ data: user })
+
+  async create(data: Partial<UserEntity>): Promise<UserEntity> {
+    return this.connection.save(data);
   }
 }
