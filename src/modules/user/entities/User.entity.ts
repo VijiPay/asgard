@@ -29,7 +29,7 @@ export class UserEntity {
   password: string;
 
   @Column({
-    name: "first_name",
+    name: "firstName",
     type: "varchar",
     length: 255,
     nullable: false,
@@ -37,7 +37,7 @@ export class UserEntity {
   firstName: string;
 
   @Column({
-    name: "last_name",
+    name: "lastName",
     type: "varchar",
     length: 255,
     nullable: false,
