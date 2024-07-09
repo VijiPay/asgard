@@ -50,7 +50,7 @@ export class UserEntity {
     length: 50,
     nullable: true,
   })
-  type?: string;
+  type: string;
 
   @Column({
     name: "nickname",
@@ -58,15 +58,15 @@ export class UserEntity {
     length: 255,
     nullable: true,
   })
-  nickname?: string;
+  nickname: string;
 
   @Column({
-    name: "phone",
+    name: "phone_number",
     type: "varchar",
     length: 50,
     nullable: true,
   })
-  phone?: string;
+  phoneNumber: string;
 
   @Column({
     name: "date_of_birth",
@@ -74,7 +74,7 @@ export class UserEntity {
     length: 50,
     nullable: true,
   })
-  date_of_birth?: string;
+  date_of_birth: string;
 
   @Column({
     name: "role",
@@ -82,15 +82,15 @@ export class UserEntity {
     length: 50,
     nullable: true,
   })
-  role?: string;
+  role: string;
 
   @Column({
     name: "status",
-    type: "varchar",
-    length: 50,
+    type: "int",
+    default: 1,
     nullable: true,
   })
-  status?: string;
+  status: number;
 
   @Column({
     name: "login_ip",
@@ -98,7 +98,7 @@ export class UserEntity {
     length: 50,
     nullable: true,
   })
-  login_ip?: string;
+  login_ip: string;
 
   @Column({
     name: "platform_id",
@@ -106,21 +106,21 @@ export class UserEntity {
     length: 50,
     nullable: true,
   })
-  platform_id?: string;
+  platform_id: string;
 
   @Column({
     name: "last_login",
     type: "datetime",
     nullable: true,
   })
-  last_login?: Date;
+  last_login: Date;
 
   @Column({
     name: "password_reset",
     type: "boolean",
     nullable: true,
   })
-  password_reset?: boolean;
+  password_reset: boolean;
 
   @Column({
     name: "password_reset_token",
@@ -128,21 +128,21 @@ export class UserEntity {
     length: 255,
     nullable: true,
   })
-  password_reset_token?: string;
+  password_reset_token: string;
 
   @Column({
     name: "password_reset_expires",
     type: "datetime",
     nullable: true,
   })
-  password_reset_expires?: Date;
+  password_reset_expires: Date;
 
   @Column({
     name: "user_locked",
     type: "boolean",
     nullable: true,
   })
-  user_locked?: boolean;
+  user_locked: boolean;
 
   @Column({
     name: "user_locked_message",
@@ -150,14 +150,14 @@ export class UserEntity {
     length: 255,
     nullable: true,
   })
-  user_locked_message?: string;
+  user_locked_message: string;
 
   @Column({
     name: "user_locked_date",
     type: "datetime",
     nullable: true,
   })
-  user_locked_date?: Date;
+  user_locked_date: Date;
 
   @Column({
     name: "user_locked_by",
@@ -165,7 +165,7 @@ export class UserEntity {
     length: 255,
     nullable: true,
   })
-  user_locked_by?: string;
+  user_locked_by: string;
 
   @Column({
     name: "api_key",
@@ -173,21 +173,21 @@ export class UserEntity {
     length: 255,
     nullable: true,
   })
-  api_key?: string;
+  api_key: string;
 
   @Column({
     name: "authy_id",
     type: "int",
     nullable: true,
   })
-  authy_id?: number;
+  authy_id: number;
 
   @Column({
     name: "phone_verified",
     type: "boolean",
     nullable: true,
   })
-  phone_verified?: boolean;
+  phone_verified: boolean;
 
   @Column({
     name: "phone_verify_code",
@@ -195,28 +195,28 @@ export class UserEntity {
     length: 255,
     nullable: true,
   })
-  phone_verify_code?: string;
+  phone_verify_code: string;
 
   @Column({
     name: "phone_verify_expires",
     type: "datetime",
     nullable: true,
   })
-  phone_verify_expires?: Date;
+  phone_verify_expires: Date;
 
   @Column({
     name: "phone_verify_date",
     type: "datetime",
     nullable: true,
   })
-  phone_verify_date?: Date;
+  phone_verify_date: Date;
 
   @Column({
     name: "email_verified",
     type: "boolean",
     nullable: true,
   })
-  email_verified?: boolean;
+  email_verified: boolean;
 
   @Column({
     name: "email_verify_code",
@@ -224,84 +224,84 @@ export class UserEntity {
     length: 255,
     nullable: true,
   })
-  email_verify_code?: string;
+  email_verify_code: string;
 
   @Column({
     name: "email_verify_expires",
     type: "datetime",
     nullable: true,
   })
-  email_verify_expires?: Date;
+  email_verify_expires: Date;
 
   @Column({
     name: "email_verify_date",
     type: "datetime",
     nullable: true,
   })
-  email_verify_date?: Date;
+  email_verify_date: Date;
 
   @Column({
     name: "payment_method",
     type: "json",
     nullable: true,
   })
-  payment_method?: object;
+  payment_method: object;
 
   @Column({
     name: "address",
     type: "json",
     nullable: true,
   })
-  address?: object;
+  address: object;
 
   @Column({
     name: "organization",
     type: "json",
     nullable: true,
   })
-  organization?: object;
+  organization: object;
 
   @Column({
     name: "business",
     type: "json",
     nullable: true,
   })
-  business?: object;
+  business: object;
 
   @Column({
     name: "broker",
     type: "json",
     nullable: true,
   })
-  broker?: object;
+  broker: object;
 
   @Column({
     name: "individual",
     type: "json",
     nullable: true,
   })
-  individual?: object;
+  individual: object;
 
   @Column({
     name: "metadata",
     type: "json",
     nullable: true,
   })
-  metadata?: object;
+  metadata: object;
 
   @Column({
     name: "fraud_score",
     type: "int",
     nullable: true,
   })
-  fraud_score?: number;
+  fraud_score: number;
 
   @Column({
     name: "tos_acceptance",
     type: "json",
     nullable: true,
   })
-  tos_acceptance?: object;
+  tos_acceptance: object;
 
   @Column({
     name: "country_code",
@@ -309,14 +309,14 @@ export class UserEntity {
     length: 10,
     nullable: true,
   })
-  country_code?: string;
+  country_code: string;
 
   @Column({
     name: "webhooks",
     type: "json",
     nullable: true,
   })
-  webhooks?: object[];
+  webhooks: object[];
 
   @CreateDateColumn({
     name: "created_date",

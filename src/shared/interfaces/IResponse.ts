@@ -5,6 +5,6 @@ export interface IResponse<T> {
 }
 
 export enum ResponseStatus {
-  SUCCESS = 'success',
-  ERROR = 'error',
+  SUCCESS = "success",
+  ERROR = "error",
 }

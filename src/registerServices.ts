@@ -2,7 +2,7 @@ import { container } from "tsyringe";
 import { AuthService } from "./modules/user/services/Auth.service";
 import { CreateUserUsecase } from "./modules/user/use-cases/CreateUser.usecase";
 import { DecryptPasswordUsecase } from "./modules/user/use-cases/DecryptPassword.usecase";
-import { EncryptPasswordUsecase } from "./modules/user/use-cases/EncryptPassword.usecase";
+import { EncryptPasswordUsecase } from "./modules/user/use-cases/GetUser.usecase";
 import { Components } from "./shared/constants/Components";
 import type { ILogger } from "./shared/services/logger/ILogger";
 import Logger from "./shared/services/logger/Logger";
