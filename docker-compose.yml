@@ -1,3 +1,4 @@
+version: '3.9'
 services:
   postgres:
     container_name: asgard_db
@@ -10,6 +11,11 @@ services:
       POSTGRES_DB: asgard_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: "123456de"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # pgadmin:
   #   container_name: pgadmin
@@ -27,10 +33,10 @@ services:
     container_name: asgard
     build: .
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - 4343:4343
-      - 9229:9229
     volumes:
       - .:/asgard
       - /asgard/.pnpm-store
@@ -45,6 +51,8 @@ services:
       DB_NAME: asgard_db
       DB_PORT: 5432
       PORT: 4343
+    env_file:
+      - .env
 
 networks:
   asgard_net:
