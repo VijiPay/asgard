@@ -1,6 +1,5 @@
-import type { Request, Response } from "express";
 import httpStatus from "http-status";
-import { Controller, Get, Route, Tags } from "tsoa";
+import { Controller, Get, Query, Route, Tags } from "tsoa";
 import { inject, injectable } from "tsyringe";
 import { Components } from "../../../shared/constants/Components";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
@@ -18,9 +17,8 @@ export class GetUserController extends Controller {
 	}
 
 	@Get("find")
-	async getUser(req: Request, res: Response) {
-		const { id, email } = req.query;
-		const user = await this.userService.find(Number(id), String(email));
+	async getUser(@Query() id?: number, @Query() email?: string) {
+		const user = await this.userService.find(id, email);
 		if (user) {
 			return ResponseDTO.success({
 				message: "user profile fetched successfully",
@@ -31,9 +29,8 @@ export class GetUserController extends Controller {
 	}
 
 	@Get("find-by-id")
-	async getUserById(req: Request, res: Response) {
-		const { id } = req.query;
-		const user = await this.userService.findById(Number(id));
+	async getUserById(@Query() id: number) {
+		const user = await this.userService.findById(id);
 		if (user) {
 			return ResponseDTO.success({
 				message: "user profile fetched successfully",
@@ -42,10 +39,10 @@ export class GetUserController extends Controller {
 		}
 		throw new CustomException("User Not Found", httpStatus.NOT_FOUND);
 	}
+
 	@Get("find-by-email")
-	async getUserByEmail(req: Request, res: Response) {
-		const { email } = req.query;
-		const user = await this.userService.findByEmail(String(email));
+	async getUserByEmail(@Query() email: string) {
+		const user = await this.userService.findByEmail(email);
 		if (user) {
 			return ResponseDTO.success({
 				message: "user profile fetched successfully",

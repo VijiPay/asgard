@@ -9,7 +9,7 @@
 	},
 	"scripts": {
 		"start": "pnpm migration:run && node server.js",
-		"start:dev": "rimraf dist && build && tsx watch src/server.ts --clear-screen=false",
+		"start:dev": "rimraf dist && pnpm build && tsx watch src/server.ts --clear-screen=false",
 		"build": "tsoa spec-and-routes",
 		"rebuild:be": "docker compose build asgard && docker compose rm --force --stop asgard && docker compose up -d asgard",
 		"test": "pnpm vitest",
@@ -24,12 +24,11 @@
 		"migration:create": "typeorm-ts-node-commonjs migration:create"
 	},
 	"dependencies": {
-		"@prisma/client": "5.14.0",
 		"bcryptjs": "2.4.3",
 		"class-transformer": "0.5.1",
 		"class-validator": "0.14.1",
-		"dotenv": "16.4.5",
 		"express": "4.19.2",
+		"cors": "2.8.5",
 		"express-async-errors": "3.1.1",
 		"http-status": "1.7.4",
 		"morgan": "1.10.0",
@@ -37,15 +36,15 @@
 		"pg": "8.12.0",
 		"reflect-metadata": "0.2.2",
 		"tsoa": "6.3.1",
+		"ts-node": "10.9.2",
 		"tsyringe": "4.8.0",
 		"typeorm": "0.3.20",
+		"typeorm-ts-node-commonjs": "0.3.20",
 		"winston": "3.13.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.7.3",
-		"@swc/cli": "0.1.65",
-		"@swc/core": "1.5.5",
-		"@swc/helpers": "0.5.11",
+		"@types/cors": "2.8.17",
 		"@tsconfig/node20": "20.1.4",
 		"@types/bcryptjs": "2.4.6",
 		"@types/express": "4.17.21",
@@ -53,16 +52,12 @@
 		"@types/node": "18.19.33",
 		"knip": "5.16.0",
 		"nock": "13.5.4",
-		"prisma": "5.14.0",
 		"rimraf": "4.4.1",
-		"sinon": "18.0.0",
 		"swagger-jsdoc": "6.2.8",
 		"swagger-ui-express": "5.0.1",
-		"ts-node": "10.9.2",
 		"tslib": "2.6.2",
 		"tsx": "4.15.7",
 		"typescript": "5.4.5",
-		"vitest": "1.6.0",
-		"watchy": "0.10.1"
+		"vitest": "1.6.0"
 	}
 }
