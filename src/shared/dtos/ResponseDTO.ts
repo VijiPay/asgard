@@ -1,22 +1,22 @@
 import { type IResponse, ResponseStatus } from "../interfaces/IResponse";
 
 export class ResponseDTO<T = null> implements IResponse<T> {
-  data: T;
+	data: T;
 
-  message: string | undefined;
+	message: string | undefined;
 
-  status: ResponseStatus;
+	status: ResponseStatus;
 
-  constructor(status: ResponseStatus, message?: string, data?: T) {
-    this.status = status;
-    this.message = message;
-    this.data = (data || null) as T;
-  }
+	constructor(status: ResponseStatus, message?: string, data?: T) {
+		this.status = status;
+		this.message = message;
+		this.data = (data || null) as T;
+	}
 
-  static success<T>({
-    message,
-    data,
-  }: { message?: string; data?: T } = {}): ResponseDTO<T> {
-    return new ResponseDTO(ResponseStatus.SUCCESS, message, data);
-  }
+	static success<T>({
+		message,
+		data,
+	}: { message?: string; data?: T } = {}): ResponseDTO<T> {
+		return new ResponseDTO(ResponseStatus.SUCCESS, message, data);
+	}
 }

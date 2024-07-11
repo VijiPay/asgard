@@ -1,25 +1,26 @@
 import { inject, injectable } from "tsyringe";
 import { Components } from "../../../shared/constants/Components";
-import type { CreateUserDTO } from "../dtos/CreateUserDTO";
 import type { LoginDTO } from "../dtos/LoginDTO";
-import type { UserEntity } from "../entities/User.entity";
 import type { IAuthService } from "../interface/IAuthService";
+import type { ICreateUser } from "../interface/ICreateUser";
+import type { IUserProfile } from "../interface/IUserProfile";
 import type { CreateUserUsecase } from "../use-cases/CreateUser.usecase";
 
 @injectable()
 export class AuthService implements IAuthService {
-  constructor(
-    @inject(Components.CreateUserUsecase)
-    private createUserUsecase: CreateUserUsecase,
-  ) {}
+	constructor(
+		@inject(Components.CreateUserUsecase)
+		private createUserUsecase: CreateUserUsecase,
+	) {}
 
-  async register(data: CreateUserDTO): Promise<UserEntity> {
-    return this.createUserUsecase.execute(data);
-  }
+	async register(data: ICreateUser): Promise<IUserProfile> {
+		const res = this.createUserUsecase.execute(data);
+		return res;
+	}
 
-  login: (data: LoginDTO) => Promise<{ user: UserEntity; token: string }>;
+	login: (data: LoginDTO) => Promise<{ user: IUserProfile; token: string }>;
 
-  refreshToken: (token: string) => Promise<string>;
+	refreshToken: (token: string) => Promise<string>;
 
-  logout: (id: number) => Promise<void>;
+	logout: (id: number) => Promise<void>;
 }

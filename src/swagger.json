@@ -32,7 +32,7 @@
 						"type": "number",
 						"format": "double"
 					},
-					"country_code": {
+					"countryCode": {
 						"type": "string"
 					}
 				},
@@ -44,7 +44,7 @@
 					"phoneNumber",
 					"type",
 					"status",
-					"country_code"
+					"countryCode"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -74,6 +74,96 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"ResponseDTO_IUserProfile-Array_": {
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/ResponseStatus"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IUserProfile"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ResponseDTO__Name-string--Email-string__": {
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/ResponseStatus"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"properties": {
+							"Email": {
+								"type": "string"
+							},
+							"Name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"Email",
+							"Name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"status",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateUserDTO": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"countryCode": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"firstName",
+					"lastName",
+					"email",
+					"password",
+					"type",
+					"status",
+					"countryCode"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -88,7 +178,7 @@
 		"contact": {}
 	},
 	"paths": {
-		"/api/v1/users/find": {
+		"/ag/v1/users/find": {
 			"get": {
 				"operationId": "GetUser",
 				"responses": {
@@ -128,7 +218,7 @@
 				]
 			}
 		},
-		"/api/v1/users/find-by-id": {
+		"/ag/v1/users/find-by-id": {
 			"get": {
 				"operationId": "GetUserById",
 				"responses": {
@@ -160,7 +250,7 @@
 				]
 			}
 		},
-		"/api/v1/users/find-by-email": {
+		"/ag/v1/users/find-by-email": {
 			"get": {
 				"operationId": "GetUserByEmail",
 				"responses": {
@@ -189,6 +279,60 @@
 						}
 					}
 				]
+			}
+		},
+		"/ag/v1/users/all": {
+			"get": {
+				"operationId": "GetAllUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_IUserProfile-Array_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User Management"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/ag/v1/users/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO__Name-string--Email-string__"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User Management"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateUserDTO"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

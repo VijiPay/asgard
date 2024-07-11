@@ -10,7 +10,10 @@ export class UserService implements IUserService {
 		@inject(Components.GetUserUseCase) private user: GetUserUsecase,
 	) {}
 
-	async find(id?: number, email?: string): Promise<IUserProfile | undefined | null> {
+	async find(
+		id?: number,
+		email?: string,
+	): Promise<IUserProfile | undefined | null> {
 		return this.user.find(id, email);
 	}
 
@@ -19,5 +22,8 @@ export class UserService implements IUserService {
 	}
 	async findById(id: number): Promise<IUserProfile | null> {
 		return this.user.findById(id);
+	}
+	async all(): Promise<IUserProfile[]> {
+		return this.user.get();
 	}
 }

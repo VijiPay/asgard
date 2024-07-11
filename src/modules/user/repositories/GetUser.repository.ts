@@ -1,25 +1,28 @@
+import type { PrismaClient } from "@prisma/client";
 import { singleton } from "tsyringe";
-import type { DataSource } from "typeorm";
-import { UserEntity } from "../entities/User.entity";
 import type { IGetUserRepository } from "../interface/IGetUserRepository";
 import type { IUserProfile } from "../interface/IUserProfile";
-import { mapUserEntityToUserProfile } from "../mappers/UserEntityToUserProfile.mapper";
 
 @singleton()
 export class GetUserRepository implements IGetUserRepository {
 	private connection;
 
-	constructor(dataSource: DataSource) {
-		this.connection = dataSource.getRepository(UserEntity);
+	constructor(dataSource: PrismaClient) {
+		this.connection = dataSource.user;
 	}
 
-	async findByEmail(email: string): Promise<IUserProfile  | null> {
-		const user = await this.connection.findOne({ where: { email } });
-		return mapUserEntityToUserProfile(user);
+	async findByEmail(email: string): Promise<IUserProfile | null> {
+		const user = await this.connection.findUnique({ where: { email } });
+		return user as IUserProfile;
 	}
 
 	async findById(id: number): Promise<IUserProfile | null> {
-		const user = await this.connection.findOne({ where: { id } });
-		return mapUserEntityToUserProfile(user);
+		const user = await this.connection.findUnique({ where: { id } });
+		return user as IUserProfile;
+	}
+
+	async findAll(): Promise<IUserProfile[]> {
+		const users = await this.connection.findMany();
+		return users as IUserProfile[];
 	}
 }

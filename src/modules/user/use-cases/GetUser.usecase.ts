@@ -32,4 +32,8 @@ export class GetUserUsecase {
 	async findByEmail(email: string): Promise<IUserProfile | null> {
 		return this.getUser.findByEmail(email);
 	}
+
+	async get(): Promise<IUserProfile[]> {
+		return this.getUser.findAll();
+	}
 }

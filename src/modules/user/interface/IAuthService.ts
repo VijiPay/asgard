@@ -1,10 +1,10 @@
-import type { CreateUserDTO } from "../dtos/CreateUserDTO";
 import type { LoginDTO } from "../dtos/LoginDTO";
-import type { UserEntity } from "../entities/User.entity";
+import type { ICreateUser } from "./ICreateUser";
+import type { IUserProfile } from "./IUserProfile";
 
 export interface IAuthService {
-  register: (data: CreateUserDTO) => Promise<UserEntity>;
-  login: (data: LoginDTO) => Promise<{ user: UserEntity; token: string }>;
-  refreshToken: (token: string) => Promise<string>;
-  logout: (id: number) => Promise<void>;
+	register: (data: ICreateUser) => Promise<IUserProfile>;
+	login: (data: LoginDTO) => Promise<{ user: IUserProfile; token: string }>;
+	refreshToken: (token: string) => Promise<string>;
+	logout: (id: number) => Promise<void>;
 }

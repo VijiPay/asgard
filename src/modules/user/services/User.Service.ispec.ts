@@ -20,7 +20,7 @@ describe("User Service", () => {
 		phoneNumber: "2348026772577",
 		type: "individual",
 		status: 0,
-		country_code: "NG",
+		countryCode: "NG",
 	};
 	let userService: IUserService;
 	beforeAll(() => {

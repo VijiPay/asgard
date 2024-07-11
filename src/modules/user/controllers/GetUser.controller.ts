@@ -8,16 +8,23 @@ import type { IUserService } from "../interface/IUserService";
 
 @injectable()
 @Tags("User Management")
-@Route("api/v1/users")
+@Route("ag/v1/users")
 export class GetUserController extends Controller {
 	constructor(
-		@inject(Components.UserService) private readonly userService: IUserService,
+		@inject(Components.UserService)
+		private readonly userService: IUserService,
 	) {
 		super();
 	}
 
 	@Get("find")
 	async getUser(@Query() id?: number, @Query() email?: string) {
+		if (!id && !email) {
+			throw new CustomException(
+				"user id or email is required",
+				httpStatus.FORBIDDEN,
+			);
+		}
 		const user = await this.userService.find(id, email);
 		if (user) {
 			return ResponseDTO.success({
@@ -25,7 +32,7 @@ export class GetUserController extends Controller {
 				data: user,
 			});
 		}
-		throw new CustomException("User Not Found", httpStatus.NOT_FOUND);
+		throw new CustomException("user not found", httpStatus.NOT_FOUND);
 	}
 
 	@Get("find-by-id")
@@ -50,5 +57,14 @@ export class GetUserController extends Controller {
 			});
 		}
 		throw new CustomException("User Not Found", httpStatus.NOT_FOUND);
+	}
+
+	@Get("all")
+	async getAllUsers() {
+		const users = await this.userService.all();
+		return ResponseDTO.success({
+			message: "users fetched successfully",
+			data: users,
+		});
 	}
 }

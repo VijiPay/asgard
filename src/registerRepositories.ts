@@ -1,5 +1,5 @@
 import { container } from "tsyringe";
-import { dataSource } from "./database/datasource";
+import { dataSource } from "./database/dataSource";
 import type { ICreateUserRepository } from "./modules/user/interface/ICreateUserRepository";
 import type { IGetUserRepository } from "./modules/user/interface/IGetUserRepository";
 import { CreateUserRepository } from "./modules/user/repositories/CreateUser.repository";
@@ -9,7 +9,7 @@ import type { ILogger } from "./shared/services/logger/ILogger";
 
 export const registerRepositories = async (logger?: ILogger) => {
 	await dataSource
-		.initialize()
+		.$connect()
 		.catch(() => logger?.error("db connection failed"));
 
 	logger?.info("db connection success");

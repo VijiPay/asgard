@@ -1,10 +1,9 @@
-export interface IUserProfile {
-	id: number;
+export interface ICreateUser {
 	firstName: string;
 	lastName: string;
 	email: string;
-	phoneNumber: string;
+	password: string;
 	type: string;
 	status: number;
 	countryCode: string;
-}
+};

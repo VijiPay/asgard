@@ -1,5 +1,6 @@
-import type { UserEntity } from "../entities/User.entity";
+import type { ICreateUser } from "./ICreateUser";
+import type { IUserProfile } from "./IUserProfile";
 
 export interface ICreateUserRepository {
-  create(user: Partial<UserEntity>): Promise<UserEntity>;
+	create: (user: ICreateUser) => Promise<IUserProfile>;
 }
