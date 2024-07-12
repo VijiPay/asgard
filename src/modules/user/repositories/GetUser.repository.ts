@@ -12,17 +12,160 @@ export class GetUserRepository implements IGetUserRepository {
 	}
 
 	async findByEmail(email: string): Promise<IUserProfile | null> {
-		const user = await this.connection.findUnique({ where: { email } });
-		return user as IUserProfile;
+		const user = await this.connection.findUnique({
+			where: { email },
+			include: {
+				profile: true,
+				transactions: {
+					select: {
+						id: true,
+					},
+				},
+				fraudScores: true,
+				payouts: true,
+				paymentMethod: true,
+			},
+		});
+		if (!user) return null;
+
+		const userProfile: IUserProfile = {
+			id: user.id,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			email: user.email,
+			type: user.type,
+			status: user.status,
+			countryCode: user.countryCode,
+			apiKey: user.apiKey,
+			profile: user.profile
+				? {
+						role: user.profile.role,
+						nickname: user.profile.nickname,
+						dateOfBirth: user.profile.dateOfBirth,
+						phoneNumber: user.profile.phoneNumber,
+						address: user.profile.address,
+						lastLogin: user.profile.lastLogin?.toISOString(),
+						phoneVerified: user.profile.phoneVerified,
+						emailVerified: user.profile.emailVerified,
+					}
+				: null,
+			paymentMethod: user.paymentMethod.map((pm) => ({
+				id: pm.id,
+				name: pm.name,
+				paymentId: pm.paymentId,
+				institution: pm.institution,
+			})),
+			transactionsCount: user.transactions.length,
+			fraudScores: user.fraudScores.map((fraudScore) => ({
+				score: fraudScore.score,
+				result: fraudScore.result,
+			})),
+		};
+
+		return userProfile;
 	}
 
 	async findById(id: number): Promise<IUserProfile | null> {
-		const user = await this.connection.findUnique({ where: { id } });
-		return user as IUserProfile;
+		const user = await this.connection.findUnique({
+			where: { id },
+			include: {
+				profile: true,
+				transactions: {
+					select: {
+						id: true,
+					},
+				},
+				fraudScores: true,
+				payouts: true,
+				paymentMethod: true,
+			},
+		});
+		if (!user) return null;
+
+		const userProfile: IUserProfile = {
+			id: user.id,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			email: user.email,
+			type: user.type,
+			status: user.status,
+			countryCode: user.countryCode,
+			apiKey: user.apiKey,
+			profile: user.profile
+				? {
+						role: user.profile.role,
+						nickname: user.profile.nickname,
+						dateOfBirth: user.profile.dateOfBirth,
+						phoneNumber: user.profile.phoneNumber,
+						address: user.profile.address,
+						lastLogin: user.profile.lastLogin?.toISOString(),
+						phoneVerified: user.profile.phoneVerified,
+						emailVerified: user.profile.emailVerified,
+					}
+				: null,
+			paymentMethod: user.paymentMethod.map((pm) => ({
+				id: pm.id,
+				name: pm.name,
+				paymentId: pm.paymentId,
+				institution: pm.institution,
+			})),
+			transactionsCount: user.transactions.length,
+			fraudScores: user.fraudScores.map((fraudScore) => ({
+				score: fraudScore.score,
+				result: fraudScore.result,
+			})),
+		};
+
+		return userProfile;
 	}
 
 	async findAll(): Promise<IUserProfile[]> {
-		const users = await this.connection.findMany();
-		return users as IUserProfile[];
+		const users = await this.connection.findMany({
+			include: {
+				profile: true,
+				transactions: {
+					select: {
+						id: true,
+					},
+				},
+				fraudScores: true,
+				payouts: true,
+				paymentMethod: true,
+			},
+		});
+
+		return users.map((user) => ({
+			id: user.id,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			email: user.email,
+			type: user.type,
+			status: user.status,
+			countryCode: user.countryCode,
+			apiKey: user.apiKey,
+			profile: user.profile
+				? {
+						role: user.profile.role,
+						nickname: user.profile.nickname,
+						dateOfBirth: user.profile.dateOfBirth,
+						phoneNumber: user.profile.phoneNumber,
+						address: user.profile.address,
+						lastLogin: user.profile.lastLogin?.toISOString(),
+						phoneVerified: user.profile.phoneVerified,
+						emailVerified: user.profile.emailVerified,
+					}
+				: null,
+			paymentMethod: user.paymentMethod.map((pm) => ({
+				id: pm.id,
+				name: pm.name,
+				paymentId: pm.paymentId,
+				institution: pm.institution,
+			})),
+			transactionsCount: user.transactions.length,
+			fraudScores: user.fraudScores.map((fraudScore) => ({
+				score: fraudScore.score,
+				result: fraudScore.result,
+			})),
+		}));
 	}
 }

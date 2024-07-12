@@ -9,41 +9,17 @@ datasource db {
 }
 
 model User {
-  id                   Int       @id @default(autoincrement())
-  email                String    @unique
-  password             String
-  firstName            String
-  lastName             String
-  type                 String
-  status               Int       @default(1)
-  countryCode          String    @map("country_code")
-  nickname             String?   @map("phone_number")
-  dateOfBirth          String?   @map("date_of_birth")
-  role                 String?
-  loginIp              String?   @map("login_ip")
-  platformId           String?   @map("platform_id")
-  lastLogin            DateTime? @map("last_login")
-  passwordReset        Boolean?  @map("password_reset")
-  passwordResetToken   String?   @map("password_reset_token")
-  passwordResetExpires DateTime? @map("password_reset_expires")
-  userLocked           Boolean?  @map("user_locked")
-  userLockedMessage    String?   @map("user_locked_message")
-  userLockedDate       DateTime? @map("user_locked_date")
-  userLockedBy         String?   @map("user_locked_by")
-  apiKey               String?   @map("api_key")
-  authyId              Int?      @map("authy_id")
-  phoneVerified        Boolean?  @map("phone_verified")
-  phoneVerifyCode      String?   @map("phone_verify_code")
-  phoneVerifyExpires   DateTime? @map("phone_verify_expires")
-  phoneVerifyDate      DateTime? @map("phone_verify_date")
-  emailVerified        Boolean?  @map("email_verified")
-  emailVerifyCode      String?   @map("email_verify_code")
-  emailVerifyExpires   DateTime? @map("email_verify_expires")
-  emailVerifyDate      DateTime? @map("email_verify_date")
-  paymentMethod        Json?     @map("payment_method")
-  address              Json?
-  createdDate          DateTime? @default(now()) @map("created_date")
-  lastModifiedDate     DateTime? @updatedAt @map("last_modified_date")
+  id               Int      @id @default(autoincrement())
+  email            String   @unique
+  password         String
+  firstName        String
+  lastName         String
+  type             String
+  status           Int      @default(1)
+  countryCode      String   @map("country_code")
+  apiKey           String?  @map("api_key")
+  createdDate      DateTime @default(now()) @map("created_date")
+  lastModifiedDate DateTime @updatedAt @map("last_modified_date")
 
   profile          Profile?
   transactions     Transaction[]
@@ -51,18 +27,52 @@ model User {
   marketplaceItems MarketplaceItem[]
   fraudScores      FraudScore[]
   payouts          Payout[]
+  paymentMethod    PaymentMethod[]
 }
 
 model Profile {
-  id            Int  @id @default(autoincrement())
-  organization  Json
-  business      Json
-  broker        Json
-  individual    Json
-  metadata      Json
-  tosAcceptance Json @map("tos_acceptance")
-  userId        Int  @unique
-  user          User @relation(fields: [userId], references: [id])
+  id                   Int       @id @default(autoincrement())
+  nickname             String    @map("nick_name")
+  dateOfBirth          String    @map("date_of_birth")
+  address              String
+  phoneNumber          String    @map("phone_number")
+  role                 String
+  loginIp              String    @map("login_ip")
+  platformId           String    @map("platform_id")
+  lastLogin            DateTime  @map("last_login")
+  passwordReset        Boolean   @map("password_reset")
+  passwordResetToken   String    @map("password_reset_token")
+  phoneVerified        Boolean   @map("phone_verified")
+  emailVerified        Boolean   @map("email_verified")
+  passwordResetExpires DateTime? @map("password_reset_expires")
+  userLocked           Boolean?  @map("user_locked")
+  userLockedMessage    String?   @map("user_locked_message")
+  userLockedDate       DateTime? @map("user_locked_date")
+  userLockedBy         String?   @map("user_locked_by")
+  authyId              Int?      @map("authy_id")
+  phoneVerifyCode      String?   @map("phone_verify_code")
+  phoneVerifyExpires   DateTime? @map("phone_verify_expires")
+  phoneVerifyDate      DateTime? @map("phone_verify_date")
+  emailVerifyCode      String?   @map("email_verify_code")
+  emailVerifyExpires   DateTime? @map("email_verify_expires")
+  emailVerifyDate      DateTime? @map("email_verify_date")
+  organization         Json
+  business             Json
+  broker               Json
+  individual           Json
+  metadata             Json
+  tosAcceptance        Json      @map("tos_acceptance")
+  userId               Int       @unique
+  user                 User      @relation(fields: [userId], references: [id])
+}
+
+model PaymentMethod {
+  id          Int    @default(autoincrement())
+  name        String
+  paymentId   String
+  institution String
+  userId      Int    @unique
+  User        User   @relation(fields: [userId], references: [id])
 }
 
 model Transaction {
@@ -73,7 +83,6 @@ model Transaction {
   status       String
   description  String
   userId       Int
-  escrowId     Int
   fraudScoreId Int
 
   user       User         @relation(fields: [userId], references: [id])
@@ -113,7 +122,7 @@ model FraudScore {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   score         Int
-  result        String
+  result        String   @default("NO RECORD")
   userId        Int
   transactionId Int
 

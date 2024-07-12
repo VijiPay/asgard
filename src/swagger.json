@@ -22,9 +22,6 @@
 					"email": {
 						"type": "string"
 					},
-					"phoneNumber": {
-						"type": "string"
-					},
 					"type": {
 						"type": "string"
 					},
@@ -34,6 +31,98 @@
 					},
 					"countryCode": {
 						"type": "string"
+					},
+					"apiKey": {
+						"type": "string",
+						"nullable": true
+					},
+					"profile": {
+						"properties": {
+							"emailVerified": {
+								"type": "boolean"
+							},
+							"phoneVerified": {
+								"type": "boolean"
+							},
+							"lastLogin": {
+								"type": "string"
+							},
+							"address": {
+								"type": "string"
+							},
+							"phoneNumber": {
+								"type": "string"
+							},
+							"dateOfBirth": {
+								"type": "string"
+							},
+							"nickname": {
+								"type": "string"
+							},
+							"role": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastLogin",
+							"address",
+							"phoneNumber",
+							"dateOfBirth",
+							"nickname",
+							"role"
+						],
+						"type": "object",
+						"nullable": true
+					},
+					"paymentMethod": {
+						"items": {
+							"properties": {
+								"institution": {
+									"type": "string"
+								},
+								"paymentId": {
+									"type": "string"
+								},
+								"name": {
+									"type": "string"
+								},
+								"id": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"institution",
+								"paymentId",
+								"name",
+								"id"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"transactionsCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"fraudScores": {
+						"items": {
+							"properties": {
+								"result": {
+									"type": "string"
+								},
+								"score": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"result",
+								"score"
+							],
+							"type": "object"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -41,10 +130,10 @@
 					"firstName",
 					"lastName",
 					"email",
-					"phoneNumber",
 					"type",
 					"status",
-					"countryCode"
+					"countryCode",
+					"apiKey"
 				],
 				"type": "object",
 				"additionalProperties": false
