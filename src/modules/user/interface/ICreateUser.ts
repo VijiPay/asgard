@@ -6,4 +6,7 @@ export interface ICreateUser {
 	type: string;
 	status: number;
 	countryCode: string;
-};
+	profile?: {
+		role: string;
+	} | null;
+}

@@ -32,10 +32,6 @@
 					"countryCode": {
 						"type": "string"
 					},
-					"apiKey": {
-						"type": "string",
-						"nullable": true
-					},
 					"profile": {
 						"properties": {
 							"emailVerified": {
@@ -45,19 +41,21 @@
 								"type": "boolean"
 							},
 							"lastLogin": {
-								"type": "string"
+								"type": "string",
+								"format": "date-time",
+								"nullable": true
 							},
 							"address": {
-								"type": "string"
+								"type": "string",
+								"nullable": true
 							},
 							"phoneNumber": {
-								"type": "string"
-							},
-							"dateOfBirth": {
-								"type": "string"
+								"type": "string",
+								"nullable": true
 							},
 							"nickname": {
-								"type": "string"
+								"type": "string",
+								"nullable": true
 							},
 							"role": {
 								"type": "string"
@@ -67,7 +65,6 @@
 							"lastLogin",
 							"address",
 							"phoneNumber",
-							"dateOfBirth",
 							"nickname",
 							"role"
 						],
@@ -123,6 +120,29 @@
 							"type": "object"
 						},
 						"type": "array"
+					},
+					"apiKey": {
+						"properties": {
+							"lastUsed": {
+								"type": "string",
+								"format": "date-time",
+								"nullable": true
+							},
+							"createdAt": {
+								"type": "string",
+								"format": "date-time"
+							},
+							"key": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUsed",
+							"createdAt",
+							"key"
+						],
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
@@ -132,8 +152,7 @@
 					"email",
 					"type",
 					"status",
-					"countryCode",
-					"apiKey"
+					"countryCode"
 				],
 				"type": "object",
 				"additionalProperties": false

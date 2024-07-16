@@ -1,21 +1,27 @@
 FROM node:20-slim as build
-COPY package.json pnpm-lock.yaml tsconfig.base.json tsconfig.build.json tsoa.json asgard/
 RUN apt-get update && apt-get install -y openssl
-RUN npm i -g pnpm typescript
-RUN pnpm add typeorm-ts-node-commonjs
+COPY package.json pnpm-lock.yaml tsconfig.base.json tsconfig.build.json .swcrc vitest.config.mts tsoa.json asgard/
+COPY /src asgard/src
+RUN npm i -g pnpm
 WORKDIR /asgard
-COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
+COPY prisma/schema.prisma ./prisma/
+RUN pnpm prisma generate
+
 COPY . .
+
 RUN pnpm build
 RUN pnpm rimraf dist && pnpm swc ./src --copy-files -d dist
 
 FROM node:20-slim as install
+RUN apt-get update && apt-get install -y openssl
 WORKDIR /asgard
-COPY --from=build /asgard/package.json /asgard/pnpm-lock.yaml ./
-COPY --from=build /asgard/dist ./dist
-RUN npm i -g pnpm typescript
-RUN pnpm install
+COPY --from=build /asgard/package.json .
+COPY --from=build /asgard/dist/src .
+RUN npm i -g pnpm
+RUN pnpm install --prod
 
+ARG GIT_SHA
+ENV GIT_SHA $GIT_SHA
 EXPOSE 4343
 CMD ["pnpm", "start"]

@@ -9,9 +9,10 @@
 		"node": "20.12.2"
 	},
 	"scripts": {
-		"start": "pnpm migration:run && node dist/src/server.js",
+		"start": "pnpm db:migrate  && node dist/src/server.js",
 		"start:dev": "pnpm build && tsx watch src/server.ts --clear-screen=false",
 		"build": "tsoa spec-and-routes",
+		"db:migrate": "pnpm prisma db push",
 		"rebuild:be": "docker compose build asgard && docker compose rm --force --stop asgard && docker compose up -d",
 		"test": "pnpm vitest",
 		"test:run": "pnpm vitest run",
@@ -19,13 +20,13 @@
 		"lint": "pnpm biome format --write ./src",
 		"lint:fix": "pnpm biome check --apply ./src",
 		"down": "docker compose down --remove-orphans",
-		"watch": "watchy --no-init-spawn --debounce 1 -w src -- docker compose restart asgard",
-		"migration:run": "typeorm-ts-node-commonjs migration:run -d dist/src/database/dataSource.js",
-		"migration:run:local": "typeorm-ts-node-commonjs migration:run -- -d src/database/dataSource.ts",
-		"migration:create": "typeorm-ts-node-commonjs migration:create"
+		"watch": "watchy --no-init-spawn --debounce 1 -w src -- docker compose restart asgard"
 	},
 	"dependencies": {
 		"@prisma/client": "5.16.2",
+		"@swc/cli": "0.4.0",
+		"@swc/core": "1.6.13",
+		"@swc/helpers": "0.5.11",
 		"@tsoa/runtime": "6.3.0",
 		"bcryptjs": "2.4.3",
 		"class-transformer": "0.5.1",
@@ -40,6 +41,7 @@
 		"pg": "8.12.0",
 		"prisma": "5.16.2",
 		"reflect-metadata": "0.2.2",
+		"rimraf": "4.4.1",
 		"sequelize": "6.37.3",
 		"sequelize-typescript": "2.1.6",
 		"swagger-jsdoc": "6.2.8",
@@ -53,9 +55,6 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.7.3",
-		"@swc/cli": "0.4.0",
-		"@swc/core": "1.6.13",
-		"@swc/helpers": "0.5.11",
 		"@tsconfig/node20": "20.1.4",
 		"@types/bcryptjs": "2.4.6",
 		"@types/cors": "2.8.17",
@@ -65,7 +64,6 @@
 		"@types/swagger-ui-express": "4.1.6",
 		"knip": "5.16.0",
 		"nock": "13.5.4",
-		"rimraf": "4.4.1",
 		"tslib": "2.6.2",
 		"tsx": "4.15.7",
 		"typescript": "5.4.5",

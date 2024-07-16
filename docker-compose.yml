@@ -3,17 +3,17 @@ services:
     container_name: asgard_db
     image: postgres:15-alpine
     env_file:
-      - ./.env
+      - .env
     ports:
       - 5800:5432
     networks:
       - asgard_net
     environment:
-      POSTGRES_DB: $DB_NAME
-      POSTGRES_USER: $DB_USER
-      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,12 +34,8 @@ services:
     networks:
       - asgard_net
     environment:
-      DB_HOST: postgresdb
-      DB_USER: $DB_USER
-      DB_PASSWORD: $DB_PASSWORD
-      DB_NAME: $DB_NAME
-      DB_PORT: $DB_PORT
-      PORT: $PORT
+      DB_URL: ${DATABASE_URL}
+      DB_PORT: ${DB_PORT}
     stdin_open: true
     tty: true
     env_file:

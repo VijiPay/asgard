@@ -36,15 +36,13 @@ export class GetUserRepository implements IGetUserRepository {
 			type: user.type,
 			status: user.status,
 			countryCode: user.countryCode,
-			apiKey: user.apiKey,
 			profile: user.profile
 				? {
 						role: user.profile.role,
 						nickname: user.profile.nickname,
-						dateOfBirth: user.profile.dateOfBirth,
 						phoneNumber: user.profile.phoneNumber,
 						address: user.profile.address,
-						lastLogin: user.profile.lastLogin?.toISOString(),
+						lastLogin: user.profile.lastLogin,
 						phoneVerified: user.profile.phoneVerified,
 						emailVerified: user.profile.emailVerified,
 					}
@@ -90,15 +88,13 @@ export class GetUserRepository implements IGetUserRepository {
 			type: user.type,
 			status: user.status,
 			countryCode: user.countryCode,
-			apiKey: user.apiKey,
 			profile: user.profile
 				? {
 						role: user.profile.role,
 						nickname: user.profile.nickname,
-						dateOfBirth: user.profile.dateOfBirth,
 						phoneNumber: user.profile.phoneNumber,
 						address: user.profile.address,
-						lastLogin: user.profile.lastLogin?.toISOString(),
+						lastLogin: user.profile.lastLogin,
 						phoneVerified: user.profile.phoneVerified,
 						emailVerified: user.profile.emailVerified,
 					}
@@ -142,15 +138,13 @@ export class GetUserRepository implements IGetUserRepository {
 			type: user.type,
 			status: user.status,
 			countryCode: user.countryCode,
-			apiKey: user.apiKey,
 			profile: user.profile
 				? {
 						role: user.profile.role,
 						nickname: user.profile.nickname,
-						dateOfBirth: user.profile.dateOfBirth,
 						phoneNumber: user.profile.phoneNumber,
 						address: user.profile.address,
-						lastLogin: user.profile.lastLogin?.toISOString(),
+						lastLogin: user.profile.lastLogin,
 						phoneVerified: user.profile.phoneVerified,
 						emailVerified: user.profile.emailVerified,
 					}

@@ -6,14 +6,12 @@ export interface IUserProfile {
 	type: string;
 	status: number;
 	countryCode: string;
-	apiKey: string | null;
 	profile?: {
 		role: string;
-		nickname: string;
-		dateOfBirth: string;
-		phoneNumber: string;
-		address: string;
-		lastLogin: string;
+		nickname: string | null;
+		phoneNumber: string | null;
+		address: string | null;
+		lastLogin: Date | null;
 		phoneVerified?: boolean;
 		emailVerified?: boolean;
 	} | null;
@@ -28,4 +26,9 @@ export interface IUserProfile {
 		score: number;
 		result: string;
 	}>;
+	apiKey?: {
+		key: string;
+		createdAt: Date;
+		lastUsed: Date | null;
+	} | null;
 }
