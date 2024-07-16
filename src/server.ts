@@ -19,7 +19,8 @@ server.use(json());
 
 RegisterRoutes(server);
 
-server.use("ag/docs", swaggerUi.serve, swaggerUi.setup(doc));
+server.use("/ag/docs", swaggerUi.serve);
+server.get("/ag/docs", swaggerUi.setup(doc));
 
 server.get("/", (_, res) => {
 	res.json({ message: "Hello, åsgårdiån!" });

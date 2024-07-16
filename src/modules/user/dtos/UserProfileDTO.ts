@@ -5,7 +5,6 @@ export class UserProfileDTO {
 	firstName: string;
 	lastName: string;
 	email: string;
-	phoneNumber: string;
 	type: string;
 	status: number;
 	country_code: string;
@@ -15,9 +14,8 @@ export class UserProfileDTO {
 		this.firstName = user.firstName;
 		this.lastName = user.lastName;
 		this.email = user.email;
-		this.phoneNumber = user.phoneNumber;
 		this.type = user.type;
 		this.status = user.status;
-		this.country_code = user.country_code;
+		this.country_code = user.countryCode;
 	}
 }

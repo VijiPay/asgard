@@ -17,7 +17,6 @@ describe("User Service", () => {
 		email: "test@mainModule.com",
 		firstName: "Shemang",
 		lastName: "David",
-		phoneNumber: "2348026772577",
 		type: "individual",
 		status: 0,
 		countryCode: "NG",

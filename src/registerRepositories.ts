@@ -10,9 +10,9 @@ import type { ILogger } from "./shared/services/logger/ILogger";
 export const registerRepositories = async (logger?: ILogger) => {
 	await dataSource
 		.$connect()
-		.catch(() => logger?.error("db connection failed"));
+		.catch(() => logger?.error("db connection.failed"));
 
-	logger?.info("db connection success");
+	logger?.info("db connection.success");
 
 	container.register<ICreateUserRepository>(Components.CreateUserRepository, {
 		useValue: new CreateUserRepository(dataSource),
