@@ -1,23 +1,27 @@
-import "reflect-metadata";
-import "./registerServices";
+import "express-async-errors";
+import cors from "cors";
+import express, { json, urlencoded } from "express";
+import helmet from "helmet";
+import swaggerUi from "swagger-ui-express";
+import { RegisterRoutes } from "./routes";
+import { errorMiddleware } from "./shared/middleware/error.handler";
+import doc from "./swagger.json";
 
-import dotenv from "dotenv";
-import { container } from "tsyringe";
-import app from "./app";
-import { registerRepositories } from "./registerRepositories";
-import { Components } from "./shared/constants/Components";
-import { Config } from "./shared/services/config/Config";
-import type { ILogger } from "./shared/services/logger/ILogger";
+// import dotenv from "dotenv";
+// dotenv.config();
 
-dotenv.config();
-const logger: ILogger = container.resolve(Components.Logger);
-const config = container.resolve(Config);
-const PORT = config.get<number>("PORT");
+export const server = express();
 
-registerRepositories(logger).catch((err: Error) => {
-	logger.error("failed to register Repositories", { err });
+server.use(cors());
+server.use(helmet());
+server.use(urlencoded({ extended: true }));
+server.use(json());
+
+RegisterRoutes(server);
+
+server.use("ag/docs", swaggerUi.serve, swaggerUi.setup(doc));
+
+server.get("/", (_, res) => {
+	res.json({ message: "Hello, åsgårdiån!" });
 });
-
-app.listen(PORT, () => {
-	logger.info(`Server running at http://localhost:${PORT}`);
-});
+server.use(errorMiddleware);

@@ -1,15 +1,9 @@
 {
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
-		"noEmit": true,
+		"noEmit": false,
 		"types": ["node"],
-		"outDir": "dist",
-		"typeRoots": ["./node_modules/@types"]
-	},
-	"ts-node": {
-		"swc": true,
-		"transpileOnly": true,
-		"files": true
+		"outDir": "dist"
 	},
 	"include": ["./src"],
 	"exclude": ["node_modules", "**/*.ispec.ts"]

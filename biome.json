@@ -1,40 +1,43 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
-  "formatter": {
-    "enabled": true,
-    "ignore": ["**/*.ispec.ts"],
-    "formatWithErrors": false,
-    "indentStyle": "tab",
-    "indentWidth": 2,
-    "lineEnding": "lf",
-    "lineWidth": 80,
-    "attributePosition": "auto"
-  },
-  "organizeImports": {
-    "enabled": true
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true,
-      "style": {
-        "useImportType":"warn"
-      }
-    }
-  },
-  "javascript": {
-    "formatter": {
-      "jsxQuoteStyle": "double",
-      "quoteProperties": "asNeeded",
-      "trailingComma": "all",
-      "arrowParentheses": "always",
-      "bracketSpacing": true,
-      "bracketSameLine": false,
-      "quoteStyle": "double",
-      "attributePosition": "auto"
-    },
-    "parser": {
-      "unsafeParameterDecoratorsEnabled": true
-    }
-  }
+	"$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
+	"formatter": {
+		"enabled": true,
+		"ignore": ["**/*.ispec.ts"],
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineEnding": "lf",
+		"lineWidth": 80,
+		"attributePosition": "auto"
+	},
+	"files": {
+		"ignore": ["./src/routes.ts", "dist/**"]
+	},
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+				"useImportType": "warn"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"jsxQuoteStyle": "double",
+			"quoteProperties": "asNeeded",
+			"trailingComma": "all",
+			"arrowParentheses": "always",
+			"bracketSpacing": true,
+			"bracketSameLine": false,
+			"quoteStyle": "double",
+			"attributePosition": "auto"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		}
+	}
 }
