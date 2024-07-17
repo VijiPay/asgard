@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "./registerServices";
+
 import { container } from "tsyringe";
 import { registerRepositories } from "./registerRepositories";
 import { server } from "./server";

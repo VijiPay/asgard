@@ -3,7 +3,11 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TsoaRoute, fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { UpdateUserController } from './modules/user/controllers/UpdateUser.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { GetUserController } from './modules/user/controllers/GetUser.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { DeleteUserController } from './modules/user/controllers/DeleteUser.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CreateUserController } from './modules/user/controllers/CreateUser.controller';
 import { iocContainer } from './shared/ioc';
@@ -15,6 +19,21 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "ResponseStatus": {
+        "dataType": "refEnum",
+        "enums": ["success","error"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ResponseDTO_unknown_": {
+        "dataType": "refObject",
+        "properties": {
+            "status": {"ref":"ResponseStatus","required":true},
+            "message": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"undefined"}],"required":true},
+            "data": {"dataType":"any","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IUserProfile": {
         "dataType": "refObject",
         "properties": {
@@ -32,11 +51,6 @@ const models: TsoaRoute.Models = {
             "apiKey": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{"lastUsed":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},"createdAt":{"dataType":"datetime","required":true},"key":{"dataType":"string","required":true}}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseStatus": {
-        "dataType": "refEnum",
-        "enums": ["success","error"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ResponseDTO_IUserProfile_": {
@@ -100,7 +114,43 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        app.get('/ag/v1/users/find',
+        app.patch('/ag/v1/user/:userId/disable',
+            ...(fetchMiddlewares<RequestHandler>(UpdateUserController)),
+            ...(fetchMiddlewares<RequestHandler>(UpdateUserController.prototype.disableUser)),
+
+            async function UpdateUserController_disableUser(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    userId: {"in":"path","name":"userId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UpdateUserController>(UpdateUserController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+              await templateService.apiHandler({
+                methodName: 'disableUser',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/ag/v1/user/find',
             ...(fetchMiddlewares<RequestHandler>(GetUserController)),
             ...(fetchMiddlewares<RequestHandler>(GetUserController.prototype.getUser)),
 
@@ -136,7 +186,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/ag/v1/users/find-by-id',
+        app.get('/ag/v1/user/find-by-id',
             ...(fetchMiddlewares<RequestHandler>(GetUserController)),
             ...(fetchMiddlewares<RequestHandler>(GetUserController.prototype.getUserById)),
 
@@ -171,7 +221,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/ag/v1/users/find-by-email',
+        app.get('/ag/v1/user/find-by-email',
             ...(fetchMiddlewares<RequestHandler>(GetUserController)),
             ...(fetchMiddlewares<RequestHandler>(GetUserController.prototype.getUserByEmail)),
 
@@ -206,7 +256,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/ag/v1/users/all',
+        app.get('/ag/v1/user/all',
             ...(fetchMiddlewares<RequestHandler>(GetUserController)),
             ...(fetchMiddlewares<RequestHandler>(GetUserController.prototype.getAllUsers)),
 
@@ -229,6 +279,76 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getAllUsers',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/ag/v1/user/:userId/delete',
+            ...(fetchMiddlewares<RequestHandler>(DeleteUserController)),
+            ...(fetchMiddlewares<RequestHandler>(DeleteUserController.prototype.deleteUser)),
+
+            async function DeleteUserController_deleteUser(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    userId: {"in":"path","name":"userId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<DeleteUserController>(DeleteUserController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+              await templateService.apiHandler({
+                methodName: 'deleteUser',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/ag/v1/user/deleteAll',
+            ...(fetchMiddlewares<RequestHandler>(DeleteUserController)),
+            ...(fetchMiddlewares<RequestHandler>(DeleteUserController.prototype.deleteAllUsers)),
+
+            async function DeleteUserController_deleteAllUsers(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<DeleteUserController>(DeleteUserController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+              await templateService.apiHandler({
+                methodName: 'deleteAllUsers',
                 controller,
                 response,
                 next,

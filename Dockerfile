@@ -1,6 +1,6 @@
-FROM node:20-slim as build
+FROM node:20-slim AS build
 RUN apt-get update && apt-get install -y openssl
-COPY package.json pnpm-lock.yaml tsconfig.base.json tsconfig.build.json .swcrc vitest.config.mts tsoa.json asgard/
+COPY package.json pnpm-lock.yaml tsconfig.base.json tsconfig.build.json vitest.config.mts tsoa.json asgard/
 COPY /src asgard/src
 RUN npm i -g pnpm typescript
 WORKDIR /asgard
@@ -11,7 +11,7 @@ RUN pnpm prisma generate
 RUN pnpm build
 COPY . .
 
-FROM --platform=arm64 node:20-slim as install
+FROM --platform=arm64 node:20-slim AS install
 RUN apt-get update && apt-get install -y openssl
 RUN npm i -g pnpm
 WORKDIR /asgard

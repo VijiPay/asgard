@@ -1,20 +1,19 @@
 import { inject, injectable } from "tsyringe";
-import { Components } from "../../../shared/constants/Components";
+import { UserComponents } from "../constants/UserComponents";
 import type { IGetUserRepository } from "../interface/IGetUserRepository";
+import type { IGetUserService } from "../interface/IGetUserService";
 import type { IUserProfile } from "../interface/IUserProfile";
 
 @injectable()
-export class GetUserUsecase {
+export class GetUserService implements IGetUserService {
 	constructor(
-		@inject(Components.GetUserRepository) private getUser: IGetUserRepository,
+		@inject(UserComponents.GetUserRepository)
+		private getUser: IGetUserRepository,
 	) {}
 
-	async find(
-		id?: number,
-		email?: string,
-	): Promise<IUserProfile | undefined | null> {
+	find(id?: number, email?: string): Promise<IUserProfile | undefined | null> {
 		if (id && email) {
-			throw new Error("Not allowed to provide both ID and EMAIL");
+			throw new Error("BothIdAndEmail.notAllowed");
 		}
 		if (id) {
 			return this.getUser.findById(id);
@@ -22,7 +21,7 @@ export class GetUserUsecase {
 		if (email) {
 			return this.getUser.findByEmail(email);
 		}
-		return null;
+		return Promise.resolve(null);
 	}
 
 	async findById(id: number): Promise<IUserProfile | null> {
@@ -33,7 +32,7 @@ export class GetUserUsecase {
 		return this.getUser.findByEmail(email);
 	}
 
-	async get(): Promise<IUserProfile[]> {
+	async all(): Promise<IUserProfile[]> {
 		return this.getUser.findAll();
 	}
 }

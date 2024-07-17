@@ -1,23 +1,26 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
 import { beforeAll, describe, expect, test, vi } from "vitest";
-import { Components } from "../../../shared/constants/Components";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
+import { UserComponents } from "../constants/UserComponents";
 import type { CreateUserDTO } from "../dtos/CreateUserDTO";
-import type { IAuthService } from "../interface/IAuthService";
+import type { ICreateUserService } from "../interface/ICreateUserService";
 import { CreateUserController } from "./CreateUser.controller";
 
 describe("CreateUserController", () => {
 	const mockAuthService = {
 		register: vi.fn(),
-	} as unknown as IAuthService;
+	} as unknown as ICreateUserService;
 
 	let controller: CreateUserController;
 
 	beforeAll(() => {
-		container.registerInstance(Components.AuthService, mockAuthService);
+		container.registerInstance(
+			UserComponents.CreateUserService,
+			mockAuthService,
+		);
 		controller = new CreateUserController(
-			container.resolve(Components.AuthService),
+			container.resolve(UserComponents.CreateUserService),
 		);
 	});
 

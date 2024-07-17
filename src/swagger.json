@@ -7,6 +7,30 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"ResponseStatus": {
+				"enum": [
+					"success",
+					"error"
+				],
+				"type": "string"
+			},
+			"ResponseDTO_unknown_": {
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/ResponseStatus"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {}
+				},
+				"required": [
+					"status",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IUserProfile": {
 				"properties": {
 					"id": {
@@ -157,13 +181,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ResponseStatus": {
-				"enum": [
-					"success",
-					"error"
-				],
-				"type": "string"
-			},
 			"ResponseDTO_IUserProfile_": {
 				"properties": {
 					"status": {
@@ -286,7 +303,39 @@
 		"contact": {}
 	},
 	"paths": {
-		"/ag/v1/users/find": {
+		"/ag/v1/user/{userId}/disable": {
+			"patch": {
+				"operationId": "DisableUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_unknown_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User Management"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/ag/v1/user/find": {
 			"get": {
 				"operationId": "GetUser",
 				"responses": {
@@ -326,7 +375,7 @@
 				]
 			}
 		},
-		"/ag/v1/users/find-by-id": {
+		"/ag/v1/user/find-by-id": {
 			"get": {
 				"operationId": "GetUserById",
 				"responses": {
@@ -358,7 +407,7 @@
 				]
 			}
 		},
-		"/ag/v1/users/find-by-email": {
+		"/ag/v1/user/find-by-email": {
 			"get": {
 				"operationId": "GetUserByEmail",
 				"responses": {
@@ -389,7 +438,7 @@
 				]
 			}
 		},
-		"/ag/v1/users/all": {
+		"/ag/v1/user/all": {
 			"get": {
 				"operationId": "GetAllUsers",
 				"responses": {
@@ -399,6 +448,60 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ResponseDTO_IUserProfile-Array_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User Management"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/ag/v1/user/{userId}/delete": {
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_unknown_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User Management"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/ag/v1/user/deleteAll": {
+			"delete": {
+				"operationId": "DeleteAllUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_unknown_"
 								}
 							}
 						}

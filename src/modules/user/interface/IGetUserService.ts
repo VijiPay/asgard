@@ -1,6 +1,6 @@
 import type { IUserProfile } from "./IUserProfile";
 
-export interface IUserService {
+export interface IGetUserService {
 	find: (
 		id?: number,
 		email?: string,

@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
 import { beforeAll, beforeEach, describe, expect, test, vi } from "vitest";
-import { Components } from "../../../shared/constants/Components";
+import { UserComponents } from "../constants/UserComponents";
+import type { IGetUserService } from "../interface/IGetUserService";
 import type { IUserProfile } from "../interface/IUserProfile";
-import type { IUserService } from "../interface/IUserService";
-import { UserService } from "../services/User.Service";
+import { GetUserService } from "../services/GetUser.Service";
 
 describe("User Service", () => {
 	const mockGetUserUsecase = {
@@ -21,13 +21,16 @@ describe("User Service", () => {
 		status: 0,
 		countryCode: "NG",
 	};
-	let userService: IUserService;
+	let userService: IGetUserService;
 	beforeAll(() => {
-		container.registerInstance(Components.GetUserUseCase, mockGetUserUsecase);
+		container.registerInstance(
+			UserComponents.GetUserRepository,
+			mockGetUserUsecase,
+		);
 	});
 	beforeEach(async () => {
 		vi.clearAllMocks();
-		userService = container.resolve(UserService);
+		userService = container.resolve(GetUserService);
 	});
 
 	test("should return user if id or email is provided", async () => {
