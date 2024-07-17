@@ -8,6 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserType {
+  UNKNOWN
+  INDIVIDUAL
+  ORGANIZATION
+  BUSINESS
+  BROKER
+}
+
 model User {
   id               Int      @id @default(autoincrement())
   email            String   @unique

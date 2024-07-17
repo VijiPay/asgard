@@ -17,7 +17,7 @@ export class UpdateUserRepository implements IUpdateUserRepository {
 				id: userId,
 			},
 			data: {
-				status: UserStatus.DISABLED,
+				status: UserStatus.SUSPENDED,
 			},
 		});
 	}

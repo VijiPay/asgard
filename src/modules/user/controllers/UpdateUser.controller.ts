@@ -22,6 +22,6 @@ export class UpdateUserController extends Controller {
 		@Path() userId: number,
 	) {
 		await this.user.disable(userId);
-		return ResponseDTO.success({ message: "user.disabled" });
+		return ResponseDTO.success({ message: "user.suspended" });
 	}
 }
