@@ -16,12 +16,17 @@ export class GetUserRepository implements IGetUserRepository {
 			where: { email },
 			include: {
 				profile: true,
-				transactions: {
+				initiatedTransactions: {
 					select: {
 						id: true,
 					},
 				},
-				fraudScores: true,
+				receivedTransactions: {
+					select: {
+						id: true,
+					},
+				},
+				fraudScore: true,
 				payouts: true,
 				paymentMethod: true,
 			},
@@ -53,8 +58,9 @@ export class GetUserRepository implements IGetUserRepository {
 				paymentId: pm.paymentId,
 				institution: pm.institution,
 			})),
-			transactionsCount: user.transactions.length,
-			fraudScores: user.fraudScores.map((fraudScore) => ({
+			transactionsCount:
+				user.initiatedTransactions.length + user.receivedTransactions.length,
+			fraudScore: user.fraudScore.map((fraudScore) => ({
 				score: fraudScore.score,
 				result: fraudScore.result,
 			})),
@@ -68,12 +74,17 @@ export class GetUserRepository implements IGetUserRepository {
 			where: { id },
 			include: {
 				profile: true,
-				transactions: {
+				initiatedTransactions: {
 					select: {
 						id: true,
 					},
 				},
-				fraudScores: true,
+				receivedTransactions: {
+					select: {
+						id: true,
+					},
+				},
+				fraudScore: true,
 				payouts: true,
 				paymentMethod: true,
 			},
@@ -105,8 +116,9 @@ export class GetUserRepository implements IGetUserRepository {
 				paymentId: pm.paymentId,
 				institution: pm.institution,
 			})),
-			transactionsCount: user.transactions.length,
-			fraudScores: user.fraudScores.map((fraudScore) => ({
+			transactionsCount:
+				user.initiatedTransactions.length + user.receivedTransactions.length,
+			fraudScore: user.fraudScore.map((fraudScore) => ({
 				score: fraudScore.score,
 				result: fraudScore.result,
 			})),
@@ -119,12 +131,17 @@ export class GetUserRepository implements IGetUserRepository {
 		const users = await this.connection.findMany({
 			include: {
 				profile: true,
-				transactions: {
+				initiatedTransactions: {
 					select: {
 						id: true,
 					},
 				},
-				fraudScores: true,
+				receivedTransactions: {
+					select: {
+						id: true,
+					},
+				},
+				fraudScore: true,
 				payouts: true,
 				paymentMethod: true,
 			},
@@ -155,8 +172,9 @@ export class GetUserRepository implements IGetUserRepository {
 				paymentId: pm.paymentId,
 				institution: pm.institution,
 			})),
-			transactionsCount: user.transactions.length,
-			fraudScores: user.fraudScores.map((fraudScore) => ({
+			transactionsCount:
+				user.initiatedTransactions.length + user.receivedTransactions.length,
+			fraudScore: user.fraudScore.map((fraudScore) => ({
 				score: fraudScore.score,
 				result: fraudScore.result,
 			})),

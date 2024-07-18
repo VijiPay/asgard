@@ -29,10 +29,6 @@ export class CreateUserDTO {
 	@MinLength(8, { message: "Password must be at least 8 characters long" })
 	password: string;
 
-	@IsNotEmpty({ message: "User type is required" })
-	@IsString({ message: "User type must be a string" })
-	type: string;
-
 	@IsInt()
 	status: number;
 

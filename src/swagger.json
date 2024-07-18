@@ -31,6 +31,101 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"_36_Enums.UserType": {
+				"type": "string",
+				"enum": [
+					"INDIVIDUAL",
+					"BUSINESS",
+					"BROKER",
+					"UNKNOWN"
+				]
+			},
+			"UserType": {
+				"$ref": "#/components/schemas/_36_Enums.UserType"
+			},
+			"IProfile": {
+				"properties": {
+					"role": {
+						"type": "string"
+					},
+					"nickname": {
+						"type": "string",
+						"nullable": true
+					},
+					"phoneNumber": {
+						"type": "string",
+						"nullable": true
+					},
+					"address": {
+						"type": "string",
+						"nullable": true
+					},
+					"lastLogin": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"phoneVerified": {
+						"type": "boolean"
+					},
+					"emailVerified": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"role",
+					"nickname",
+					"phoneNumber",
+					"address",
+					"lastLogin",
+					"phoneVerified",
+					"emailVerified"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPaymentMethod": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"paymentId": {
+						"type": "string"
+					},
+					"institution": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"paymentId",
+					"institution"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IFraudScore": {
+				"properties": {
+					"score": {
+						"type": "number",
+						"format": "double"
+					},
+					"result": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"score",
+					"result"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IUserProfile": {
 				"properties": {
 					"id": {
@@ -47,7 +142,7 @@
 						"type": "string"
 					},
 					"type": {
-						"type": "string"
+						"$ref": "#/components/schemas/UserType"
 					},
 					"status": {
 						"type": "number",
@@ -57,68 +152,16 @@
 						"type": "string"
 					},
 					"profile": {
-						"properties": {
-							"emailVerified": {
-								"type": "boolean"
-							},
-							"phoneVerified": {
-								"type": "boolean"
-							},
-							"lastLogin": {
-								"type": "string",
-								"format": "date-time",
-								"nullable": true
-							},
-							"address": {
-								"type": "string",
-								"nullable": true
-							},
-							"phoneNumber": {
-								"type": "string",
-								"nullable": true
-							},
-							"nickname": {
-								"type": "string",
-								"nullable": true
-							},
-							"role": {
-								"type": "string"
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IProfile"
 							}
-						},
-						"required": [
-							"lastLogin",
-							"address",
-							"phoneNumber",
-							"nickname",
-							"role"
 						],
-						"type": "object",
 						"nullable": true
 					},
 					"paymentMethod": {
 						"items": {
-							"properties": {
-								"institution": {
-									"type": "string"
-								},
-								"paymentId": {
-									"type": "string"
-								},
-								"name": {
-									"type": "string"
-								},
-								"id": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"institution",
-								"paymentId",
-								"name",
-								"id"
-							],
-							"type": "object"
+							"$ref": "#/components/schemas/IPaymentMethod"
 						},
 						"type": "array"
 					},
@@ -126,47 +169,11 @@
 						"type": "number",
 						"format": "double"
 					},
-					"fraudScores": {
+					"fraudScore": {
 						"items": {
-							"properties": {
-								"result": {
-									"type": "string"
-								},
-								"score": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"result",
-								"score"
-							],
-							"type": "object"
+							"$ref": "#/components/schemas/IFraudScore"
 						},
 						"type": "array"
-					},
-					"apiKey": {
-						"properties": {
-							"lastUsed": {
-								"type": "string",
-								"format": "date-time",
-								"nullable": true
-							},
-							"createdAt": {
-								"type": "string",
-								"format": "date-time"
-							},
-							"key": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"lastUsed",
-							"createdAt",
-							"key"
-						],
-						"type": "object",
-						"nullable": true
 					}
 				},
 				"required": [
@@ -176,7 +183,9 @@
 					"email",
 					"type",
 					"status",
-					"countryCode"
+					"countryCode",
+					"profile",
+					"fraudScore"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -267,9 +276,6 @@
 					"password": {
 						"type": "string"
 					},
-					"type": {
-						"type": "string"
-					},
 					"status": {
 						"type": "number",
 						"format": "double"
@@ -283,7 +289,6 @@
 					"lastName",
 					"email",
 					"password",
-					"type",
 					"status",
 					"countryCode"
 				],

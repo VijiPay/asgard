@@ -1,8 +1,8 @@
-import type {PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
 import { injectable } from "tsyringe";
+import type { ICreateUser } from "../interface/ICreateUser";
 import type { ICreateUserRepository } from "../interface/ICreateUserRepository";
 import type { IUserProfile } from "../interface/IUserProfile";
-import type { ICreateUser } from "../interface/ICreateUser";
 
 @injectable()
 export class CreateUserRepository implements ICreateUserRepository {
@@ -16,14 +16,19 @@ export class CreateUserRepository implements ICreateUserRepository {
 		return this.connection.create({
 			data: {
 				...user,
+				type: "INDIVIDUAL",
 				profile: {
 					create: {
 						role: "user",
 						phoneVerified: false,
 						emailVerified: false,
+						tosAcceptance: {
+							accepted: true,
+							acceptedOn: Date.now(),
+						},
 					},
 				},
-				fraudScores: {
+				fraudScore: {
 					create: {
 						score: 0,
 						result: "No Record",
@@ -32,7 +37,7 @@ export class CreateUserRepository implements ICreateUserRepository {
 			},
 			include: {
 				profile: true,
-				fraudScores: true,
+				fraudScore: true,
 			},
 		});
 	}

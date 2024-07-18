@@ -34,6 +34,50 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "_36_Enums.UserType": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["INDIVIDUAL"]},{"dataType":"enum","enums":["BUSINESS"]},{"dataType":"enum","enums":["BROKER"]},{"dataType":"enum","enums":["UNKNOWN"]}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserType": {
+        "dataType": "refAlias",
+        "type": {"ref":"_36_Enums.UserType","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IProfile": {
+        "dataType": "refObject",
+        "properties": {
+            "role": {"dataType":"string","required":true},
+            "nickname": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "phoneNumber": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "address": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "lastLogin": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
+            "phoneVerified": {"dataType":"boolean","required":true},
+            "emailVerified": {"dataType":"boolean","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IPaymentMethod": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double","required":true},
+            "name": {"dataType":"string","required":true},
+            "paymentId": {"dataType":"string","required":true},
+            "institution": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IFraudScore": {
+        "dataType": "refObject",
+        "properties": {
+            "score": {"dataType":"double","required":true},
+            "result": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IUserProfile": {
         "dataType": "refObject",
         "properties": {
@@ -41,14 +85,13 @@ const models: TsoaRoute.Models = {
             "firstName": {"dataType":"string","required":true},
             "lastName": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
-            "type": {"dataType":"string","required":true},
+            "type": {"ref":"UserType","required":true},
             "status": {"dataType":"double","required":true},
             "countryCode": {"dataType":"string","required":true},
-            "profile": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{"emailVerified":{"dataType":"boolean"},"phoneVerified":{"dataType":"boolean"},"lastLogin":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},"address":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"phoneNumber":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"nickname":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"role":{"dataType":"string","required":true}}},{"dataType":"enum","enums":[null]}]},
-            "paymentMethod": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"institution":{"dataType":"string","required":true},"paymentId":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"double","required":true}}}},
+            "profile": {"dataType":"union","subSchemas":[{"ref":"IProfile"},{"dataType":"enum","enums":[null]}],"required":true},
+            "paymentMethod": {"dataType":"array","array":{"dataType":"refObject","ref":"IPaymentMethod"}},
             "transactionsCount": {"dataType":"double"},
-            "fraudScores": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"result":{"dataType":"string","required":true},"score":{"dataType":"double","required":true}}}},
-            "apiKey": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{"lastUsed":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},"createdAt":{"dataType":"datetime","required":true},"key":{"dataType":"string","required":true}}},{"dataType":"enum","enums":[null]}]},
+            "fraudScore": {"dataType":"array","array":{"dataType":"refObject","ref":"IFraudScore"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -90,7 +133,6 @@ const models: TsoaRoute.Models = {
             "lastName": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
             "password": {"dataType":"string","required":true},
-            "type": {"dataType":"string","required":true},
             "status": {"dataType":"double","required":true},
             "countryCode": {"dataType":"string","required":true},
         },

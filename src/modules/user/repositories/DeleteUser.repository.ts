@@ -4,7 +4,7 @@ import type { IDeleteUserRepository } from "../interface/IDeleteUserRepository";
 
 @injectable()
 export class DeleteUserRepository implements IDeleteUserRepository {
-	connection;
+	private connection;
 
 	constructor(dataSource: PrismaClient) {
 		this.connection = dataSource;
@@ -12,65 +12,49 @@ export class DeleteUserRepository implements IDeleteUserRepository {
 
 	async delete(userId: number): Promise<void> {
 		// Delete related records
-		await this.connection.transaction.deleteMany({
-			where: {
-				userId: userId,
-			},
-		});
-		await this.connection.payment.deleteMany({
-			where: {
-				userId: userId,
-			},
-		});
-		await this.connection.fraudScore.deleteMany({
-			where: {
-				userId: userId,
-			},
-		});
-		await this.connection.payout.deleteMany({
-			where: {
-				userId: userId,
-			},
-		});
-		await this.connection.paymentMethod.deleteMany({
-			where: {
-				userId: userId,
-			},
-		});
-		await this.connection.marketplaceItem.deleteMany({
-			where: {
-				userId: userId,
-			},
-		});
-		await this.connection.profile.deleteMany({
-			where: {
-				userId: userId,
-			},
-		});
-		await this.connection.apiKey.deleteMany({
-			where: {
-				userId: userId,
-			},
-		});
-		// Finally, delete the user
-		await this.connection.user.delete({
-			where: {
-				id: userId,
-			},
+		await this.connection.$transaction(async (prisma) => {
+			// Deleting related transactions
+			await prisma.transaction.deleteMany({
+				where: {
+					OR: [{ initiatorId: userId }, { receiverId: userId }],
+				},
+			});
+
+			// Deleting other related records
+			await prisma.payment.deleteMany({ where: { userId } });
+			await prisma.fraudScore.deleteMany({ where: { userId } });
+			await prisma.payout.deleteMany({ where: { userId } });
+			await prisma.paymentMethod.deleteMany({ where: { userId } });
+			await prisma.profile.deleteMany({ where: { userId } });
+			await prisma.apiKey.deleteMany({ where: { userId } });
+			await prisma.businessAssociate.deleteMany({ where: { userId } });
+
+			// Delete Business if user is associated with one
+			const business = await prisma.business.findUnique({ where: { userId } });
+			if (business) {
+				await prisma.business.delete({ where: { userId } });
+			}
+
+			// Finally, delete the user
+			await prisma.user.delete({ where: { id: userId } });
 		});
 	}
 
 	async deleteAll(): Promise<void> {
-		// Delete related records first
-		await this.connection.transaction.deleteMany({});
-		await this.connection.payment.deleteMany({});
-		await this.connection.fraudScore.deleteMany({});
-		await this.connection.payout.deleteMany({});
-		await this.connection.paymentMethod.deleteMany({});
-		await this.connection.marketplaceItem.deleteMany({});
-		await this.connection.profile.deleteMany({});
-		await this.connection.apiKey.deleteMany({});
-		// Finally, delete all users
-		await this.connection.user.deleteMany({});
+		await this.connection.$transaction(async (prisma) => {
+			// Deleting all related records first
+			await prisma.transaction.deleteMany({});
+			await prisma.payment.deleteMany({});
+			await prisma.fraudScore.deleteMany({});
+			await prisma.payout.deleteMany({});
+			await prisma.paymentMethod.deleteMany({});
+			await prisma.profile.deleteMany({});
+			await prisma.apiKey.deleteMany({});
+			await prisma.businessAssociate.deleteMany({});
+			await prisma.business.deleteMany({});
+
+			// Finally, delete all users
+			await prisma.user.deleteMany({});
+		});
 	}
 }

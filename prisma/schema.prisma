@@ -1,4 +1,3 @@
-// models/schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,11 +8,10 @@ datasource db {
 }
 
 enum UserType {
-  UNKNOWN
   INDIVIDUAL
-  ORGANIZATION
   BUSINESS
   BROKER
+  UNKNOWN
 }
 
 model User {
@@ -22,20 +20,24 @@ model User {
   password         String
   firstName        String
   lastName         String
-  type             String
-  status           Int      @default(1)
+  type             UserType @default(INDIVIDUAL)
+  status           Int      @default(0)
   countryCode      String   @map("country_code")
   createdDate      DateTime @default(now()) @map("created_date")
   lastModifiedDate DateTime @updatedAt @map("last_modified_date")
 
-  api              ApiKey?
-  profile          Profile?
-  transactions     Transaction[]
-  payments         Payment[]
-  marketplaceItems MarketplaceItem[]
-  fraudScores      FraudScore[]
-  payouts          Payout[]
-  paymentMethod    PaymentMethod[]
+  api               ApiKey?
+  profile           Profile?
+  payments          Payment[]
+  fraudScore        FraudScore[]
+  payouts           Payout[]
+  paymentMethod     PaymentMethod[]
+  Business          Business?
+  BusinessAssociate BusinessAssociate[]
+
+  initiatedTransactions Transaction[] @relation("initiatedTransactions")
+
+  receivedTransactions Transaction[] @relation("receivedTransactions")
 }
 
 model Profile {
@@ -63,14 +65,54 @@ model Profile {
   emailVerifyCode      String?   @map("email_verify_code")
   emailVerifyExpires   DateTime? @map("email_verify_expires")
   emailVerifyDate      DateTime? @map("email_verify_date")
-  organization         Json?
-  business             Json?
-  broker               Json?
-  individual           Json?
   metadata             Json?
-  tosAcceptance        Json?     @map("tos_acceptance")
+  tosAcceptance        Json      @map("tos_acceptance")
   userId               Int       @unique
   user                 User      @relation(fields: [userId], references: [id])
+}
+
+model Business {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  address            String
+  registrationNumber String              @map("registration_number")
+  registrationStatus String              @map("registration_status")
+  phoneNumber        String
+  userId             Int                 @unique
+  user               User                @relation(fields: [userId], references: [id])
+  linkedUsers        BusinessAssociate[]
+  transactions       Transaction[]
+}
+
+model BusinessAssociate {
+  id         Int    @id @default(autoincrement())
+  userId     Int
+  businessId Int
+  role       String
+
+  user     User     @relation(fields: [userId], references: [id])
+  business Business @relation(fields: [businessId], references: [id])
+
+  @@unique([userId, businessId])
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  amount      Float
+  status      String
+  description String
+  initiatorId Int
+  receiverId  Int
+  businessId  Int?
+
+  Payment Payment[]
+
+  FraudScore FraudScore[]
+  initiator  User         @relation("initiatedTransactions", fields: [initiatorId], references: [id])
+  receiver   User         @relation("receivedTransactions", fields: [receiverId], references: [id])
+  Business   Business?    @relation(fields: [businessId], references: [id])
 }
 
 model ApiKey {
@@ -90,21 +132,6 @@ model PaymentMethod {
   institution String
   userId      Int    @unique
   User        User   @relation(fields: [userId], references: [id])
-}
-
-model Transaction {
-  id           Int      @id @default(autoincrement())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  amount       Float
-  status       String
-  description  String
-  userId       Int
-  fraudScoreId Int
-
-  user       User         @relation(fields: [userId], references: [id])
-  Payment    Payment[]
-  FraudScore FraudScore[]
 }
 
 model Payment {
@@ -129,9 +156,6 @@ model MarketplaceItem {
   description String
   price       Float
   status      String
-  userId      Int
-
-  user User @relation(fields: [userId], references: [id])
 }
 
 model FraudScore {

@@ -1,34 +1,37 @@
+import type { UserType } from "@prisma/client";
+
+interface IProfile {
+	role: string;
+	nickname: string | null;
+	phoneNumber: string | null;
+	address: string | null;
+	lastLogin: Date | null;
+	phoneVerified: boolean;
+	emailVerified: boolean;
+}
+
+interface IPaymentMethod {
+	id: number;
+	name: string;
+	paymentId: string;
+	institution: string;
+}
+
+interface IFraudScore {
+	score: number;
+	result: string;
+}
+
 export interface IUserProfile {
 	id: number;
 	firstName: string;
 	lastName: string;
 	email: string;
-	type: string;
+	type: UserType;
 	status: number;
 	countryCode: string;
-	profile?: {
-		role: string;
-		nickname: string | null;
-		phoneNumber: string | null;
-		address: string | null;
-		lastLogin: Date | null;
-		phoneVerified?: boolean;
-		emailVerified?: boolean;
-	} | null;
-	paymentMethod?: Array<{
-		id: number;
-		name: string;
-		paymentId: string;
-		institution: string;
-	}>;
+	profile: IProfile | null;
+	paymentMethod?: IPaymentMethod[];
 	transactionsCount?: number;
-	fraudScores?: Array<{
-		score: number;
-		result: string;
-	}>;
-	apiKey?: {
-		key: string;
-		createdAt: Date;
-		lastUsed: Date | null;
-	} | null;
+	fraudScore: IFraudScore[];
 }
