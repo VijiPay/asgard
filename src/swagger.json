@@ -31,6 +31,32 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"UpdateUserDTO": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"profile": {
+						"properties": {
+							"phoneNumber": {
+								"type": "string",
+								"nullable": true
+							},
+							"address": {
+								"type": "string",
+								"nullable": true
+							},
+							"tradeName": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"type": "object"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"_36_Enums.UserType": {
 				"type": "string",
 				"enum": [
@@ -48,11 +74,15 @@
 					"role": {
 						"type": "string"
 					},
-					"nickname": {
+					"tradeName": {
 						"type": "string",
 						"nullable": true
 					},
 					"phoneNumber": {
+						"type": "string",
+						"nullable": true
+					},
+					"platformId": {
 						"type": "string",
 						"nullable": true
 					},
@@ -73,13 +103,46 @@
 					}
 				},
 				"required": [
-					"role",
-					"nickname",
 					"phoneNumber",
+					"address"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusiness": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"registrationNumber": {
+						"type": "string"
+					},
+					"registrationStatus": {
+						"type": "string"
+					},
+					"businessPhone": {
+						"type": "string"
+					},
+					"transactions": {
+						"type": "number",
+						"format": "double"
+					},
+					"associates": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
 					"address",
-					"lastLogin",
-					"phoneVerified",
-					"emailVerified"
+					"registrationNumber",
+					"registrationStatus",
+					"businessPhone",
+					"transactions",
+					"associates"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -159,7 +222,10 @@
 						],
 						"nullable": true
 					},
-					"paymentMethod": {
+					"business": {
+						"$ref": "#/components/schemas/IBusiness"
+					},
+					"paymentMethods": {
 						"items": {
 							"$ref": "#/components/schemas/IPaymentMethod"
 						},
@@ -174,6 +240,10 @@
 							"$ref": "#/components/schemas/IFraudScore"
 						},
 						"type": "array"
+					},
+					"createdDate": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [
@@ -185,7 +255,8 @@
 					"status",
 					"countryCode",
 					"profile",
-					"fraudScore"
+					"fraudScore",
+					"createdDate"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -338,6 +409,38 @@
 						}
 					}
 				]
+			}
+		},
+		"/ag/v1/user/me": {
+			"patch": {
+				"operationId": "UpdateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_unknown_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User Management"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateUserDTO"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/ag/v1/user/find": {

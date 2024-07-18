@@ -34,6 +34,15 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpdateUserDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "email": {"dataType":"string"},
+            "profile": {"dataType":"nestedObjectLiteral","nestedProperties":{"phoneNumber":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},"address":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},"tradeName":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]}}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "_36_Enums.UserType": {
         "dataType": "refAlias",
         "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["INDIVIDUAL"]},{"dataType":"enum","enums":["BUSINESS"]},{"dataType":"enum","enums":["BROKER"]},{"dataType":"enum","enums":["UNKNOWN"]}],"validators":{}},
@@ -47,13 +56,28 @@ const models: TsoaRoute.Models = {
     "IProfile": {
         "dataType": "refObject",
         "properties": {
-            "role": {"dataType":"string","required":true},
-            "nickname": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "role": {"dataType":"string"},
+            "tradeName": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
             "phoneNumber": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "platformId": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
             "address": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
-            "lastLogin": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
-            "phoneVerified": {"dataType":"boolean","required":true},
-            "emailVerified": {"dataType":"boolean","required":true},
+            "lastLogin": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
+            "phoneVerified": {"dataType":"boolean"},
+            "emailVerified": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IBusiness": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "address": {"dataType":"string","required":true},
+            "registrationNumber": {"dataType":"string","required":true},
+            "registrationStatus": {"dataType":"string","required":true},
+            "businessPhone": {"dataType":"string","required":true},
+            "transactions": {"dataType":"double","required":true},
+            "associates": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -89,9 +113,11 @@ const models: TsoaRoute.Models = {
             "status": {"dataType":"double","required":true},
             "countryCode": {"dataType":"string","required":true},
             "profile": {"dataType":"union","subSchemas":[{"ref":"IProfile"},{"dataType":"enum","enums":[null]}],"required":true},
-            "paymentMethod": {"dataType":"array","array":{"dataType":"refObject","ref":"IPaymentMethod"}},
+            "business": {"ref":"IBusiness"},
+            "paymentMethods": {"dataType":"array","array":{"dataType":"refObject","ref":"IPaymentMethod"}},
             "transactionsCount": {"dataType":"double"},
             "fraudScore": {"dataType":"array","array":{"dataType":"refObject","ref":"IFraudScore"},"required":true},
+            "createdDate": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
     },
@@ -181,6 +207,42 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'disableUser',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/ag/v1/user/me',
+            ...(fetchMiddlewares<RequestHandler>(UpdateUserController)),
+            ...(fetchMiddlewares<RequestHandler>(UpdateUserController.prototype.updateUser)),
+
+            async function UpdateUserController_updateUser(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    payload: {"in":"body","name":"payload","required":true,"ref":"UpdateUserDTO"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UpdateUserController>(UpdateUserController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+              await templateService.apiHandler({
+                methodName: 'updateUser',
                 controller,
                 response,
                 next,

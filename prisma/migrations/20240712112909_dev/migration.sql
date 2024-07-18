@@ -11,7 +11,7 @@
   - You are about to drop the column `email_verify_expires` on the `User` table. All the data in the column will be lost.
   - You are about to drop the column `last_login` on the `User` table. All the data in the column will be lost.
   - You are about to drop the column `login_ip` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `nickname` on the `User` table. All the data in the column will be lost.
+  - You are about to drop the column `tr` on the `User` table. All the data in the column will be lost.
   - You are about to drop the column `password_reset` on the `User` table. All the data in the column will be lost.
   - You are about to drop the column `password_reset_expires` on the `User` table. All the data in the column will be lost.
   - You are about to drop the column `password_reset_token` on the `User` table. All the data in the column will be lost.
@@ -82,7 +82,7 @@ DROP COLUMN "email_verify_date",
 DROP COLUMN "email_verify_expires",
 DROP COLUMN "last_login",
 DROP COLUMN "login_ip",
-DROP COLUMN "nickname",
+DROP COLUMN "trade_name",
 DROP COLUMN "password_reset",
 DROP COLUMN "password_reset_expires",
 DROP COLUMN "password_reset_token",

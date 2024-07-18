@@ -28,7 +28,7 @@ export class GetUserRepository implements IGetUserRepository {
 				},
 				fraudScore: true,
 				payouts: true,
-				paymentMethod: true,
+				paymentMethods: true,
 			},
 		});
 		if (!user) return null;
@@ -41,10 +41,11 @@ export class GetUserRepository implements IGetUserRepository {
 			type: user.type,
 			status: user.status,
 			countryCode: user.countryCode,
+			createdDate: user.createdDate,
 			profile: user.profile
 				? {
 						role: user.profile.role,
-						nickname: user.profile.nickname,
+						tradeName: user.profile.tradeName,
 						phoneNumber: user.profile.phoneNumber,
 						address: user.profile.address,
 						lastLogin: user.profile.lastLogin,
@@ -52,7 +53,7 @@ export class GetUserRepository implements IGetUserRepository {
 						emailVerified: user.profile.emailVerified,
 					}
 				: null,
-			paymentMethod: user.paymentMethod.map((pm) => ({
+			paymentMethods: user.paymentMethods.map((pm) => ({
 				id: pm.id,
 				name: pm.name,
 				paymentId: pm.paymentId,
@@ -86,7 +87,7 @@ export class GetUserRepository implements IGetUserRepository {
 				},
 				fraudScore: true,
 				payouts: true,
-				paymentMethod: true,
+				paymentMethods: true,
 			},
 		});
 		if (!user) return null;
@@ -99,10 +100,11 @@ export class GetUserRepository implements IGetUserRepository {
 			type: user.type,
 			status: user.status,
 			countryCode: user.countryCode,
+			createdDate: user.createdDate,
 			profile: user.profile
 				? {
 						role: user.profile.role,
-						nickname: user.profile.nickname,
+						tradeName: user.profile.tradeName,
 						phoneNumber: user.profile.phoneNumber,
 						address: user.profile.address,
 						lastLogin: user.profile.lastLogin,
@@ -110,7 +112,7 @@ export class GetUserRepository implements IGetUserRepository {
 						emailVerified: user.profile.emailVerified,
 					}
 				: null,
-			paymentMethod: user.paymentMethod.map((pm) => ({
+			paymentMethods: user.paymentMethods.map((pm) => ({
 				id: pm.id,
 				name: pm.name,
 				paymentId: pm.paymentId,
@@ -143,7 +145,7 @@ export class GetUserRepository implements IGetUserRepository {
 				},
 				fraudScore: true,
 				payouts: true,
-				paymentMethod: true,
+				paymentMethods: true,
 			},
 		});
 
@@ -155,10 +157,11 @@ export class GetUserRepository implements IGetUserRepository {
 			type: user.type,
 			status: user.status,
 			countryCode: user.countryCode,
+			createdDate: user.createdDate,
 			profile: user.profile
 				? {
 						role: user.profile.role,
-						nickname: user.profile.nickname,
+						tradeName: user.profile.tradeName,
 						phoneNumber: user.profile.phoneNumber,
 						address: user.profile.address,
 						lastLogin: user.profile.lastLogin,
@@ -166,7 +169,7 @@ export class GetUserRepository implements IGetUserRepository {
 						emailVerified: user.profile.emailVerified,
 					}
 				: null,
-			paymentMethod: user.paymentMethod.map((pm) => ({
+			paymentMethods: user.paymentMethods.map((pm) => ({
 				id: pm.id,
 				name: pm.name,
 				paymentId: pm.paymentId,

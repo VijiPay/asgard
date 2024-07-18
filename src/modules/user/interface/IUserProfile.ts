@@ -1,13 +1,14 @@
 import type { UserType } from "@prisma/client";
 
 interface IProfile {
-	role: string;
-	nickname: string | null;
+	role?: string;
+	tradeName?: string | null;
 	phoneNumber: string | null;
+	platformId?: string | null;
 	address: string | null;
-	lastLogin: Date | null;
-	phoneVerified: boolean;
-	emailVerified: boolean;
+	lastLogin?: Date | null;
+	phoneVerified?: boolean;
+	emailVerified?: boolean;
 }
 
 interface IPaymentMethod {
@@ -22,6 +23,16 @@ interface IFraudScore {
 	result: string;
 }
 
+interface IBusiness {
+	name: string;
+	address: string;
+	registrationNumber: string;
+	registrationStatus: string;
+	businessPhone: string;
+	transactions: number;
+	associates: number;
+}
+
 export interface IUserProfile {
 	id: number;
 	firstName: string;
@@ -31,7 +42,9 @@ export interface IUserProfile {
 	status: number;
 	countryCode: string;
 	profile: IProfile | null;
-	paymentMethod?: IPaymentMethod[];
+	business?: IBusiness;
+	paymentMethods?: IPaymentMethod[];
 	transactionsCount?: number;
 	fraudScore: IFraudScore[];
+	createdDate: Date;
 }

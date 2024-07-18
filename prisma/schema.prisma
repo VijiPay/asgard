@@ -26,14 +26,14 @@ model User {
   createdDate      DateTime @default(now()) @map("created_date")
   lastModifiedDate DateTime @updatedAt @map("last_modified_date")
 
-  api               ApiKey?
-  profile           Profile?
-  payments          Payment[]
-  fraudScore        FraudScore[]
-  payouts           Payout[]
-  paymentMethod     PaymentMethod[]
-  Business          Business?
-  BusinessAssociate BusinessAssociate[]
+  api                ApiKey?
+  profile            Profile?
+  payments           Payment[]
+  fraudScore         FraudScore[]
+  payouts            Payout[]
+  paymentMethods     PaymentMethod[]
+  business           Business?
+  businessAssociates BusinessAssociate[]
 
   initiatedTransactions Transaction[] @relation("initiatedTransactions")
 
@@ -42,7 +42,7 @@ model User {
 
 model Profile {
   id                   Int       @id @default(autoincrement())
-  nickname             String?   @map("date_of_birth")
+  tradeName            String?   @map("trade_name")
   address              String?
   phoneNumber          String?   @map("phone_number")
   role                 String

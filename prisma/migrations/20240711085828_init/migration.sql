@@ -6,7 +6,7 @@ CREATE TABLE "User" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "type" TEXT,
-    "nickname" TEXT,
+    "tr" TEXT,
     "phone_number" TEXT,
     "date_of_birth" TEXT,
     "role" TEXT,

@@ -1,8 +1,9 @@
-import { Controller, Patch, Path, Request, Route, Tags } from "tsoa";
+import { Body, Controller, Patch, Path, Request, Route, Tags } from "tsoa";
 import { inject, injectable } from "tsyringe";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
 import type { AuthenticatedRequest } from "../../../shared/interfaces/AuthenticatedRequest";
 import { UserComponents } from "../constants/UserComponents";
+import type { UpdateUserDTO } from "../dtos/UpdateUserDTO";
 import type { IUpdateUserService } from "../interface/IUpdateUserService";
 
 @injectable()
@@ -23,5 +24,14 @@ export class UpdateUserController extends Controller {
 	) {
 		await this.user.disable(userId);
 		return ResponseDTO.success({ message: "user.suspended" });
+	}
+
+	@Patch("me")
+	async updateUser(
+		@Request() req: AuthenticatedRequest,
+		@Body() payload: UpdateUserDTO,
+	) {
+		await this.user.update(1, payload);
+		return ResponseDTO.success({ message: "user.updated" });
 	}
 }
