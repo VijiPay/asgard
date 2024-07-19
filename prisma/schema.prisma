@@ -42,7 +42,7 @@ model User {
 
 model Profile {
   id                   Int       @id @default(autoincrement())
-  tradeName            String?   @map("trade_name")
+  tradeName            String    @map("trade_name")
   address              String?
   phoneNumber          String?   @map("phone_number")
   role                 String

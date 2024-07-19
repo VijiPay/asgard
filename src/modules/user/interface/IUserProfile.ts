@@ -2,7 +2,7 @@ import type { UserType } from "@prisma/client";
 
 interface IProfile {
 	role?: string;
-	tradeName?: string | null;
+	tradeName?: string;
 	phoneNumber: string | null;
 	platformId?: string | null;
 	address: string | null;
@@ -36,7 +36,6 @@ interface IBusiness {
 export interface IUserProfile {
 	id: number;
 	firstName: string;
-	lastName: string;
 	email: string;
 	type: UserType;
 	status: number;

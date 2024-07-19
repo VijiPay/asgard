@@ -36,7 +36,6 @@ export class GetUserRepository implements IGetUserRepository {
 		const userProfile: IUserProfile = {
 			id: user.id,
 			firstName: user.firstName,
-			lastName: user.lastName,
 			email: user.email,
 			type: user.type,
 			status: user.status,
@@ -95,7 +94,6 @@ export class GetUserRepository implements IGetUserRepository {
 		const userProfile: IUserProfile = {
 			id: user.id,
 			firstName: user.firstName,
-			lastName: user.lastName,
 			email: user.email,
 			type: user.type,
 			status: user.status,
@@ -152,7 +150,6 @@ export class GetUserRepository implements IGetUserRepository {
 		return users.map((user) => ({
 			id: user.id,
 			firstName: user.firstName,
-			lastName: user.lastName,
 			email: user.email,
 			type: user.type,
 			status: user.status,

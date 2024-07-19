@@ -20,6 +20,7 @@ export class CreateUserRepository implements ICreateUserRepository {
 				profile: {
 					create: {
 						role: "user",
+						tradeName: `${user.firstName} ${user.lastName}`,
 						phoneVerified: false,
 						emailVerified: false,
 						tosAcceptance: {

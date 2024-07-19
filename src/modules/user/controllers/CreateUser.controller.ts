@@ -22,7 +22,7 @@ export class CreateUserController extends Controller {
 			return ResponseDTO.success({
 				message: "successful",
 				data: {
-					Name: `${response.firstName} ${response.lastName}`,
+					Name: response.profile?.tradeName,
 					Email: response.email,
 				},
 			});

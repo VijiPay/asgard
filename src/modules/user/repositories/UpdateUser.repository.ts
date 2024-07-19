@@ -29,7 +29,6 @@ export class UpdateUserRepository implements IUpdateUserRepository {
 
 		const profileUpdateData = updateUserDTO.profile
 			? {
-					tradeName: updateUserDTO.profile.tradeName,
 					address: updateUserDTO.profile.address,
 					phoneNumber: updateUserDTO.profile.phoneNumber,
 				}

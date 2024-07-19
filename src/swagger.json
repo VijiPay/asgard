@@ -45,10 +45,6 @@
 							"address": {
 								"type": "string",
 								"nullable": true
-							},
-							"tradeName": {
-								"type": "string",
-								"nullable": true
 							}
 						},
 						"type": "object"
@@ -75,8 +71,7 @@
 						"type": "string"
 					},
 					"tradeName": {
-						"type": "string",
-						"nullable": true
+						"type": "string"
 					},
 					"phoneNumber": {
 						"type": "string",
@@ -198,9 +193,6 @@
 					"firstName": {
 						"type": "string"
 					},
-					"lastName": {
-						"type": "string"
-					},
 					"email": {
 						"type": "string"
 					},
@@ -249,7 +241,6 @@
 				"required": [
 					"id",
 					"firstName",
-					"lastName",
 					"email",
 					"type",
 					"status",
@@ -362,6 +353,101 @@
 					"password",
 					"status",
 					"countryCode"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAuthenticatedUser": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"$ref": "#/components/schemas/UserType"
+					},
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"country": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string",
+						"nullable": true
+					},
+					"token": {
+						"type": "string"
+					},
+					"refreshToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"type",
+					"status",
+					"country"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ResponseDTO_IAuthenticatedUser-or-null_": {
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/ResponseStatus"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IAuthenticatedUser"
+							}
+						],
+						"nullable": true
+					}
+				},
+				"required": [
+					"status",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AuthDTO": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ResponseDTO_string_": {
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/ResponseStatus"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"status",
+					"data"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -648,6 +734,70 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/CreateUserDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_IAuthenticatedUser-or-null_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AuthDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/refreshtoken": {
+			"post": {
+				"operationId": "RefreshToken",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_string_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "string"
 							}
 						}
 					}

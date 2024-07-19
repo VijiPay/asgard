@@ -22,7 +22,6 @@ export class UpdateUserService implements IUpdateUserService {
 			email: payload.email,
 			profile: payload.profile
 				? {
-						tradeName: payload.profile.tradeName || null,
 						address: payload.profile.address || null,
 						phoneNumber: payload.profile.phoneNumber || null,
 					}

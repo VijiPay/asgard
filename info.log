@@ -786,3 +786,13 @@
 {"level":"error","message":"handler.unhandled"}
 {"level":"info","message":"server.running"}
 {"level":"info","message":"db.connection.success"}
+{"level":"info","message":"server.running"}
+{"level":"info","message":"db.connection.success"}
+{"level":"error","message":"handler.unhandled"}
+{"level":"info","message":"server.running"}
+{"level":"info","message":"db.connection.success"}
+{"level":"error","message":"handler.unhandled"}
+{"level":"error","message":"handler.unhandled"}
+{"level":"error","message":"handler.unhandled"}
+{"level":"error","message":"handler.unhandled"}
+{"level":"error","message":"handler.unhandled"}
