@@ -1,17 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex", "driverAdapters", "prismaSchemaFolder"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-enum UserType {
-  INDIVIDUAL
-  BUSINESS
-  BROKER
-  UNKNOWN
 }
 
 model User {
@@ -38,146 +32,16 @@ model User {
   initiatedTransactions Transaction[] @relation("initiatedTransactions")
 
   receivedTransactions Transaction[] @relation("receivedTransactions")
+
+  sessions Session[]
 }
 
-model Profile {
-  id                   Int       @id @default(autoincrement())
-  tradeName            String    @map("trade_name")
-  address              String?
-  phoneNumber          String?   @map("phone_number")
-  role                 String
-  loginIp              String?   @map("login_ip")
-  platformId           String?   @map("platform_id")
-  lastLogin            DateTime? @map("last_login")
-  passwordReset        Boolean?  @map("password_reset")
-  passwordResetToken   String?   @map("password_reset_token")
-  phoneVerified        Boolean   @map("phone_verified")
-  emailVerified        Boolean   @map("email_verified")
-  passwordResetExpires DateTime? @map("password_reset_expires")
-  userLocked           Boolean?  @map("user_locked")
-  userLockedMessage    String?   @map("user_locked_message")
-  userLockedDate       DateTime? @map("user_locked_date")
-  userLockedBy         String?   @map("user_locked_by")
-  authyId              Int?      @map("authy_id")
-  phoneVerifyCode      String?   @map("phone_verify_code")
-  phoneVerifyExpires   DateTime? @map("phone_verify_expires")
-  phoneVerifyDate      DateTime? @map("phone_verify_date")
-  emailVerifyCode      String?   @map("email_verify_code")
-  emailVerifyExpires   DateTime? @map("email_verify_expires")
-  emailVerifyDate      DateTime? @map("email_verify_date")
-  metadata             Json?
-  tosAcceptance        Json      @map("tos_acceptance")
-  userId               Int       @unique
-  user                 User      @relation(fields: [userId], references: [id])
-}
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-model Business {
-  id                 Int                 @id @default(autoincrement())
-  name               String
-  address            String
-  registrationNumber String              @map("registration_number")
-  registrationStatus String              @map("registration_status")
-  phoneNumber        String
-  userId             Int                 @unique
-  user               User                @relation(fields: [userId], references: [id])
-  linkedUsers        BusinessAssociate[]
-  transactions       Transaction[]
-}
-
-model BusinessAssociate {
-  id         Int    @id @default(autoincrement())
-  userId     Int
-  businessId Int
-  role       String
-
-  user     User     @relation(fields: [userId], references: [id])
-  business Business @relation(fields: [businessId], references: [id])
-
-  @@unique([userId, businessId])
-}
-
-model Transaction {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  amount      Float
-  status      String
-  description String
-  initiatorId Int
-  receiverId  Int
-  businessId  Int?
-
-  Payment Payment[]
-
-  FraudScore FraudScore[]
-  initiator  User         @relation("initiatedTransactions", fields: [initiatorId], references: [id])
-  receiver   User         @relation("receivedTransactions", fields: [receiverId], references: [id])
-  Business   Business?    @relation(fields: [businessId], references: [id])
-}
-
-model ApiKey {
-  id        Int      @default(autoincrement())
-  key       String
-  createdAt DateTime @default(now()) @map("created_at")
-  lastUsed  DateTime @updatedAt
-  userId    Int      @unique
-
-  user User @relation(fields: [userId], references: [id])
-}
-
-model PaymentMethod {
-  id          Int    @default(autoincrement())
-  name        String
-  paymentId   String
-  institution String
-  userId      Int    @unique
-  User        User   @relation(fields: [userId], references: [id])
-}
-
-model Payment {
-  id            Int      @id @default(autoincrement())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  amount        Float
-  method        String
-  status        String
-  userId        Int
-  transactionId Int
-
-  user        User        @relation(fields: [userId], references: [id])
-  transaction Transaction @relation(fields: [transactionId], references: [id])
-}
-
-model MarketplaceItem {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  title       String
-  description String
-  price       Float
-  status      String
-}
-
-model FraudScore {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  score     Int
-  result    String   @default("NO RECORD")
-  userId    Int
-
-  user          User         @relation(fields: [userId], references: [id])
-  Transaction   Transaction? @relation(fields: [transactionId], references: [id])
-  transactionId Int?
-}
-
-model Payout {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  amount    Float
-  status    String
-  userId    Int
-
-  user User @relation(fields: [userId], references: [id])
+  @@index([userId])
 }

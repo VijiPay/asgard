@@ -1,0 +1,24 @@
+model Business {
+    id                 Int                 @id @default(autoincrement())
+    name               String
+    address            String
+    registrationNumber String              @map("registration_number")
+    registrationStatus String              @map("registration_status")
+    phoneNumber        String
+    userId             Int                 @unique
+    user               User                @relation(fields: [userId], references: [id])
+    linkedUsers        BusinessAssociate[]
+    transactions       Transaction[]
+}
+
+model BusinessAssociate {
+    id         Int    @id @default(autoincrement())
+    userId     Int
+    businessId Int
+    role       String
+
+    user     User     @relation(fields: [userId], references: [id])
+    business Business @relation(fields: [businessId], references: [id])
+
+    @@unique([userId, businessId])
+}

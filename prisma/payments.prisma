@@ -1,0 +1,33 @@
+model PaymentMethod {
+    id          Int    @default(autoincrement())
+    name        String
+    paymentId   String
+    institution String
+    userId      Int    @unique
+    User        User   @relation(fields: [userId], references: [id])
+}
+
+model Payment {
+    id            Int      @id @default(autoincrement())
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    amount        Float
+    method        String
+    status        String
+    userId        Int
+    transactionId Int
+
+    user        User        @relation(fields: [userId], references: [id])
+    transaction Transaction @relation(fields: [transactionId], references: [id])
+}
+
+model Payout {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    amount    Float
+    status    String
+    userId    Int
+
+    user User @relation(fields: [userId], references: [id])
+}

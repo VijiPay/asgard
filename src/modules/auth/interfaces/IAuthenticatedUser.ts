@@ -4,8 +4,8 @@ export interface IAuthenticatedUser {
 	id: number;
 	type: UserType;
 	status: number;
-	country: string;
-	name: string | null | undefined;
-	token?: string;
+	name: string;
+	countryCode: string;
+	token: string;
 	refreshToken?: string;
 }

@@ -1,7 +1,12 @@
-import type { AuthDTO } from "../dtos/AuthDTO";
-import type { IAuthenticatedUser } from "./IAuthenticatedUser";
-
 export interface IAuthRepository {
-	login(authDTO: AuthDTO): Promise<IAuthenticatedUser | null>;
-	refreshToken(token: string): Promise<string>;
-}
+		createPasswordResetRequest(
+			id: number,
+			token: string,
+			tokenExpiry: Date,
+		): Promise<void>;
+	
+
+		updatePassword(id: number, password: string): Promise<void>;
+
+		updatePasswordDirectly(id: number, newPassword: string): Promise<void>;
+	}

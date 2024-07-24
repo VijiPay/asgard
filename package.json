@@ -12,7 +12,7 @@
 		"start": "pnpm db:migrate && node ./dist/src/serve.js",
 		"start:dev": "pnpm build && tsx watch src/serve.ts --clear-screen=false",
 		"build": "tsoa spec-and-routes && tsc --project tsconfig.build.json",
-		"db:migrate": "pnpm prisma generate && pnpm prisma db push",
+		"db:migrate": "pnpm prisma generate --schema=./prisma/ && pnpm prisma db push --schema=./prisma/",
 		"rebuild:be": "docker compose build asgard && docker compose rm --force --stop asgard && docker compose up -d",
 		"test": "vitest",
 		"test:run": "vitest run",

@@ -4,8 +4,8 @@ import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
 import type { AuthenticatedRequest } from "../../../shared/interfaces/AuthenticatedRequest";
 import { AuthComponents } from "../constants/AuthComponents";
 import type { AuthDTO } from "../dtos/AuthDTO";
-import type { IAuthService } from "../interfaces/IAuthService";
 import type { IAuthenticatedUser } from "../interfaces/IAuthenticatedUser";
+import type { IAuthService } from "../interfaces/ILoginService";
 
 @injectable()
 @Tags("Authentication")

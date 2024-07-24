@@ -1,7 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 import { singleton } from "tsyringe";
 import type { IGetUserRepository } from "../interface/IGetUserRepository";
-import type { IUserProfile } from "../interface/IUserProfile";
+import type { IUser } from "../interface/IUser";
 
 @singleton()
 export class GetUserRepository implements IGetUserRepository {
@@ -11,7 +11,7 @@ export class GetUserRepository implements IGetUserRepository {
 		this.connection = dataSource.user;
 	}
 
-	async findByEmail(email: string): Promise<IUserProfile | null> {
+	async findByEmail(email: string): Promise<IUser | null> {
 		const user = await this.connection.findUnique({
 			where: { email },
 			include: {
@@ -33,43 +33,10 @@ export class GetUserRepository implements IGetUserRepository {
 		});
 		if (!user) return null;
 
-		const userProfile: IUserProfile = {
-			id: user.id,
-			firstName: user.firstName,
-			email: user.email,
-			type: user.type,
-			status: user.status,
-			countryCode: user.countryCode,
-			createdDate: user.createdDate,
-			profile: user.profile
-				? {
-						role: user.profile.role,
-						tradeName: user.profile.tradeName,
-						phoneNumber: user.profile.phoneNumber,
-						address: user.profile.address,
-						lastLogin: user.profile.lastLogin,
-						phoneVerified: user.profile.phoneVerified,
-						emailVerified: user.profile.emailVerified,
-					}
-				: null,
-			paymentMethods: user.paymentMethods.map((pm) => ({
-				id: pm.id,
-				name: pm.name,
-				paymentId: pm.paymentId,
-				institution: pm.institution,
-			})),
-			transactionsCount:
-				user.initiatedTransactions.length + user.receivedTransactions.length,
-			fraudScore: user.fraudScore.map((fraudScore) => ({
-				score: fraudScore.score,
-				result: fraudScore.result,
-			})),
-		};
-
-		return userProfile;
+		return user;
 	}
 
-	async findById(id: number): Promise<IUserProfile | null> {
+	async findById(id: number): Promise<IUser | null> {
 		const user = await this.connection.findUnique({
 			where: { id },
 			include: {
@@ -90,44 +57,10 @@ export class GetUserRepository implements IGetUserRepository {
 			},
 		});
 		if (!user) return null;
-
-		const userProfile: IUserProfile = {
-			id: user.id,
-			firstName: user.firstName,
-			email: user.email,
-			type: user.type,
-			status: user.status,
-			countryCode: user.countryCode,
-			createdDate: user.createdDate,
-			profile: user.profile
-				? {
-						role: user.profile.role,
-						tradeName: user.profile.tradeName,
-						phoneNumber: user.profile.phoneNumber,
-						address: user.profile.address,
-						lastLogin: user.profile.lastLogin,
-						phoneVerified: user.profile.phoneVerified,
-						emailVerified: user.profile.emailVerified,
-					}
-				: null,
-			paymentMethods: user.paymentMethods.map((pm) => ({
-				id: pm.id,
-				name: pm.name,
-				paymentId: pm.paymentId,
-				institution: pm.institution,
-			})),
-			transactionsCount:
-				user.initiatedTransactions.length + user.receivedTransactions.length,
-			fraudScore: user.fraudScore.map((fraudScore) => ({
-				score: fraudScore.score,
-				result: fraudScore.result,
-			})),
-		};
-
-		return userProfile;
+		return user;
 	}
 
-	async findAll(): Promise<IUserProfile[]> {
+	async findAll(): Promise<IUser[]> {
 		const users = await this.connection.findMany({
 			include: {
 				profile: true,
@@ -147,37 +80,6 @@ export class GetUserRepository implements IGetUserRepository {
 			},
 		});
 
-		return users.map((user) => ({
-			id: user.id,
-			firstName: user.firstName,
-			email: user.email,
-			type: user.type,
-			status: user.status,
-			countryCode: user.countryCode,
-			createdDate: user.createdDate,
-			profile: user.profile
-				? {
-						role: user.profile.role,
-						tradeName: user.profile.tradeName,
-						phoneNumber: user.profile.phoneNumber,
-						address: user.profile.address,
-						lastLogin: user.profile.lastLogin,
-						phoneVerified: user.profile.phoneVerified,
-						emailVerified: user.profile.emailVerified,
-					}
-				: null,
-			paymentMethods: user.paymentMethods.map((pm) => ({
-				id: pm.id,
-				name: pm.name,
-				paymentId: pm.paymentId,
-				institution: pm.institution,
-			})),
-			transactionsCount:
-				user.initiatedTransactions.length + user.receivedTransactions.length,
-			fraudScore: user.fraudScore.map((fraudScore) => ({
-				score: fraudScore.score,
-				result: fraudScore.result,
-			})),
-		}));
+		return users;
 	}
 }

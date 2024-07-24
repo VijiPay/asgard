@@ -1,0 +1,6 @@
+enum UserType {
+    INDIVIDUAL
+    BUSINESS
+    BROKER
+    UNKNOWN
+}

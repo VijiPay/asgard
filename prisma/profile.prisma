@@ -1,0 +1,43 @@
+model Profile {
+  id                   Int       @id @default(autoincrement())
+  tradeName            String    @map("trade_name")
+  address              String?
+  role                 String
+  phoneNumber          String?   @map("phone_number")
+  phoneVerified        Boolean   @map("phone_verified")
+  phoneVerifyCode      String?   @map("phone_verify_code")
+  phoneVerifyExpires   DateTime? @map("phone_verify_expires")
+  phoneVerifyDate      DateTime? @map("phone_verify_date")
+  emailVerified        Boolean   @map("email_verified")
+  emailVerifyCode      String?   @unique @map("email_verify_code")
+  emailVerifyExpires   DateTime? @map("email_verify_expires")
+  emailVerifyDate      DateTime? @map("email_verify_date")
+  passwordReset        Boolean?  @map("password_reset")
+  passwordResetToken   String?   @map("password_reset_token")
+  passwordResetExpires DateTime? @map("password_reset_expires")
+  userLocked           Boolean?  @map("user_locked")
+  userLockedMessage    String?   @map("user_locked_message")
+  userLockedDate       DateTime? @map("user_locked_date")
+  userLockedBy         String?   @map("user_locked_by")
+  authyId              Int?      @map("authy_id")
+  platformId           String?   @map("platform_id")
+  loginIp              String?   @map("login_ip")
+  lastLogin            DateTime? @map("last_login")
+  metadata             Json?
+  tosAcceptance        Json      @map("tos_acceptance")
+  userId               Int       @unique
+  user                 User      @relation(fields: [userId], references: [id])
+}
+
+model FraudScore {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  score     Int
+  result    String   @default("NO RECORD")
+  userId    Int
+
+  user          User         @relation(fields: [userId], references: [id])
+  Transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  transactionId Int?
+}
