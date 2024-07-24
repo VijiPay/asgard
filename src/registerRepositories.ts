@@ -2,6 +2,7 @@ import { container } from "tsyringe";
 import { dataSource } from "./database/dataSource";
 import { AuthComponents } from "./modules/auth/constants/AuthComponents";
 import type { IAuthRepository } from "./modules/auth/interfaces/IAuthRepository";
+import { registerAuthRepositories } from "./modules/auth/registerAuthRepositories";
 import { AuthRepository } from "./modules/auth/repositories/AuthRepository";
 import { registerUserRepositories } from "./modules/user/registerUserRepositories";
 import type { ILogger } from "./shared/services/logger/ILogger";
@@ -17,6 +18,7 @@ export const registerRepositories = async (logger?: ILogger) => {
 	});
 
 	await registerUserRepositories(dataSource);
+	await registerAuthRepositories(dataSource);
 
 	return dataSource;
 };

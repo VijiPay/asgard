@@ -1,19 +1,18 @@
 import type { PrismaClient } from "@prisma/client";
 import { injectable } from "tsyringe";
-import type { ICreateUser } from "../interface/ICreateUser";
-import type { ICreateUserRepository } from "../interface/ICreateUserRepository";
-import type { IUserProfile } from "../interface/IUserProfile";
+import type { IUserProfile } from "../../user/interface/IUserProfile.js";
+import type { ICreateUser } from "../interfaces/ICreateUser.js";
+import type { IRegisterUserRepository } from "../interfaces/IRegisterUserRepository";
 
 @injectable()
-export class CreateUserRepository implements ICreateUserRepository {
-	private connection;
-
+export class RegisterUserRepository implements IRegisterUserRepository {
+	private connection: PrismaClient;
 	constructor(dataSource: PrismaClient) {
-		this.connection = dataSource.user;
+		this.connection = dataSource;
 	}
 
 	async create(user: ICreateUser): Promise<IUserProfile> {
-		return this.connection.create({
+		return await this.connection.user.create({
 			data: {
 				...user,
 				type: "INDIVIDUAL",

@@ -2,7 +2,7 @@ import { Body, Controller, Post, Route, Tags } from "tsoa";
 import { inject, injectable } from "tsyringe";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
 import { UserComponents } from "../constants/UserComponents";
-import type { CreateUserDTO } from "../dtos/CreateUserDTO";
+import type { CreateUserDTO } from "../../auth/dtos/CreateUserDTO";
 import type { ICreateUserService } from "../interface/ICreateUserService";
 
 @injectable()
