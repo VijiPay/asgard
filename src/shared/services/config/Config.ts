@@ -16,4 +16,8 @@ export class Config implements IConfig {
 		const value = this.config[propertyPath] as T;
 		return value || defaultValue;
 	}
+	defined<T = unknown>(propertyPath: string): T {
+		const value = this.config[propertyPath] as T;
+		return value;
+	}
 }

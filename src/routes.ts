@@ -10,6 +10,8 @@ import { GetUserController } from './modules/user/controllers/GetUser.controller
 import { DeleteUserController } from './modules/user/controllers/DeleteUser.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RegisterController } from './modules/auth/controllers/RegisterController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { LoginController } from './modules/auth/controllers/LoginController';
 import { iocContainer } from './shared/ioc';
 import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -530,10 +532,10 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/ag/v1/user/login',
-            ...(fetchMiddlewares<RequestHandler>(RegisterController)),
-            ...(fetchMiddlewares<RequestHandler>(RegisterController.prototype.login)),
+            ...(fetchMiddlewares<RequestHandler>(LoginController)),
+            ...(fetchMiddlewares<RequestHandler>(LoginController.prototype.login)),
 
-            async function RegisterController_login(request: ExRequest, response: ExResponse, next: any) {
+            async function LoginController_login(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     payload: {"in":"body","name":"payload","required":true,"ref":"AuthDTO"},
             };
@@ -546,7 +548,7 @@ export function RegisterRoutes(app: Router) {
 
                 const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
 
-                const controller: any = await container.get<RegisterController>(RegisterController);
+                const controller: any = await container.get<LoginController>(LoginController);
                 if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
                 }

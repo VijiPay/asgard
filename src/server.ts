@@ -7,9 +7,6 @@ import { RegisterRoutes } from "./routes";
 import { errorMiddleware } from "./shared/middleware/error.handler";
 import doc from "./swagger.json";
 
-// import dotenv from "dotenv";
-// dotenv.config();
-
 export const server = express();
 
 server.use(cors());

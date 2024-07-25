@@ -26,13 +26,12 @@ export class LoginService implements ILoginService {
 
 	async loginWithEmail(authDTO: AuthDTO): Promise<IAuthenticatedUser> {
 		const user = await this.userRepository.findByEmail(authDTO.email);
-
 		if (!user) {
-			throw new CustomException("invalid credentials", httpStatus.NOT_FOUND);
+			throw new CustomException("invalid.credentials", httpStatus.NOT_FOUND);
 		}
-		const decrypt = decryptPassword(authDTO.password, user.password);
+		const decrypt = await decryptPassword(authDTO.password, user.password);
 		if (!decrypt) {
-			throw new CustomException("invalid credentials", httpStatus.UNAUTHORIZED);
+			throw new CustomException("invalid.credentials", httpStatus.UNAUTHORIZED);
 		}
 		const accessToken = generateAccessToken(user.id, user.email);
 		await this.tokenRepository.saveSessionToken(
