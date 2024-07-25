@@ -34,6 +34,7 @@ export class LoginService implements ILoginService {
 			throw new CustomException("invalid.credentials", httpStatus.UNAUTHORIZED);
 		}
 		const accessToken = generateAccessToken(user.id, user.email);
+		const sessionToken = generateSessionToken(user.id);
 		await this.tokenRepository.saveSessionToken(
 			user.id,
 			accessToken,
@@ -46,7 +47,8 @@ export class LoginService implements ILoginService {
 			status: user.status,
 			name: user.profile?.tradeName as string,
 			countryCode: user.countryCode,
-			token: accessToken,
+			accessToken,
+			sessionToken,
 		};
 		return authenticatedUser;
 	}

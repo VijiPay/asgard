@@ -371,7 +371,10 @@
 					"countryCode": {
 						"type": "string"
 					},
-					"token": {
+					"accessToken": {
+						"type": "string"
+					},
+					"sessionToken": {
 						"type": "string"
 					}
 				},
@@ -381,7 +384,8 @@
 					"status",
 					"name",
 					"countryCode",
-					"token"
+					"accessToken",
+					"sessionToken"
 				],
 				"type": "object",
 				"additionalProperties": false

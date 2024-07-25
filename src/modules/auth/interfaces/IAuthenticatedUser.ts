@@ -6,5 +6,6 @@ export interface IAuthenticatedUser {
 	status: number;
 	name: string;
 	countryCode: string;
-	token: string;
+	accessToken: string;
+	sessionToken: string;
 }
