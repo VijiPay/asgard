@@ -5,8 +5,8 @@ COPY /src asgard/src
 RUN npm i -g pnpm typescript
 WORKDIR /asgard
 RUN pnpm install --frozen-lockfile
-COPY prisma/schema.prisma ./prisma/
-RUN pnpm prisma generate
+COPY prisma/ ./prisma/
+RUN pnpm prisma generate --schema=./prisma/
 
 RUN pnpm build
 COPY . .

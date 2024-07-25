@@ -293,7 +293,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ResponseDTO__Name-string--Email-string__": {
+			"ResponseDTO__name-string--email-string__": {
 				"properties": {
 					"status": {
 						"$ref": "#/components/schemas/ResponseStatus"
@@ -303,16 +303,16 @@
 					},
 					"data": {
 						"properties": {
-							"Email": {
+							"email": {
 								"type": "string"
 							},
-							"Name": {
+							"name": {
 								"type": "string"
 							}
 						},
 						"required": [
-							"Email",
-							"Name"
+							"email",
+							"name"
 						],
 						"type": "object"
 					}
@@ -338,10 +338,6 @@
 					"password": {
 						"type": "string"
 					},
-					"status": {
-						"type": "number",
-						"format": "double"
-					},
 					"countryCode": {
 						"type": "string"
 					}
@@ -351,7 +347,6 @@
 					"lastName",
 					"email",
 					"password",
-					"status",
 					"countryCode"
 				],
 				"type": "object",
@@ -370,17 +365,13 @@
 						"type": "number",
 						"format": "double"
 					},
-					"country": {
+					"name": {
 						"type": "string"
 					},
-					"name": {
-						"type": "string",
-						"nullable": true
+					"countryCode": {
+						"type": "string"
 					},
 					"token": {
-						"type": "string"
-					},
-					"refreshToken": {
 						"type": "string"
 					}
 				},
@@ -388,12 +379,14 @@
 					"id",
 					"type",
 					"status",
-					"country"
+					"name",
+					"countryCode",
+					"token"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ResponseDTO_IAuthenticatedUser-or-null_": {
+			"ResponseDTO_IAuthenticatedUser_": {
 				"properties": {
 					"status": {
 						"$ref": "#/components/schemas/ResponseStatus"
@@ -402,12 +395,7 @@
 						"type": "string"
 					},
 					"data": {
-						"allOf": [
-							{
-								"$ref": "#/components/schemas/IAuthenticatedUser"
-							}
-						],
-						"nullable": true
+						"$ref": "#/components/schemas/IAuthenticatedUser"
 					}
 				},
 				"required": [
@@ -429,25 +417,6 @@
 				"required": [
 					"email",
 					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ResponseDTO_string_": {
-				"properties": {
-					"status": {
-						"$ref": "#/components/schemas/ResponseStatus"
-					},
-					"message": {
-						"type": "string"
-					},
-					"data": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"status",
-					"data"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -708,7 +677,7 @@
 				"parameters": []
 			}
 		},
-		"/ag/v1/users/register": {
+		"/ag/v1/user/register": {
 			"post": {
 				"operationId": "Register",
 				"responses": {
@@ -717,14 +686,14 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ResponseDTO__Name-string--Email-string__"
+									"$ref": "#/components/schemas/ResponseDTO__name-string--email-string__"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"User Management"
+					"Authentication"
 				],
 				"security": [],
 				"parameters": [],
@@ -740,7 +709,7 @@
 				}
 			}
 		},
-		"/auth/login": {
+		"/ag/v1/user/login": {
 			"post": {
 				"operationId": "Login",
 				"responses": {
@@ -749,7 +718,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ResponseDTO_IAuthenticatedUser-or-null_"
+									"$ref": "#/components/schemas/ResponseDTO_IAuthenticatedUser_"
 								}
 							}
 						}
@@ -766,38 +735,6 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/AuthDTO"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/refreshtoken": {
-			"post": {
-				"operationId": "RefreshToken",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ResponseDTO_string_"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "string"
 							}
 						}
 					}

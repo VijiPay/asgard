@@ -1,16 +1,10 @@
-interface Terms {
-	accepted: boolean;
-	acceptedOn: Date;
-}
+import type { Prisma } from "@prisma/client";
+
 export interface ICreateUser {
-	firstName: string;
-	lastName: string;
 	email: string;
 	password: string;
-	status: number;
+	firstName: string;
+	lastName: string;
 	countryCode: string;
-	profile?: {
-		role: string;
-		tosAcceptance: Terms;
-	} | null;
+	profile: Prisma.ProfileCreateNestedOneWithoutUserInput;
 }

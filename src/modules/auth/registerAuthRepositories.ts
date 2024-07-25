@@ -4,11 +4,11 @@ import type { PrismaClient } from "@prisma/client";
 import { AuthComponents } from "./constants/AuthComponents";
 import type { IAuthRepository } from "./interfaces/IAuthRepository";
 import type { IEmailVerificationRepository } from "./interfaces/IEmailVerificationRepository";
-import type { IRegisterUserRepository } from "./interfaces/IRegisterUserRepository";
+import type { IRegisterRepository } from "./interfaces/IRegisterRepository";
 import type { ITokenRepository } from "./interfaces/ITokenRepository";
 import { AuthRepository } from "./repositories/AuthRepository";
 import { EmailVerificationRepository } from "./repositories/EmailVerificationRepository";
-import { RegisterUserRepository } from "./repositories/RegisterUserRepository";
+import { RegisterRepository } from "./repositories/RegisterRepository";
 import { TokenRepository } from "./repositories/TokenRepository";
 
 export const registerAuthRepositories = async (dataSource: PrismaClient) => {
@@ -23,12 +23,9 @@ export const registerAuthRepositories = async (dataSource: PrismaClient) => {
 		},
 	);
 
-	container.register<IRegisterUserRepository>(
-		AuthComponents.RegisterUserRepository,
-		{
-			useValue: new RegisterUserRepository(dataSource),
-		},
-	);
+	container.register<IRegisterRepository>(AuthComponents.RegisterRepository, {
+		useValue: new RegisterRepository(dataSource),
+	});
 	container.register<ITokenRepository>(AuthComponents.TokenRepository, {
 		useValue: new TokenRepository(dataSource),
 	});

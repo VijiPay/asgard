@@ -53,7 +53,7 @@ export interface IProfile {
 	emailVerifyExpires: Date | null;
 	emailVerifyDate: Date | null;
 	metadata: JsonValue;
-	tosAcceptance: JsonValue;
+	acceptTerms: boolean;
 	userId: number;
 }
 export interface ITransaction {

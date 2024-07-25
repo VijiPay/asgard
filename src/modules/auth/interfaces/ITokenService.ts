@@ -1,15 +1,9 @@
 export interface ITokenService {
-	saveRefreshToken(
-		userId: number,
-		token: string,
-		expiryDate: Date,
-	): Promise<void>;
+	refreshAccessToken(
+		sessionTokenoken: string,
+	): Promise<{ accessToken: string }>;
 
-	getRefreshToken(
-		token: string,
-	): Promise<{ sessionToken: string; expires: Date } | null>;
-
-	revokeRefreshToken(token: string): Promise<void>;
+	revokeSessionToken(token: string): Promise<void>;
 
 	invalidateUserSessions(userId: number): Promise<void>;
 }

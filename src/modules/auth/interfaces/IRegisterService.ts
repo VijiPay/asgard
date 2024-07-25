@@ -1,6 +1,5 @@
-import type { IUserProfile } from "../../user/interface/IUserProfile";
-import type { ICreateUser } from "./ICreateUser";
+import type { CreateUserDTO } from "../dtos/CreateUserDTO";
 
 export interface IRegisterService {
-	register: (data: ICreateUser) => Promise<IUserProfile>;
+	register: (data: CreateUserDTO) => Promise<{ name: string; email: string }>;
 }

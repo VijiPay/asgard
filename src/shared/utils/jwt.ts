@@ -12,6 +12,24 @@ export function generateToken(userId: number, email: string): string {
 	});
 }
 
+export function generateAccessToken(userId: number, email: string): string {
+	return jwt.sign(
+		{ id: userId, email },
+		config.get("ACCESS_TOKEN_SECRET") as string,
+		{ expiresIn: "15m" },
+	);
+}
+
+export function generateSessionToken(userId: number): string {
+	return jwt.sign(
+		{ id: userId },
+		config.get("REFRESH_TOKEN_SECRET") as string,
+		{
+			expiresIn: "1d",
+		},
+	);
+}
+
 export function decodeToken(token: string) {
 	return jwt.verify(
 		token,

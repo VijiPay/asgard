@@ -1,15 +1,28 @@
 export interface ITokenRepository {
-	saveRefreshToken(
+	saveSessionToken(
 		userId: number,
-		token: string,
+		accessToken: string,
+		sessionToken: string,
 		expiryDate: Date,
 	): Promise<void>;
 
-	getRefreshToken(
-		token: string,
-	): Promise<{ sessionToken: string; expires: Date } | null>;
+	generateAccessToken(
+		sessionTokenToken: string,
+		accessToken: string,
+	): Promise<{
+		accessToken: string;
+		sessionToken: string;
+		expires: Date;
+	}>;
+
+	getSessionToken(sessionToken: string): Promise<{
+		accessToken: string;
+		sessionToken: string;
+		expires: Date;
+	} | null>;
 
 	verifyPasswordResetToken(token: string): Promise<{
+		userId: number;
 		token: string | null;
 		resetRequired: boolean | null;
 		expiry: Date | null;

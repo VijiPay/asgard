@@ -5,6 +5,6 @@
 		"types": ["node"],
 		"outDir": "dist"
 	},
-	"include": ["./src", "src/modules/auth/services/PasswordResetService.ts"],
+	"include": ["./src", "src/modules/auth/services/PasswordService.ts"],
 	"exclude": ["node_modules", "**/*.ispec.ts"]
 }

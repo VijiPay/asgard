@@ -23,6 +23,6 @@ server.use("/ag/docs", swaggerUi.serve);
 server.get("/ag/docs", swaggerUi.setup(doc));
 
 server.get("/", (_, res) => {
-	res.json({ message: "Hello, åsgårdiån." });
+	res.json({ message: "Hello, åsgårdiån" });
 });
 server.use(errorMiddleware);

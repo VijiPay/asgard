@@ -16,23 +16,23 @@ export class GetUserService implements IGetUserService {
 			throw new Error("BothIdAndEmail.notAllowed");
 		}
 		if (id) {
-			return this.getUser.findById(id);
+			this.getUser.findById(id);
 		}
 		if (email) {
-			return this.getUser.findByEmail(email);
+			this.getUser.findByEmail(email);
 		}
 		return Promise.resolve(null);
 	}
 
 	async findById(id: number): Promise<IUserProfile | null> {
-		return this.getUser.findById(id);
+		return (await this.getUser.findById(id)) as unknown as IUserProfile;
 	}
 
 	async findByEmail(email: string): Promise<IUserProfile | null> {
-		return this.getUser.findByEmail(email);
+		return this.getUser.findByEmail(email) as unknown as IUserProfile;
 	}
 
 	async all(): Promise<IUserProfile[]> {
-		return this.getUser.findAll();
+		return this.getUser.findAll() as unknown as IUserProfile[];
 	}
 }

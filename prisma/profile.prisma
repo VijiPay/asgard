@@ -2,20 +2,20 @@ model Profile {
   id                   Int       @id @default(autoincrement())
   tradeName            String    @map("trade_name")
   address              String?
-  role                 String
+  role                 String    @default("user")
   phoneNumber          String?   @map("phone_number")
-  phoneVerified        Boolean   @map("phone_verified")
+  phoneVerified        Boolean   @default(false) @map("phone_verified")
   phoneVerifyCode      String?   @map("phone_verify_code")
   phoneVerifyExpires   DateTime? @map("phone_verify_expires")
   phoneVerifyDate      DateTime? @map("phone_verify_date")
-  emailVerified        Boolean   @map("email_verified")
+  emailVerified        Boolean   @default(false) @map("email_verified")
   emailVerifyCode      String?   @unique @map("email_verify_code")
   emailVerifyExpires   DateTime? @map("email_verify_expires")
   emailVerifyDate      DateTime? @map("email_verify_date")
   passwordReset        Boolean?  @map("password_reset")
   passwordResetToken   String?   @map("password_reset_token")
   passwordResetExpires DateTime? @map("password_reset_expires")
-  userLocked           Boolean?  @map("user_locked")
+  userLocked           Boolean   @default(false) @map("user_locked")
   userLockedMessage    String?   @map("user_locked_message")
   userLockedDate       DateTime? @map("user_locked_date")
   userLockedBy         String?   @map("user_locked_by")
@@ -24,7 +24,7 @@ model Profile {
   loginIp              String?   @map("login_ip")
   lastLogin            DateTime? @map("last_login")
   metadata             Json?
-  tosAcceptance        Json      @map("tos_acceptance")
+  acceptTerms          Boolean   @default(true) @map("tos_acceptance")
   userId               Int       @unique
   user                 User      @relation(fields: [userId], references: [id])
 }

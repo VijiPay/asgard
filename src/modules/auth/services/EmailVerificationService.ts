@@ -1,35 +1,37 @@
 import { inject, singleton } from "tsyringe";
+import { CustomException } from "../../../shared/exceptions/CustomException";
+import {
+	expiresInDays,
+	generateEmailVerificationToken,
+} from "../../../shared/utils/tokenUtils";
 import { AuthComponents } from "../constants/AuthComponents";
-import type { IAuthRepository } from "../interfaces/IAuthRepository";
+import type { IEmailVerificationRepository } from "../interfaces/IEmailVerificationRepository";
 import type { IEmailVerificationService } from "../interfaces/IEmailVerificationService.ts";
 
 @singleton()
 export class EmailVerificationService implements IEmailVerificationService {
 	constructor(
-		@inject(AuthComponents.AuthRepository)
-		private authRepository: IAuthRepository,
+		@inject(AuthComponents.EmailVerificationRepository)
+		private emailRepository: IEmailVerificationRepository,
 	) {}
 
-	async updateVerificationEmail(
-		email: string,
-		emailVerifyCode: string,
-		emailVerifyExpires: Date,
-	): Promise<void> {
-		await this.authRepository.updateVerificationEmail(
+	async sendEmailVerificationCode(email: string): Promise<void> {
+		await this.emailRepository.updateVerificationEmail(
 			email,
-			emailVerifyCode,
-			emailVerifyExpires,
+			generateEmailVerificationToken(),
+			expiresInDays(2),
 		);
 	}
 
-	async getEmailVerificationCode(token: string): Promise<{
-		code: string | undefined | null;
-		expiryDate: Date | undefined | null;
-	} | null> {
-		return this.authRepository.getEmailVerificationCode(token);
-	}
+	async verifyEmail(token: string): Promise<void> {
+		const response = await this.emailRepository.getEmailVerificationCode(token);
 
-	async confirmEmailVerification(token: string): Promise<void> {
-		await this.authRepository.confirmEmailVerification(token);
+		if (!response?.expiryDate || response.expiryDate.getTime() < Date.now()) {
+			throw new CustomException("verification.expired");
+		}
+		if (!response.code) {
+			throw new CustomException("invalid.token");
+		}
+		await this.emailRepository.confirmEmailVerification(response.code);
 	}
 }

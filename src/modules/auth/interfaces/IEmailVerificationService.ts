@@ -1,14 +1,5 @@
 export interface IEmailVerificationService {
-	updateVerificationEmail(
-		email: string,
-		emailVerifyCode: string,
-		emailVerifyExpires: Date,
-	): Promise<void>;
+	sendEmailVerificationCode(email: string): Promise<void>;
 
-	getEmailVerificationCode(token: string): Promise<{
-		code: string | undefined | null;
-		expiryDate: Date | undefined | null;
-	} | null>;
-
-	confirmEmailVerification(token: string): Promise<void>;
+	verifyEmail(token: string): Promise<void>;
 }

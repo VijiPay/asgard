@@ -4,34 +4,41 @@ import { CustomException } from "../../../shared/exceptions/CustomException";
 import { encryptPassword } from "../../../shared/utils/jwt";
 import { UserComponents } from "../../user/constants/UserComponents";
 import type { IGetUserRepository } from "../../user/interface/IGetUserRepository";
-import type { IUserProfile } from "../../user/interface/IUserProfile";
 import { AuthComponents } from "../constants/AuthComponents";
+import type { CreateUserDTO } from "../dtos/CreateUserDTO";
 import type { ICreateUser } from "../interfaces/ICreateUser";
-import type { IRegisterService } from "../interfaces/IRegisterService.ts";
-import type { IRegisterUserRepository } from "../interfaces/IRegisterUserRepository";
+import type { IRegisterRepository } from "../interfaces/IRegisterRepository";
+import type { IRegisterService } from "../interfaces/IRegisterService";
 
 @singleton()
-export class RegisterUserService implements IRegisterService {
+export class RegisterService implements IRegisterService {
 	constructor(
-		@inject(AuthComponents.AuthRepository)
-		private registerUserRepository: IRegisterUserRepository,
+		@inject(AuthComponents.RegisterRepository)
+		private registerRepository: IRegisterRepository,
 		@inject(UserComponents.GetUserRepository)
 		private userRepository: IGetUserRepository,
 	) {}
 
-	async register(data: ICreateUser): Promise<IUserProfile> {
+	async register(
+		data: CreateUserDTO,
+	): Promise<{ name: string; email: string }> {
 		const userExists = await this.userRepository.findByEmail(data.email);
 		if (userExists) {
 			throw new CustomException("user.already.exists", httpStatus.FORBIDDEN);
 		}
+
 		const encryptedPassword = await encryptPassword(data.password);
 		const userData: ICreateUser = {
 			...data,
 			password: encryptedPassword,
-			countryCode: "NG",
-			status: 0,
+			profile: {
+				create: {
+					tradeName: `${data.firstName} ${data.lastName}`,
+				},
+			},
 		};
-		const user = await this.registerUserRepository.create(userData);
-		return user;
+
+		const user = await this.registerRepository.create(userData);
+		return { name: user.firstName, email: user.email };
 	}
 }

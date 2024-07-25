@@ -29,16 +29,16 @@ export class EmailVerificationRepository
 		});
 	}
 	async getEmailVerificationCode(token: string): Promise<{
-		code: string | undefined | null;
-		expiryDate: Date | undefined | null;
-	} | null> {
+		code: string | null;
+		expiryDate: Date | null;
+	}> {
 		const verificationCode = await this.connection.profile.findUnique({
 			where: { emailVerifyCode: token },
 		});
 
 		return {
-			code: verificationCode?.emailVerifyCode,
-			expiryDate: verificationCode?.emailVerifyExpires,
+			code: verificationCode?.emailVerifyCode ?? null,
+			expiryDate: verificationCode?.emailVerifyExpires ?? null,
 		};
 	}
 

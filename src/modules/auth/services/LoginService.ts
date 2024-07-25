@@ -1,24 +1,27 @@
 import httpStatus from "http-status";
 import { inject, singleton } from "tsyringe";
 import { CustomException } from "../../../shared/exceptions/CustomException";
-import type { IJwtPayload } from "../../../shared/interfaces/IJwtPayload";
-import { decryptPassword, generateToken } from "../../../shared/utils/jwt";
+import {
+	decryptPassword,
+	generateAccessToken,
+	generateSessionToken,
+} from "../../../shared/utils/jwt";
 import { expiresInHours } from "../../../shared/utils/tokenUtils";
 import { UserComponents } from "../../user/constants/UserComponents";
 import type { IGetUserRepository } from "../../user/interface/IGetUserRepository";
 import { AuthComponents } from "../constants/AuthComponents";
 import type { AuthDTO } from "../dtos/AuthDTO";
-import type { IAuthRepository } from "../interfaces/IAuthRepository";
 import type { IAuthenticatedUser } from "../interfaces/IAuthenticatedUser";
 import type { ILoginService } from "../interfaces/ILoginService";
+import type { ITokenRepository } from "../interfaces/ITokenRepository";
 
 @singleton()
 export class LoginService implements ILoginService {
 	constructor(
 		@inject(UserComponents.GetUserRepository)
 		private userRepository: IGetUserRepository,
-		@inject(AuthComponents.AuthRepository)
-		private authRepository: IAuthRepository,
+		@inject(AuthComponents.TokenRepository)
+		private tokenRepository: ITokenRepository,
 	) {}
 
 	async loginWithEmail(authDTO: AuthDTO): Promise<IAuthenticatedUser> {
@@ -31,11 +34,11 @@ export class LoginService implements ILoginService {
 		if (!decrypt) {
 			throw new CustomException("invalid credentials", httpStatus.UNAUTHORIZED);
 		}
-		const token = generateToken(user.id, user.email);
-
-		await this.authRepository.saveRefreshToken(
+		const accessToken = generateAccessToken(user.id, user.email);
+		await this.tokenRepository.saveSessionToken(
 			user.id,
-			token,
+			accessToken,
+			generateSessionToken(user.id),
 			expiresInHours(1),
 		);
 		const authenticatedUser: IAuthenticatedUser = {
@@ -44,7 +47,7 @@ export class LoginService implements ILoginService {
 			status: user.status,
 			name: user.profile?.tradeName as string,
 			countryCode: user.countryCode,
-			token,
+			token: accessToken,
 		};
 		return authenticatedUser;
 	}
@@ -56,6 +59,4 @@ export class LoginService implements ILoginService {
 	loginWithFacebook(authDTO: AuthDTO): Promise<IAuthenticatedUser | null> {
 		return Promise.resolve(null);
 	}
-
-	
 }

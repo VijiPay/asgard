@@ -1,7 +1,6 @@
 import {
 	IsDefined,
 	IsEmail,
-	IsInt,
 	IsNotEmpty,
 	IsString,
 	MinLength,
@@ -28,9 +27,6 @@ export class CreateUserDTO {
 	@IsString({ message: "Password must be a string" })
 	@MinLength(8, { message: "Password must be at least 8 characters long" })
 	password: string;
-
-	@IsInt()
-	status: number;
 
 	@IsNotEmpty()
 	@IsString()

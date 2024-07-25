@@ -9,29 +9,43 @@ export class TokenRepository implements ITokenRepository {
 		this.connection = dataSource;
 	}
 
-	async saveRefreshToken(
+	async saveSessionToken(
 		userId: number,
-		token: string,
+		accessToken: string,
+		sessionToken: string,
 		expiryDate: Date,
 	): Promise<void> {
 		await this.connection.session.create({
 			data: {
 				userId,
-				sessionToken: token,
+				accessToken,
+				sessionToken,
 				expires: expiryDate,
 			},
 		});
 	}
 
-	getRefreshToken(
-		token: string,
-	): Promise<{ sessionToken: string; expires: Date } | null> {
-		return this.connection.session.findUnique({
-			where: { sessionToken: token },
+	async generateAccessToken(
+		sessionToken: string,
+		accessToken: string,
+	): Promise<{ accessToken: string; sessionToken: string; expires: Date }> {
+		return await this.connection.session.update({
+			where: { sessionToken },
+			data: { accessToken },
+		});
+	}
+	async getSessionToken(sessionToken: string): Promise<{
+		accessToken: string;
+		sessionToken: string;
+		expires: Date;
+	} | null> {
+		return await this.connection.session.findUnique({
+			where: { sessionToken },
 		});
 	}
 
 	async verifyPasswordResetToken(token: string): Promise<{
+		userId: number;
 		token: string | null;
 		resetRequired: boolean | null;
 		expiry: Date | null;
@@ -43,6 +57,7 @@ export class TokenRepository implements ITokenRepository {
 		});
 
 		return {
+			userId: res.userId,
 			token: res.passwordResetToken,
 			resetRequired: res.passwordReset,
 			expiry: res.passwordResetExpires,

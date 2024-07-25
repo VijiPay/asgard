@@ -6,8 +6,8 @@ export interface IEmailVerificationRepository {
 	): Promise<void>;
 
 	getEmailVerificationCode(token: string): Promise<{
-		code: string | undefined | null;
-		expiryDate: Date | undefined | null;
+		code: string | null;
+		expiryDate: Date | null;
 	} | null>;
 	confirmEmailVerification(token: string): Promise<void>;
 }

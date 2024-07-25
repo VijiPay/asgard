@@ -9,9 +9,7 @@ import { GetUserController } from './modules/user/controllers/GetUser.controller
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DeleteUserController } from './modules/user/controllers/DeleteUser.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { CreateUserController } from './modules/user/controllers/CreateUser.controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AuthController } from './modules/auth/controllers/Auth.controller';
+import { RegisterController } from './modules/auth/controllers/RegisterController';
 import { iocContainer } from './shared/ioc';
 import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -143,12 +141,12 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseDTO__Name-string--Email-string__": {
+    "ResponseDTO__name-string--email-string__": {
         "dataType": "refObject",
         "properties": {
             "status": {"ref":"ResponseStatus","required":true},
             "message": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"undefined"}],"required":true},
-            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"Email":{"dataType":"string","required":true},"Name":{"dataType":"string","required":true}},"required":true},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","required":true},"name":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -160,7 +158,6 @@ const models: TsoaRoute.Models = {
             "lastName": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
             "password": {"dataType":"string","required":true},
-            "status": {"dataType":"double","required":true},
             "countryCode": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
@@ -172,20 +169,19 @@ const models: TsoaRoute.Models = {
             "id": {"dataType":"double","required":true},
             "type": {"ref":"UserType","required":true},
             "status": {"dataType":"double","required":true},
-            "country": {"dataType":"string","required":true},
-            "name": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]},{"dataType":"undefined"}],"required":true},
-            "token": {"dataType":"string"},
-            "refreshToken": {"dataType":"string"},
+            "name": {"dataType":"string","required":true},
+            "countryCode": {"dataType":"string","required":true},
+            "token": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseDTO_IAuthenticatedUser-or-null_": {
+    "ResponseDTO_IAuthenticatedUser_": {
         "dataType": "refObject",
         "properties": {
             "status": {"ref":"ResponseStatus","required":true},
             "message": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"undefined"}],"required":true},
-            "data": {"dataType":"union","subSchemas":[{"ref":"IAuthenticatedUser"},{"dataType":"enum","enums":[null]}],"required":true},
+            "data": {"ref":"IAuthenticatedUser","required":true},
         },
         "additionalProperties": false,
     },
@@ -195,16 +191,6 @@ const models: TsoaRoute.Models = {
         "properties": {
             "email": {"dataType":"string","required":true},
             "password": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseDTO_string_": {
-        "dataType": "refObject",
-        "properties": {
-            "status": {"ref":"ResponseStatus","required":true},
-            "message": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"undefined"}],"required":true},
-            "data": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -508,11 +494,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/ag/v1/users/register',
-            ...(fetchMiddlewares<RequestHandler>(CreateUserController)),
-            ...(fetchMiddlewares<RequestHandler>(CreateUserController.prototype.register)),
+        app.post('/ag/v1/user/register',
+            ...(fetchMiddlewares<RequestHandler>(RegisterController)),
+            ...(fetchMiddlewares<RequestHandler>(RegisterController.prototype.register)),
 
-            async function CreateUserController_register(request: ExRequest, response: ExResponse, next: any) {
+            async function RegisterController_register(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     payload: {"in":"body","name":"payload","required":true,"ref":"CreateUserDTO"},
             };
@@ -525,7 +511,7 @@ export function RegisterRoutes(app: Router) {
 
                 const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
 
-                const controller: any = await container.get<CreateUserController>(CreateUserController);
+                const controller: any = await container.get<RegisterController>(RegisterController);
                 if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
                 }
@@ -543,14 +529,13 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/auth/login',
-            ...(fetchMiddlewares<RequestHandler>(AuthController)),
-            ...(fetchMiddlewares<RequestHandler>(AuthController.prototype.login)),
+        app.post('/ag/v1/user/login',
+            ...(fetchMiddlewares<RequestHandler>(RegisterController)),
+            ...(fetchMiddlewares<RequestHandler>(RegisterController.prototype.login)),
 
-            async function AuthController_login(request: ExRequest, response: ExResponse, next: any) {
+            async function RegisterController_login(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    body: {"in":"body","name":"body","required":true,"ref":"AuthDTO"},
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    payload: {"in":"body","name":"payload","required":true,"ref":"AuthDTO"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -561,49 +546,13 @@ export function RegisterRoutes(app: Router) {
 
                 const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
 
-                const controller: any = await container.get<AuthController>(AuthController);
+                const controller: any = await container.get<RegisterController>(RegisterController);
                 if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
                 }
 
               await templateService.apiHandler({
                 methodName: 'login',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: undefined,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/auth/refreshtoken',
-            ...(fetchMiddlewares<RequestHandler>(AuthController)),
-            ...(fetchMiddlewares<RequestHandler>(AuthController.prototype.refreshToken)),
-
-            async function AuthController_refreshToken(request: ExRequest, response: ExResponse, next: any) {
-            const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    token: {"in":"body","name":"token","required":true,"dataType":"string"},
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args, request, response });
-
-                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
-
-                const controller: any = await container.get<AuthController>(AuthController);
-                if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-                }
-
-              await templateService.apiHandler({
-                methodName: 'refreshToken',
                 controller,
                 response,
                 next,
