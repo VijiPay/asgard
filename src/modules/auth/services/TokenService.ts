@@ -1,6 +1,8 @@
 import httpStatus from "http-status";
 import { inject, singleton } from "tsyringe";
+import { Components } from "../../../shared/constants/Components";
 import { CustomException } from "../../../shared/exceptions/CustomException";
+import type { ILogger } from "../../../shared/services/logger/ILogger";
 import { decodeToken, generateAccessToken } from "../../../shared/utils/jwt";
 import { AuthComponents } from "../constants/AuthComponents";
 import type { ITokenRepository } from "../interfaces/ITokenRepository";
@@ -11,20 +13,23 @@ export class TokenService implements ITokenService {
 	constructor(
 		@inject(AuthComponents.TokenRepository)
 		private tokenRepository: ITokenRepository,
+		@inject(Components.Logger)
+		public logger: ILogger,
 	) {}
 
 	async refreshAccessToken(
-		sessionToken: string,
+		refreshToken: string,
 	): Promise<{ accessToken: string }> {
-		if (!sessionToken) {
+		this.logger.info("thesession token", refreshToken);
+		if (!refreshToken) {
 			throw new CustomException(
 				"authorization.required",
 				httpStatus.UNAUTHORIZED,
 			);
 		}
-		const decoded = decodeToken(sessionToken);
+		const decoded = decodeToken(refreshToken);
 		const userSession =
-			await this.tokenRepository.getSessionToken(sessionToken);
+			await this.tokenRepository.getRefreshToken(refreshToken);
 		if (!userSession || userSession.expires.getTime() < Date.now()) {
 			throw new CustomException(
 				"authorization.required",
@@ -35,7 +40,7 @@ export class TokenService implements ITokenService {
 		return { accessToken: newAccessToken };
 	}
 
-	async revokeSessionToken(token: string): Promise<void> {
+	async revokeRefreshToken(token: string): Promise<void> {
 		await this.tokenRepository.revokeRefreshToken(token);
 	}
 

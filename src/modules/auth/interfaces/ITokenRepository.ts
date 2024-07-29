@@ -1,23 +1,23 @@
 export interface ITokenRepository {
-	saveSessionToken(
+	saveRefreshToken(
 		userId: number,
 		accessToken: string,
-		sessionToken: string,
+		refreshToken: string,
 		expiryDate: Date,
 	): Promise<void>;
 
 	generateAccessToken(
-		sessionTokenToken: string,
+		refreshTokenToken: string,
 		accessToken: string,
 	): Promise<{
 		accessToken: string;
-		sessionToken: string;
+		refreshToken: string;
 		expires: Date;
 	}>;
 
-	getSessionToken(sessionToken: string): Promise<{
+	getRefreshToken(refreshToken: string): Promise<{
 		accessToken: string;
-		sessionToken: string;
+		refreshToken: string;
 		expires: Date;
 	} | null>;
 

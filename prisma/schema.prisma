@@ -38,7 +38,7 @@ model User {
 
 model Session {
   id           Int      @id @default(autoincrement())
-  sessionToken String   @unique
+  refreshToken String   @unique
   accessToken  String
   userId       Int
   expires      DateTime

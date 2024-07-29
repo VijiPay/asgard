@@ -7,5 +7,5 @@ export interface IAuthenticatedUser {
 	name: string;
 	countryCode: string;
 	accessToken: string;
-	sessionToken: string;
+	refreshToken: string;
 }

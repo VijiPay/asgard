@@ -293,6 +293,41 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ResponseDTO__response_58__accessToken-string___": {
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/ResponseStatus"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"properties": {
+							"response": {
+								"properties": {
+									"accessToken": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"accessToken"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"response"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"status",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ResponseDTO__name-string--email-string__": {
 				"properties": {
 					"status": {
@@ -352,63 +387,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IAuthenticatedUser": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"type": {
-						"$ref": "#/components/schemas/UserType"
-					},
-					"status": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"countryCode": {
-						"type": "string"
-					},
-					"accessToken": {
-						"type": "string"
-					},
-					"sessionToken": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"id",
-					"type",
-					"status",
-					"name",
-					"countryCode",
-					"accessToken",
-					"sessionToken"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ResponseDTO_IAuthenticatedUser_": {
-				"properties": {
-					"status": {
-						"$ref": "#/components/schemas/ResponseStatus"
-					},
-					"message": {
-						"type": "string"
-					},
-					"data": {
-						"$ref": "#/components/schemas/IAuthenticatedUser"
-					}
-				},
-				"required": [
-					"status",
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"AuthDTO": {
 				"properties": {
 					"email": {
@@ -424,6 +402,35 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Partial_IAuthenticatedUser_": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"$ref": "#/components/schemas/_36_Enums.UserType"
+					},
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"countryCode": {
+						"type": "string"
+					},
+					"accessToken": {
+						"type": "string"
+					},
+					"refreshToken": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
 			}
 		},
 		"securitySchemes": {}
@@ -681,6 +688,38 @@
 				"parameters": []
 			}
 		},
+		"/ag/v1/token/refresh-token": {
+			"post": {
+				"operationId": "RefreshSessionToken",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO__response_58__accessToken-string___"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/ag/v1/user/register": {
 			"post": {
 				"operationId": "Register",
@@ -718,14 +757,29 @@
 				"operationId": "Login",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ResponseDTO_IAuthenticatedUser_"
+									"properties": {
+										"data": {
+											"$ref": "#/components/schemas/Partial_IAuthenticatedUser_"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"data",
+										"message"
+									],
+									"type": "object"
 								}
 							}
 						}
+					},
+					"204": {
+						"description": "No content"
 					}
 				},
 				"tags": [

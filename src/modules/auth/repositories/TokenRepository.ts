@@ -9,38 +9,38 @@ export class TokenRepository implements ITokenRepository {
 		this.connection = dataSource;
 	}
 
-	async saveSessionToken(
+	async saveRefreshToken(
 		userId: number,
 		accessToken: string,
-		sessionToken: string,
+		refreshToken: string,
 		expiryDate: Date,
 	): Promise<void> {
 		await this.connection.session.create({
 			data: {
 				userId,
 				accessToken,
-				sessionToken,
+				refreshToken,
 				expires: expiryDate,
 			},
 		});
 	}
 
 	async generateAccessToken(
-		sessionToken: string,
+		refreshToken: string,
 		accessToken: string,
-	): Promise<{ accessToken: string; sessionToken: string; expires: Date }> {
+	): Promise<{ accessToken: string; refreshToken: string; expires: Date }> {
 		return await this.connection.session.update({
-			where: { sessionToken },
+			where: { refreshToken },
 			data: { accessToken },
 		});
 	}
-	async getSessionToken(sessionToken: string): Promise<{
+	async getRefreshToken(refreshToken: string): Promise<{
 		accessToken: string;
-		sessionToken: string;
+		refreshToken: string;
 		expires: Date;
 	} | null> {
 		return await this.connection.session.findUnique({
-			where: { sessionToken },
+			where: { refreshToken },
 		});
 	}
 
@@ -66,7 +66,7 @@ export class TokenRepository implements ITokenRepository {
 
 	async revokeRefreshToken(token: string): Promise<void> {
 		await this.connection.session.delete({
-			where: { sessionToken: token },
+			where: { refreshToken: token },
 		});
 	}
 	async invalidateUserSessions(userId: number): Promise<void> {

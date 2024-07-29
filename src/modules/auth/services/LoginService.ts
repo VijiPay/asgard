@@ -4,7 +4,7 @@ import { CustomException } from "../../../shared/exceptions/CustomException";
 import {
 	decryptPassword,
 	generateAccessToken,
-	generateSessionToken,
+	generateRefreshToken,
 } from "../../../shared/utils/jwt";
 import { expiresInHours } from "../../../shared/utils/tokenUtils";
 import { UserComponents } from "../../user/constants/UserComponents";
@@ -34,11 +34,11 @@ export class LoginService implements ILoginService {
 			throw new CustomException("invalid.credentials", httpStatus.UNAUTHORIZED);
 		}
 		const accessToken = generateAccessToken(user.id, user.email);
-		const sessionToken = generateSessionToken(user.id);
-		await this.tokenRepository.saveSessionToken(
+		const refreshToken = generateRefreshToken(user.id);
+		await this.tokenRepository.saveRefreshToken(
 			user.id,
 			accessToken,
-			generateSessionToken(user.id),
+			generateRefreshToken(user.id),
 			expiresInHours(1),
 		);
 		const authenticatedUser: IAuthenticatedUser = {
@@ -48,7 +48,7 @@ export class LoginService implements ILoginService {
 			name: user.profile?.tradeName as string,
 			countryCode: user.countryCode,
 			accessToken,
-			sessionToken,
+			refreshToken,
 		};
 		return authenticatedUser;
 	}

@@ -1,8 +1,17 @@
-import { Body, Controller, Post, Route, Tags } from "tsoa";
+import {
+	Body,
+	Controller,
+	Post,
+	Res,
+	Route,
+	Tags,
+	type TsoaResponse,
+} from "tsoa";
 import { inject, injectable } from "tsyringe";
-import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
+import { SaveToCookie } from "../../../shared/responses/SaveToCookie";
 import { AuthComponents } from "../constants/AuthComponents";
 import type { AuthDTO } from "../dtos/AuthDTO";
+import type { IAuthenticatedUser } from "../interfaces/IAuthenticatedUser";
 import type { ILoginService } from "../interfaces/ILoginService";
 
 @injectable()
@@ -16,13 +25,32 @@ export class LoginController extends Controller {
 	}
 
 	@Post("login")
-	async login(@Body() payload: AuthDTO) {
+	async login(
+		@Body() payload: AuthDTO,
+		@Res() res: TsoaResponse<
+			200,
+			{ message: string; data: Partial<IAuthenticatedUser> }
+		>,
+	) {
 		const response = await this.auth.loginWithEmail(payload);
-		if (response) {
-			return ResponseDTO.success({
-				message: "login",
-				data: response,
-			});
+		if (response !== null) {
+			const saveToCookie = new SaveToCookie(res);
+
+			saveToCookie.setCookie(
+				response,
+				{
+					httpOnly: true,
+					secure: process.env.NODE_ENV === "production", // Send only on HTTPS
+					sameSite: "strict",
+					maxAge: 15 * 60 * 1000, //15 mins
+				},
+				{
+					httpOnly: true,
+					secure: process.env.NODE_ENV === "production", // Send only on HTTPS
+					sameSite: "strict",
+					maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
+				},
+			);
 		}
 	}
 }

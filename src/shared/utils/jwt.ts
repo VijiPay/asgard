@@ -19,7 +19,7 @@ export function generateAccessToken(userId: number, email: string): string {
 	});
 }
 
-export function generateSessionToken(userId: number): string {
+export function generateRefreshToken(userId: number): string {
 	return jwt.sign({ id: userId }, config.defined<string>("SECRET"), {
 		expiresIn: expiresInDays(1).getTime(),
 	});
