@@ -16,13 +16,13 @@ export interface IEmailConfig {
 	fromEmail?: string;
 	fromName?: string;
 
-	driver: string;
-	encryption: string;
-	host: string;
-	name: string;
-	password: string;
-	username: string;
-	port: number;
+	driver?: string;
+	encryption?: string;
+	host?: string;
+	name?: string;
+	password?: string;
+	username?: string;
+	port?: number;
 }
 export interface EmailResponse {
 	html?: string;

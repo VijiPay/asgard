@@ -5,7 +5,7 @@ import type { EmailMessage } from "../EmailType";
 import type { IEmailConfig } from "../IEmailService";
 import type { IEmailProvider } from "./IEmailProvider";
 
-export class Nodemailer implements IEmailProvider {
+export class NodeMailer implements IEmailProvider {
 	config: IEmailConfig;
 	private readonly client: Mail;
 
