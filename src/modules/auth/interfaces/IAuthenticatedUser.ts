@@ -5,6 +5,7 @@ export interface IAuthenticatedUser {
 	type: UserType;
 	status: number;
 	name: string;
+	role: string;
 	countryCode: string;
 	accessToken: string;
 	refreshToken: string;

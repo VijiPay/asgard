@@ -26,10 +26,11 @@ export function generateRefreshToken(userId: number): string {
 }
 
 export function decodeToken(token: string) {
-	return jwt.verify(
-		token,
-		config.get<string>("SECRET") as string,
-	) as IJwtPayload;
+	return jwt.decode(token) as IJwtPayload;
+}
+
+export function verifyToken(token: string) {
+	return jwt.verify(token, config.defined<string>("SECRET")) as IJwtPayload;
 }
 
 export async function decryptPassword(

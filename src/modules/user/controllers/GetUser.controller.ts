@@ -1,8 +1,10 @@
 import httpStatus from "http-status";
-import { Controller, Get, Query, Route, Tags } from "tsoa";
+import { Controller, Get, Middlewares, Query, Route, Tags } from "tsoa";
 import { inject, injectable } from "tsyringe";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
 import { CustomException } from "../../../shared/exceptions/CustomException";
+import { Auth } from "../../../shared/middleware/Auth";
+import { RoleGuard } from "../../../shared/middleware/RoleGuard";
 import { UserComponents } from "../constants/UserComponents";
 import type { IGetUserService } from "../interface/IGetUserService";
 
@@ -57,6 +59,7 @@ export class GetUserController extends Controller {
 	}
 
 	@Get("all")
+	@Middlewares([Auth, RoleGuard(["admin"])])
 	async getAllUsers() {
 		const users = await this.userService.all();
 		return ResponseDTO.success({

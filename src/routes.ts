@@ -188,7 +188,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_IAuthenticatedUser_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"double"},"type":{"ref":"_36_Enums.UserType"},"status":{"dataType":"double"},"name":{"dataType":"string"},"countryCode":{"dataType":"string"},"accessToken":{"dataType":"string"},"refreshToken":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"double"},"type":{"ref":"_36_Enums.UserType"},"status":{"dataType":"double"},"name":{"dataType":"string"},"role":{"dataType":"string"},"countryCode":{"dataType":"string"},"accessToken":{"dataType":"string"},"refreshToken":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -462,6 +462,7 @@ export function RegisterRoutes(app: Router) {
 
             async function DeleteUserController_deleteAllUsers(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

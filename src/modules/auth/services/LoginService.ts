@@ -46,6 +46,7 @@ export class LoginService implements ILoginService {
 			type: user.type,
 			status: user.status,
 			name: user.profile?.tradeName as string,
+			role: user.profile?.role as string,
 			countryCode: user.countryCode,
 			accessToken,
 			refreshToken,

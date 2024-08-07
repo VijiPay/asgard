@@ -1,7 +1,17 @@
-import { Controller, Delete, Path, Request, Route, Tags } from "tsoa";
+import {
+	Controller,
+	Delete,
+	Middlewares,
+	Path,
+	Request,
+	Route,
+	Tags,
+} from "tsoa";
 import { inject, injectable } from "tsyringe";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
 import type { AuthenticatedRequest } from "../../../shared/interfaces/AuthenticatedRequest";
+import { Auth } from "../../../shared/middleware/Auth";
+import { RoleGuard } from "../../../shared/middleware/RoleGuard";
 import { UserComponents } from "../constants/UserComponents";
 import type { IDeleteUserService } from "../interface/IDeleteUserService";
 
@@ -17,6 +27,7 @@ export class DeleteUserController extends Controller {
 	}
 
 	@Delete("{userId}/delete")
+	@Middlewares([Auth, RoleGuard(["admin"])])
 	async deleteUser(
 		@Request() req: AuthenticatedRequest,
 		@Path() userId: number,
@@ -26,7 +37,8 @@ export class DeleteUserController extends Controller {
 	}
 
 	@Delete("/deleteAll")
-	async deleteAllUsers() {
+	@Middlewares([Auth, RoleGuard(["admin"])])
+	async deleteAllUsers(@Request() req: AuthenticatedRequest) {
 		await this.user.deleteAll();
 		return ResponseDTO.success({ message: "allUsers.deleted" });
 	}

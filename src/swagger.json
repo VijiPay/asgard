@@ -419,6 +419,9 @@
 					"name": {
 						"type": "string"
 					},
+					"role": {
+						"type": "string"
+					},
 					"countryCode": {
 						"type": "string"
 					},
