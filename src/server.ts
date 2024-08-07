@@ -1,4 +1,5 @@
 import "express-async-errors";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { json, urlencoded } from "express";
 import helmet from "helmet";
@@ -13,6 +14,7 @@ server.use(cors());
 server.use(helmet());
 server.use(urlencoded({ extended: true }));
 server.use(json());
+server.use(cookieParser());
 
 RegisterRoutes(server);
 
