@@ -1,3 +1,4 @@
+import httpStatus from "http-status";
 import { inject, singleton } from "tsyringe";
 import { CustomException } from "../../../shared/exceptions/CustomException";
 import { encryptPassword } from "../../../shared/utils/jwt";
@@ -8,6 +9,7 @@ import {
 import { UserComponents } from "../../user/constants/UserComponents";
 import type { IGetUserRepository } from "../../user/interface/IGetUserRepository";
 import { AuthComponents } from "../constants/AuthComponents";
+import type { ResetPasswordDTO } from "../dtos/ResetPasswordDTO";
 import type { IAuthRepository } from "../interfaces/IAuthRepository";
 import type { IPasswordService } from "../interfaces/IPasswordService";
 import type { ITokenRepository } from "../interfaces/ITokenRepository";
@@ -23,29 +25,30 @@ export class PasswordService implements IPasswordService {
 		private tokenRepository: ITokenRepository,
 	) {}
 
-	async forgotPasswordRequest(email: string): Promise<void> {
+	async forgotPasswordRequest(email: string): Promise<string> {
 		const user = await this.userRepository.findByEmail(email);
-		if (user) {
-			this.authRepository.createPasswordResetRequest(
-				user.id,
-				generatePasswordResetToken(),
-				expiresInHours(1),
-			);
+		if (!user) {
+			throw new CustomException("User not found", httpStatus.NOT_FOUND);
 		}
+
+		await this.authRepository.createPasswordResetRequest(
+			user.id,
+			generatePasswordResetToken(),
+			expiresInHours(1),
+		);
+
+		return "request.sent";
 	}
-	async resetPassword(
-		userId: number,
-		token: string,
-		newPassword: string,
-		confirmNewPassword: string,
-	): Promise<void> {
-		const validateToken =
-			await this.tokenRepository.verifyPasswordResetToken(token);
+
+	async resetPassword(data: ResetPasswordDTO): Promise<void> {
+		const validateToken = await this.tokenRepository.verifyPasswordResetToken(
+			data.token,
+		);
 
 		if (!validateToken.expiry || validateToken.expiry?.getTime() < Date.now()) {
 			throw new CustomException("token.expired");
 		}
-		const hashedPassword = await encryptPassword(newPassword);
+		const hashedPassword = await encryptPassword(data.newPassword);
 		this.authRepository.updatePassword(validateToken.userId, hashedPassword);
 	}
 

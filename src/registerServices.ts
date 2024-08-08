@@ -9,7 +9,7 @@ import { EmailService } from "./shared/services/email/EmailService";
 import type { IEmailService } from "./shared/services/email/IEmailService";
 import type { IEmailProvider } from "./shared/services/email/providers/IEmailProvider";
 import { NodeMailer } from "./shared/services/email/providers/NodeMailer";
-import { SendGrid } from "./shared/services/email/providers/SendGrid";
+// import { SendGrid } from "./shared/services/email/providers/SendGrid";
 import { AxiosProvider } from "./shared/services/http/AxiosProvider";
 import { Http } from "./shared/services/http/Http";
 import type { IHttpClient } from "./shared/services/http/IHttpClient";
@@ -22,19 +22,14 @@ container.register<IHttpClient>(Components.Http, {
 	useValue: new Http(new AxiosProvider()),
 });
 
-const emailProvider =
-	config.get<string>("MAIL_PROVIDER") === "nodemailer"
-		? Components.NodeMailer
-		: Components.SendGrid;
-
-container.register<IEmailProvider>(Components.EmailProvider, {
-	useValue: new SendGrid(container.resolve<Http>(Components.Http), {
-		baseUrl: String(config.get<string>("SENDGRID_BASE_URL")),
-		apiKey: String(config.get<string>("SENDGRID_API_KEY")),
-		fromEmail: String(config.get<string>("SENDGRID_FROM_EMAIL")),
-		fromName: String(config.get<string>("SENDGRID_FROM_NAME")),
-	}),
-});
+// container.register<IEmailProvider>(Components.EmailProvider, {
+// 	useValue: new SendGrid(container.resolve<Http>(Components.Http), {
+// 		baseUrl: String(config.get<string>("SENDGRID_BASE_URL")),
+// 		apiKey: String(config.get<string>("SENDGRID_API_KEY")),
+// 		fromEmail: String(config.get<string>("SENDGRID_FROM_EMAIL")),
+// 		fromName: String(config.get<string>("SENDGRID_FROM_NAME")),
+// 	}),
+// });
 
 container.register<IEmailProvider>(Components.EmailProvider, {
 	useValue: new NodeMailer({
@@ -49,5 +44,7 @@ container.register<IEmailProvider>(Components.EmailProvider, {
 });
 
 container.register<IEmailService>(Components.EmailService, {
-	useValue: new EmailService(container.resolve<IEmailProvider>(emailProvider)),
+	useValue: new EmailService(
+		container.resolve<IEmailProvider>(Components.EmailProvider),
+	),
 });

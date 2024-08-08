@@ -3,8 +3,11 @@
 	"compilerOptions": {
 		"noEmit": false,
 		"types": ["node"],
-		"outDir": "dist"
+		"outDir": "./dist"
 	},
-	"include": ["./src", "src/modules/auth/services/PasswordService.ts"],
-	"exclude": ["node_modules", "**/*.ispec.ts"]
+	"include": ["./src", "types", "src/modules/auth/services/PasswordService.ts"],
+	"exclude": ["node_modules", "**/*.ispec.ts", "templates", "dist"],
+	"ts-node": {
+		"files": true
+	}
 }

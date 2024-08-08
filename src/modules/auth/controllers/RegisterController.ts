@@ -7,7 +7,7 @@ import type { IRegisterService } from "../interfaces/IRegisterService";
 
 @injectable()
 @Tags("Authentication")
-@Route("ag/v1/user")
+@Route("ag/v1/auth")
 export class RegisterController extends Controller {
 	constructor(
 		@inject(AuthComponents.RegisterService) private user: IRegisterService,

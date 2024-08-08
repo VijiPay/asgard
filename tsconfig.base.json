@@ -19,12 +19,15 @@
 		"useUnknownInCatchVariables": false,
 		"noUnusedLocals": true,
 		"alwaysStrict": true,
+		"allowUnreachableCode": false,
 		"noImplicitThis": true,
 		"strictPropertyInitialization": false,
 		"strictBindCallApply": true,
 		"strictFunctionTypes": true,
 		"paths": {
-			"*": ["./types/*"]
+			"@shared": ["./src/shared/*"],
+			"@modules/*": ["./src/modules/*"],
+			"@services/*": ["./src/shared/services/*"]
 		},
 		"strictNullChecks": true,
 		"noImplicitAny": true,

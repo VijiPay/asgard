@@ -16,7 +16,7 @@ import type { ILoginService } from "../interfaces/ILoginService";
 
 @injectable()
 @Tags("Authentication")
-@Route("ag/v1/user")
+@Route("ag/v1/auth")
 export class LoginController extends Controller {
 	constructor(
 		@inject(AuthComponents.LoginService) private auth: ILoginService,

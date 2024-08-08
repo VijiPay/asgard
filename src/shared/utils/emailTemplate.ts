@@ -2,7 +2,6 @@ import fs from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { marked } from "marked";
-import { memDecorator } from "mem";
 import * as Mustache from "mustache";
 import { FOLDER_TEMPLATE_NAME, LAYOUT_PATH } from "../constants";
 import type {
@@ -23,7 +22,6 @@ export class EmailTemplateUtil {
 		return { markdown, subject, html };
 	}
 
-	@memDecorator()
 	protected async getTemplateByPath(path: string) {
 		const newPath = path.endsWith(".html") ? path : `${path}.md`;
 
