@@ -11,6 +11,10 @@ export class EmailService implements IEmailService {
 	) {}
 
 	async send(data: IEmailData): Promise<void> {
-		await this.provider.send(data);
+		try {
+			await this.provider.send(data);
+		} catch (error) {
+			throw new Error(`Failed to send email: ${error.message}`);
+		}
 	}
 }

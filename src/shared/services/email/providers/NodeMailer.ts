@@ -12,7 +12,9 @@ export class NodeMailer implements IEmailProvider {
 	constructor(config: IEmailConfig) {
 		this.config = config;
 		this.client = createTransport({
-			service: config.driver,
+			host: config.host,
+			port: config.port,
+			// secure: config.encryption,
 			auth: {
 				user: config.username,
 				pass: config.password,
@@ -41,7 +43,7 @@ export class NodeMailer implements IEmailProvider {
 
 		await this.client.sendMail({
 			...data,
-			from: data.from ?? `"${this.config.fromName}" <${this.config.fromEmail}>`,
+			from: data.from ?? `"${this.config.name}" <${this.config.fromEmail}>`,
 		});
 	}
 }

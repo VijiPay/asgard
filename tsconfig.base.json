@@ -25,7 +25,7 @@
 		"strictBindCallApply": true,
 		"strictFunctionTypes": true,
 		"paths": {
-			"@shared": ["./src/shared/*"],
+			"@shared/*": ["./src/shared/*"],
 			"@modules/*": ["./src/modules/*"],
 			"@services/*": ["./src/shared/services/*"]
 		},

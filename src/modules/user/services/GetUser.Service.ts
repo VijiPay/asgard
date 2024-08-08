@@ -11,6 +11,10 @@ export class GetUserService implements IGetUserService {
 		private getUser: IGetUserRepository,
 	) {}
 
+	findRaw(id: number) {
+		return this.getUser.findById(id);
+	}
+
 	find(id?: number, email?: string): Promise<IUserProfile | undefined | null> {
 		if (id && email) {
 			throw new Error("BothIdAndEmail.notAllowed");

@@ -1,12 +1,8 @@
 import type { ResetPasswordDTO } from "../dtos/ResetPasswordDTO";
+import type { UpdatePasswordDTO } from "../dtos/UpdatePasswordDTO";
 
 export interface IPasswordService {
-	forgotPasswordRequest(email: string): Promise<string>;
+	forgotPasswordRequest(email: string): Promise<void>;
 	resetPassword(payload: ResetPasswordDTO): Promise<void>;
-	updatePassword(
-		id: number,
-		oldPassword: string,
-		newPassword: string,
-		confirmNewPassword: string,
-	): Promise<void>;
+	updatePassword(data: UpdatePasswordDTO): Promise<void>;
 }

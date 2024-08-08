@@ -1,8 +1,10 @@
+import { validateOrReject } from "class-validator";
 import { Body, Controller, Post, Route, Tags } from "tsoa";
 import { inject, injectable } from "tsyringe";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
 import { AuthComponents } from "../constants/AuthComponents";
 import type { ResetPasswordDTO } from "../dtos/ResetPasswordDTO";
+import type { UpdatePasswordDTO } from "../dtos/UpdatePasswordDTO";
 import type { IPasswordService } from "../interfaces/IPasswordService";
 
 @injectable()
@@ -17,31 +19,29 @@ export class RegisterController extends Controller {
 
 	@Post("forgot-password")
 	async forgotPassword(@Body() payload: string) {
-		const response = await this.auth.forgotPasswordRequest(payload);
+		await this.auth.forgotPasswordRequest(payload);
 
 		return ResponseDTO.success({
-			message: "register",
-			data: response,
+			message: "password request sent",
 		});
 	}
 
 	@Post("reset-password")
 	async resetPassword(@Body() payload: ResetPasswordDTO) {
-		const response = await this.auth.resetPassword(payload);
+		await validateOrReject(payload);
+		await this.auth.resetPassword(payload);
 
 		return ResponseDTO.success({
-			message: "register",
-			data: response,
+			message: "password reset successfully",
 		});
 	}
 
 	@Post("update-password")
-	async updatePassword(@Body() payload: string) {
-		const response = await this.auth.forgotPasswordRequest(payload);
-
+	async updatePassword(@Body() payload: UpdatePasswordDTO) {
+		await validateOrReject(payload);
+		await this.auth.updatePassword(payload);
 		return ResponseDTO.success({
-			message: "register",
-			data: response,
+			message: "password updated successfully",
 		});
 	}
 }

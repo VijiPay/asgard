@@ -1,3 +1,4 @@
+import { validateOrReject } from "class-validator";
 import { Body, Controller, Post, Route, Tags } from "tsoa";
 import { inject, injectable } from "tsyringe";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
@@ -17,6 +18,7 @@ export class RegisterController extends Controller {
 
 	@Post("register")
 	async register(@Body() payload: CreateUserDTO) {
+		validateOrReject(payload);
 		const response = await this.user.register(payload);
 		if (response) {
 			return ResponseDTO.success({

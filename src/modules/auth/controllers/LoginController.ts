@@ -1,3 +1,4 @@
+import { validateOrReject } from "class-validator";
 import {
 	Body,
 	Controller,
@@ -32,6 +33,7 @@ export class LoginController extends Controller {
 			{ message: string; data: Partial<IAuthenticatedUser> }
 		>,
 	) {
+		await validateOrReject(payload);
 		const response = await this.auth.loginWithEmail(payload);
 		if (response !== null) {
 			const saveToCookie = new SaveToCookie(res);
