@@ -2,6 +2,7 @@ import { validateOrReject } from "class-validator";
 import {
 	Body,
 	Controller,
+	Middlewares,
 	Post,
 	Res,
 	Route,
@@ -11,9 +12,10 @@ import {
 import { inject, injectable } from "tsyringe";
 import { SaveToCookie } from "../../../shared/responses/SaveToCookie";
 import { AuthComponents } from "../constants/AuthComponents";
-import type { AuthDTO } from "../dtos/AuthDTO";
+import { AuthDTO } from "../dtos/AuthDTO";
 import type { IAuthenticatedUser } from "../interfaces/IAuthenticatedUser";
 import type { ILoginService } from "../interfaces/ILoginService";
+import { ValidateBody } from "../../../shared/middleware/ValidateBody";
 
 @injectable()
 @Tags("Authentication")
@@ -26,6 +28,7 @@ export class LoginController extends Controller {
 	}
 
 	@Post("login")
+	@Middlewares([ValidateBody(AuthDTO)])
 	async login(
 		@Body() payload: AuthDTO,
 		@Res() res: TsoaResponse<

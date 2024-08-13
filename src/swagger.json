@@ -387,6 +387,68 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ForgotPasswordDTO": {
+				"properties": {
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ResetPasswordDTO": {
+				"properties": {
+					"userId": {
+						"type": "number",
+						"format": "double"
+					},
+					"token": {
+						"type": "string"
+					},
+					"newPassword": {
+						"type": "string"
+					},
+					"confirmNewPassword": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId",
+					"token",
+					"newPassword",
+					"confirmNewPassword"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdatePasswordDTO": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"oldPassword": {
+						"type": "string"
+					},
+					"newPassword": {
+						"type": "string"
+					},
+					"confirmNewPassword": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"oldPassword",
+					"newPassword",
+					"confirmNewPassword"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"AuthDTO": {
 				"properties": {
 					"email": {
@@ -723,7 +785,7 @@
 				}
 			}
 		},
-		"/ag/v1/user/register": {
+		"/ag/v1/auth/register": {
 			"post": {
 				"operationId": "Register",
 				"responses": {
@@ -755,7 +817,103 @@
 				}
 			}
 		},
-		"/ag/v1/user/login": {
+		"/ag/v1/auth/forgot-password": {
+			"post": {
+				"operationId": "ForgotPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_unknown_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ForgotPasswordDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/ag/v1/auth/reset-password": {
+			"post": {
+				"operationId": "ResetPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_unknown_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ResetPasswordDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/ag/v1/auth/update-password": {
+			"post": {
+				"operationId": "UpdatePassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_unknown_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdatePasswordDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/ag/v1/auth/login": {
 			"post": {
 				"operationId": "Login",
 				"responses": {

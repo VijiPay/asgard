@@ -1,11 +1,11 @@
-import { Components } from "@shared/constants/Components";
+import httpStatus from "http-status";
+import { inject, singleton } from "tsyringe";
+import { Components } from "../../../shared/constants/Components";
+import { CustomException } from "../../../shared/exceptions/CustomException";
 import {
 	EmailTemplatePath,
 	type IEmailService,
-} from "@shared/services/email/IEmailService";
-import httpStatus from "http-status";
-import { inject, singleton } from "tsyringe";
-import { CustomException } from "../../../shared/exceptions/CustomException";
+} from "../../../shared/services/email/IEmailService";
 import {
 	expiresInDays,
 	generateEmailVerificationToken,

@@ -1,16 +1,18 @@
 import { validateOrReject } from "class-validator";
-import { Body, Controller, Post, Route, Tags } from "tsoa";
+import { Body, Controller, Middlewares, Post, Route, Tags } from "tsoa";
 import { inject, injectable } from "tsyringe";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
+import { ValidateBody } from "../../../shared/middleware/ValidateBody";
 import { AuthComponents } from "../constants/AuthComponents";
-import type { ResetPasswordDTO } from "../dtos/ResetPasswordDTO";
-import type { UpdatePasswordDTO } from "../dtos/UpdatePasswordDTO";
+import { ForgotPasswordDTO } from "../dtos/ForgotPasswordDTO";
+import { ResetPasswordDTO } from "../dtos/ResetPasswordDTO";
+import { UpdatePasswordDTO } from "../dtos/UpdatePasswordDTO";
 import type { IPasswordService } from "../interfaces/IPasswordService";
 
 @injectable()
 @Tags("Authentication")
 @Route("ag/v1/auth")
-export class RegisterController extends Controller {
+export class PasswordController extends Controller {
 	constructor(
 		@inject(AuthComponents.PasswordService) private auth: IPasswordService,
 	) {
@@ -18,8 +20,9 @@ export class RegisterController extends Controller {
 	}
 
 	@Post("forgot-password")
-	async forgotPassword(@Body() payload: string) {
-		await this.auth.forgotPasswordRequest(payload);
+	@Middlewares([ForgotPasswordDTO])
+	async forgotPassword(@Body() email: ForgotPasswordDTO) {
+		await this.auth.forgotPasswordRequest(email);
 
 		return ResponseDTO.success({
 			message: "password request sent",
@@ -27,6 +30,7 @@ export class RegisterController extends Controller {
 	}
 
 	@Post("reset-password")
+	@Middlewares([ValidateBody(ResetPasswordDTO)])
 	async resetPassword(@Body() payload: ResetPasswordDTO) {
 		await validateOrReject(payload);
 		await this.auth.resetPassword(payload);
@@ -37,6 +41,7 @@ export class RegisterController extends Controller {
 	}
 
 	@Post("update-password")
+	@Middlewares([ValidateBody(UpdatePasswordDTO)])
 	async updatePassword(@Body() payload: UpdatePasswordDTO) {
 		await validateOrReject(payload);
 		await this.auth.updatePassword(payload);

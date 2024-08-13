@@ -2,12 +2,8 @@
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
 		"noEmit": false,
-		"types": ["node"],
-		"outDir": "./dist"
+		"types": ["node"]
 	},
 	"include": ["./src", "types", "src/modules/auth/services/PasswordService.ts"],
-	"exclude": ["node_modules", "**/*.ispec.ts", "templates", "dist"],
-	"ts-node": {
-		"files": true
-	}
+	"exclude": ["node_modules", "**/*.ispec.ts", "templates", "dist"]
 }

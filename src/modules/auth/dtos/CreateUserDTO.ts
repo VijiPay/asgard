@@ -3,6 +3,7 @@ import {
 	IsEmail,
 	IsNotEmpty,
 	IsString,
+	IsStrongPassword,
 	MinLength,
 } from "class-validator";
 
@@ -26,6 +27,30 @@ export class CreateUserDTO {
 	@IsNotEmpty({ message: "Password is required" })
 	@IsString({ message: "Password must be a string" })
 	@MinLength(8, { message: "Password must be at least 8 characters long" })
+	@IsStrongPassword(
+		{
+			minLowercase: 1,
+		},
+		{
+			message: "The password must contain at least 1 lowercase",
+		},
+	)
+	@IsStrongPassword(
+		{
+			minSymbols: 1,
+		},
+		{
+			message: "The password must contain at least 1 symbol",
+		},
+	)
+	@IsStrongPassword(
+		{
+			minUppercase: 1,
+		},
+		{
+			message: "The password must contain at least 1 uppercase",
+		},
+	)
 	password: string;
 
 	@IsNotEmpty()

@@ -1,8 +1,9 @@
 import { validateOrReject } from "class-validator";
-import { Body, Controller, Post, Route, Tags } from "tsoa";
+import { Body, Controller, Middlewares, Post, Route, Tags } from "tsoa";
 import { inject, injectable } from "tsyringe";
 import { ResponseDTO } from "../../../shared/dtos/ResponseDTO";
-import type { CreateUserDTO } from "../../auth/dtos/CreateUserDTO";
+import { ValidateBody } from "../../../shared/middleware/ValidateBody";
+import { CreateUserDTO } from "../../auth/dtos/CreateUserDTO";
 import { AuthComponents } from "../constants/AuthComponents";
 import type { IRegisterService } from "../interfaces/IRegisterService";
 
@@ -17,12 +18,13 @@ export class RegisterController extends Controller {
 	}
 
 	@Post("register")
+	@Middlewares([ValidateBody(CreateUserDTO)])
 	async register(@Body() payload: CreateUserDTO) {
 		validateOrReject(payload);
 		const response = await this.user.register(payload);
 		if (response) {
 			return ResponseDTO.success({
-				message: "register",
+				message: "registered",
 				data: response,
 			});
 		}

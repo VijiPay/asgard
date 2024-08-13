@@ -1,4 +1,3 @@
-import type { IGetUserService } from "@modules/user/interface/IGetUserService";
 import httpStatus from "http-status";
 import { inject, singleton } from "tsyringe";
 import { CustomException } from "../../../shared/exceptions/CustomException";
@@ -8,7 +7,9 @@ import {
 	generatePasswordResetToken,
 } from "../../../shared/utils/tokenUtils";
 import { UserComponents } from "../../user/constants/UserComponents";
+import type { IGetUserService } from "../../user/interface/IGetUserService";
 import { AuthComponents } from "../constants/AuthComponents";
+import type { ForgotPasswordDTO } from "../dtos/ForgotPasswordDTO";
 import type { ResetPasswordDTO } from "../dtos/ResetPasswordDTO";
 import type { UpdatePasswordDTO } from "../dtos/UpdatePasswordDTO";
 import type { IAuthRepository } from "../interfaces/IAuthRepository";
@@ -26,8 +27,9 @@ export class PasswordService implements IPasswordService {
 		private tokenRepository: ITokenRepository,
 	) {}
 
-	async forgotPasswordRequest(email: string): Promise<void> {
-		const user = await this.user.findByEmail(email);
+	async forgotPasswordRequest(email: ForgotPasswordDTO): Promise<void> {
+		const e = email as unknown as string;
+		const user = await this.user.findByEmail(e);
 		if (!user) {
 			throw new CustomException("User not found", httpStatus.NOT_FOUND);
 		}
