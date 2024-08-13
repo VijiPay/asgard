@@ -1,11 +1,9 @@
 import type { PrismaClient } from "@prisma/client";
 import { injectable } from "tsyringe";
-import type { IEmailVerificationRepository } from "../interfaces/IEmailVerificationRepository";
+import type { ISendEmailRepository } from "../interfaces/ISendEmailRepository";
 
 @injectable()
-export class EmailVerificationRepository
-	implements IEmailVerificationRepository
-{
+export class SendEmailRepository implements ISendEmailRepository {
 	private connection: PrismaClient;
 	constructor(dataSource: PrismaClient) {
 		this.connection = dataSource;

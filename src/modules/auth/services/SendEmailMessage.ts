@@ -11,14 +11,14 @@ import {
 	generateEmailVerificationToken,
 } from "../../../shared/utils/tokenUtils";
 import { AuthComponents } from "../constants/AuthComponents";
-import type { IEmailVerificationRepository } from "../interfaces/IEmailVerificationRepository";
-import type { IEmailVerificationService } from "../interfaces/IEmailVerificationService";
+import type { ISendEmailMessage } from "../interfaces/ISendEmailMessage";
+import type { ISendEmailRepository } from "../interfaces/ISendEmailRepository";
 
 @singleton()
-export class EmailVerificationService implements IEmailVerificationService {
+export class SendEmailMessage implements ISendEmailMessage {
 	constructor(
-		@inject(AuthComponents.EmailVerificationRepository)
-		private emailRepository: IEmailVerificationRepository,
+		@inject(AuthComponents.SendEmailRepository)
+		private emailRepository: ISendEmailRepository,
 		@inject(Components.EmailService) private emailService: IEmailService,
 	) {}
 

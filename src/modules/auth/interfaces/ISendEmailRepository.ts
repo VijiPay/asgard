@@ -1,4 +1,4 @@
-export interface IEmailVerificationRepository {
+export interface ISendEmailRepository {
 	updateVerificationEmail(
 		email: string,
 		emailVerifyCode: string,
