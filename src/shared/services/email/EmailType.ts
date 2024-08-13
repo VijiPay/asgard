@@ -1,5 +1,5 @@
 import type { Options } from "nodemailer/lib/mailer";
-import type { IEmailData } from "./IEmailService";
+import type { EmailTemplateOption } from "./IEmail";
 
 export type EmailMessage = Options &
-	Partial<Pick<IEmailData, "data" | "templatePath">>;
+	Partial<Pick<EmailTemplateOption, "data" | "templatePath">>;

@@ -1,10 +1,12 @@
 import { createTransport } from "nodemailer";
 import type Mail from "nodemailer/lib/mailer";
+import { singleton } from "tsyringe";
 import { EmailTemplateUtil } from "../../../utils/emailTemplate";
 import type { EmailMessage } from "../EmailType";
-import type { IEmailConfig } from "../IEmailService";
+import type { IEmailConfig } from "../IEmail";
 import type { IEmailProvider } from "./IEmailProvider";
 
+@singleton()
 export class NodeMailer implements IEmailProvider {
 	config: IEmailConfig;
 	private readonly client: Mail;
@@ -14,7 +16,8 @@ export class NodeMailer implements IEmailProvider {
 		this.client = createTransport({
 			host: config.host,
 			port: config.port,
-			// secure: config.encryption,
+			service: config.driver,
+			secure: false,
 			auth: {
 				user: config.username,
 				pass: config.password,
@@ -26,6 +29,7 @@ export class NodeMailer implements IEmailProvider {
 		if (data.templatePath) {
 			const { subject, html, markdown } =
 				await new EmailTemplateUtil().getMessage({
+					to: [data.to as string],
 					templatePath: data.templatePath,
 					data: data.data,
 					isLayout: true,
@@ -43,7 +47,7 @@ export class NodeMailer implements IEmailProvider {
 
 		await this.client.sendMail({
 			...data,
-			from: data.from ?? `"${this.config.name}" <${this.config.fromEmail}>`,
+			from: `"${this.config.name}" <no-reply@vijipay.ng>`,
 		});
 	}
 }

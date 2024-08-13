@@ -1,11 +1,9 @@
 import httpStatus from "http-status";
 import { inject, singleton } from "tsyringe";
 import { Components } from "../../../shared/constants/Components";
+import { EmailTemplatePath } from "../../../shared/enums/EmailTemplatePath";
 import { CustomException } from "../../../shared/exceptions/CustomException";
-import {
-	EmailTemplatePath,
-	type IEmailService,
-} from "../../../shared/services/email/IEmailService";
+import type { IEmail } from "../../../shared/services/email/IEmail";
 import {
 	expiresInDays,
 	generateEmailVerificationToken,
@@ -19,7 +17,7 @@ export class SendEmailMessage implements ISendEmailMessage {
 	constructor(
 		@inject(AuthComponents.SendEmailRepository)
 		private emailRepository: ISendEmailRepository,
-		@inject(Components.EmailService) private emailService: IEmailService,
+		@inject(Components.Email) private emailService: IEmail,
 	) {}
 
 	async sendEmailVerificationCode(email: string): Promise<void> {
@@ -31,7 +29,7 @@ export class SendEmailMessage implements ISendEmailMessage {
 		);
 		try {
 			await this.emailService.send({
-				recipients: [email],
+				to: [email],
 				templatePath: EmailTemplatePath.EMAIL_VERIFICATION,
 				data: { token },
 				isHTML: true,

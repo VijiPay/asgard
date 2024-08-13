@@ -29,26 +29,13 @@ export class CreateUserDTO {
 	@MinLength(8, { message: "Password must be at least 8 characters long" })
 	@IsStrongPassword(
 		{
+			minSymbols: 1,
+			minUppercase: 1,
 			minLowercase: 1,
 		},
 		{
-			message: "The password must contain at least 1 lowercase",
-		},
-	)
-	@IsStrongPassword(
-		{
-			minSymbols: 1,
-		},
-		{
-			message: "The password must contain at least 1 symbol",
-		},
-	)
-	@IsStrongPassword(
-		{
-			minUppercase: 1,
-		},
-		{
-			message: "The password must contain at least 1 uppercase",
+			message:
+				"The password must contain at least 1 symbol lowercase and uppercase",
 		},
 	)
 	password: string;

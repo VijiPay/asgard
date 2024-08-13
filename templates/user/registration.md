@@ -1,4 +1,4 @@
-# Registration
+# Welcome to VijiPay
 
 Dear User,
 

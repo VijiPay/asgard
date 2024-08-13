@@ -5,14 +5,16 @@ import Logger from "./shared/services/logger/Logger";
 import "./modules/user/registerUserServices";
 import "./modules/auth/registerAuthServices";
 import { Config } from "./shared/services/config/Config";
-import { EmailService } from "./shared/services/email/EmailService";
-import type { IEmailService } from "./shared/services/email/IEmailService";
+import { Email } from "./shared/services/email/Email";
+import type { IEmail } from "./shared/services/email/IEmail";
 import type { IEmailProvider } from "./shared/services/email/providers/IEmailProvider";
 import { NodeMailer } from "./shared/services/email/providers/NodeMailer";
 // import { SendGrid } from "./shared/services/email/providers/SendGrid";
 import { AxiosProvider } from "./shared/services/http/AxiosProvider";
 import { Http } from "./shared/services/http/Http";
 import type { IHttpClient } from "./shared/services/http/IHttpClient";
+import type { INotificationService } from "./shared/services/notification/INotificationService";
+import { NotificationService } from "./shared/services/notification/NotificationService";
 
 const config = container.resolve(Config);
 
@@ -43,8 +45,12 @@ container.register<IEmailProvider>(Components.EmailProvider, {
 	}),
 });
 
-container.register<IEmailService>(Components.EmailService, {
-	useValue: new EmailService(
+container.register<IEmail>(Components.Email, {
+	useValue: new Email(
 		container.resolve<IEmailProvider>(Components.EmailProvider),
 	),
+});
+
+container.register<INotificationService>(Components.NotificationService, {
+	useClass: NotificationService,
 });

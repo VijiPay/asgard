@@ -1,13 +1,20 @@
+import type { EmailTemplatePath } from "../../enums/EmailTemplatePath";
+
 export interface IEmailData {
 	templateId?: string;
 	recipients?: string[];
-	data?: Record<string, unknown>;
+}
+
+export type EmailTemplateOption = {
+	to: string[];
+	data?: Record<string, number | string | boolean>;
 	isHTML?: boolean;
 	isLayout?: boolean;
 	templatePath: EmailTemplatePath;
-}
-export interface IEmailService {
-	send(data: IEmailData): Promise<void>;
+};
+
+export interface IEmail {
+	send(data: EmailTemplateOption): Promise<void>;
 }
 
 export interface IEmailConfig {
@@ -28,13 +35,5 @@ export interface EmailResponse {
 	html?: string;
 	markdown: string;
 	subject?: string;
-}
-
-export enum EmailTemplatePath {
-	EMAIL_CONFIRMED = "auth/email-confirmed",
-	EMAIL_VERIFICATION = "auth/email-verification",
-	FORGOT_PASSWORD_BY_EMAIL = "auth/forgot-password-by-email",
-	PASSWORD_CHANGED = "user/password-changed",
-	PHONE_VERIFICATION = "auth/phone-verification",
-	REGISTRATION = "user/registration",
+	recipients: string[];
 }

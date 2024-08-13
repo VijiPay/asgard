@@ -6,20 +6,20 @@ import * as Mustache from "mustache";
 import { FOLDER_TEMPLATE_NAME, LAYOUT_PATH } from "../constants";
 import type {
 	EmailResponse,
-	IEmailData,
-} from "../services/email/IEmailService";
+	EmailTemplateOption,
+} from "../services/email/IEmail";
 
 export class EmailTemplateUtil {
-	async getMessage(options: IEmailData): Promise<EmailResponse> {
+	async getMessage(options: EmailTemplateOption): Promise<EmailResponse> {
 		const template = await this.getTemplateByPath(options.templatePath);
-
 		const markdownRaw = Mustache.render(template, options.data);
 
+		const recipients = options.to;
 		const subject = this.getSubjectFromMarkdown(markdownRaw);
 		const markdown = this.transformMarkdown(markdownRaw, { subject });
 		const html = await this.convertMarkdownToHtml(markdownRaw, options);
 
-		return { markdown, subject, html };
+		return { markdown, subject, html, recipients };
 	}
 
 	protected async getTemplateByPath(path: string) {
@@ -28,7 +28,10 @@ export class EmailTemplateUtil {
 		return fs.readFile(resolve(FOLDER_TEMPLATE_NAME, newPath), "utf8");
 	}
 
-	private async convertMarkdownToHtml(markdown: string, options: IEmailData) {
+	private async convertMarkdownToHtml(
+		markdown: string,
+		options: EmailTemplateOption,
+	) {
 		const layout = await this.getTemplateByPath(LAYOUT_PATH);
 
 		if (options.isHTML && options.isLayout) {

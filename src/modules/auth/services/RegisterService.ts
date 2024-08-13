@@ -1,6 +1,9 @@
 import httpStatus from "http-status";
 import { inject, singleton } from "tsyringe";
+import { Components } from "../../../shared/constants/Components";
+import { EmailTemplatePath } from "../../../shared/enums/EmailTemplatePath";
 import { CustomException } from "../../../shared/exceptions/CustomException";
+import type { INotificationService } from "../../../shared/services/notification/INotificationService";
 import { encryptPassword } from "../../../shared/utils/jwt";
 import { UserComponents } from "../../user/constants/UserComponents";
 import type { IGetUserRepository } from "../../user/interface/IGetUserRepository";
@@ -17,6 +20,8 @@ export class RegisterService implements IRegisterService {
 		private registerRepository: IRegisterRepository,
 		@inject(UserComponents.GetUserRepository)
 		private userRepository: IGetUserRepository,
+		@inject(Components.NotificationService)
+		private notification: INotificationService,
 	) {}
 
 	async register(
@@ -39,6 +44,11 @@ export class RegisterService implements IRegisterService {
 		};
 
 		const user = await this.registerRepository.create(userData);
+		this.notification.send(
+			{ email: data.email },
+			{ templatePath: EmailTemplatePath.REGISTRATION, },
+		);
+
 		return { name: user.firstName, email: user.email };
 	}
 }
