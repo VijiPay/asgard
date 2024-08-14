@@ -1,9 +1,9 @@
 import type { PrismaClient } from "@prisma/client";
 import { injectable } from "tsyringe";
-import type { ISendEmailRepository } from "../interfaces/ISendEmailRepository";
+import type { IEmailVerificationRepository } from "../interfaces/IEmailVerificationRepository";
 
 @injectable()
-export class SendEmailRepository implements ISendEmailRepository {
+export class SendEmailRepository implements IEmailVerificationRepository {
 	private connection: PrismaClient;
 	constructor(dataSource: PrismaClient) {
 		this.connection = dataSource;
@@ -40,8 +40,8 @@ export class SendEmailRepository implements ISendEmailRepository {
 		};
 	}
 
-	async confirmEmailVerification(token: string): Promise<void> {
-		await this.connection.profile.update({
+	async confirmEmailVerification(token: string): Promise<string> {
+		const user = await this.connection.profile.update({
 			where: { emailVerifyCode: token },
 			data: {
 				emailVerified: true,
@@ -49,6 +49,9 @@ export class SendEmailRepository implements ISendEmailRepository {
 				emailVerifyExpires: null,
 				emailVerifyDate: new Date(),
 			},
+			include: { user: true },
 		});
+
+		return user?.user.email;
 	}
 }

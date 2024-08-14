@@ -1,4 +1,4 @@
-export interface ISendEmailRepository {
+export interface IEmailVerificationRepository {
 	updateVerificationEmail(
 		email: string,
 		emailVerifyCode: string,
@@ -9,5 +9,5 @@ export interface ISendEmailRepository {
 		code: string | null;
 		expiryDate: Date | null;
 	} | null>;
-	confirmEmailVerification(token: string): Promise<void>;
+	confirmEmailVerification(token: string): Promise<string>;
 }

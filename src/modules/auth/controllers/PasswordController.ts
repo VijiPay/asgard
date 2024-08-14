@@ -20,7 +20,7 @@ export class PasswordController extends Controller {
 	}
 
 	@Post("forgot-password")
-	@Middlewares([ForgotPasswordDTO])
+	@Middlewares([ValidateBody(ForgotPasswordDTO)])
 	async forgotPassword(@Body() email: ForgotPasswordDTO) {
 		await this.auth.forgotPasswordRequest(email);
 

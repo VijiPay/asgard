@@ -33,7 +33,7 @@ export class GetUserService implements IGetUserService {
 	}
 
 	async findByEmail(email: string): Promise<IUserProfile | null> {
-		return this.getUser.findByEmail(email) as unknown as IUserProfile;
+		return (await this.getUser.findByEmail(email)) as unknown as IUserProfile;
 	}
 
 	async all(): Promise<IUserProfile[]> {

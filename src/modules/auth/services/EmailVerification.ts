@@ -1,23 +1,23 @@
-import httpStatus from "http-status";
 import { inject, singleton } from "tsyringe";
 import { Components } from "../../../shared/constants/Components";
 import { EmailTemplatePath } from "../../../shared/enums/EmailTemplatePath";
 import { CustomException } from "../../../shared/exceptions/CustomException";
-import type { IEmail } from "../../../shared/services/email/IEmail";
+import type { INotificationService } from "../../../shared/services/notification/INotificationService";
 import {
 	expiresInDays,
 	generateEmailVerificationToken,
 } from "../../../shared/utils/tokenUtils";
 import { AuthComponents } from "../constants/AuthComponents";
-import type { ISendEmailMessage } from "../interfaces/ISendEmailMessage";
-import type { ISendEmailRepository } from "../interfaces/ISendEmailRepository";
+import type { IEmailVerification } from "../interfaces/IEmailVerification";
+import type { IEmailVerificationRepository } from "../interfaces/IEmailVerificationRepository";
 
 @singleton()
-export class SendEmailMessage implements ISendEmailMessage {
+export class SendEmailMessage implements IEmailVerification {
 	constructor(
-		@inject(AuthComponents.SendEmailRepository)
-		private emailRepository: ISendEmailRepository,
-		@inject(Components.Email) private emailService: IEmail,
+		@inject(AuthComponents.EmailVerificationRepository)
+		private emailRepository: IEmailVerificationRepository,
+		@inject(Components.NotificationService)
+		private notification: INotificationService,
 	) {}
 
 	async sendEmailVerificationCode(email: string): Promise<void> {
@@ -27,21 +27,16 @@ export class SendEmailMessage implements ISendEmailMessage {
 			token,
 			expiresInDays(2),
 		);
-		try {
-			await this.emailService.send({
-				to: [email],
+		this.notification.send(
+			{ email: email },
+			{
 				templatePath: EmailTemplatePath.EMAIL_VERIFICATION,
-				data: { token },
-				isHTML: true,
-				isLayout: true,
-			});
-		} catch (error) {
-			throw new CustomException(
-				"Failed to send verification email",
-				httpStatus.INTERNAL_SERVER_ERROR,
-				error,
-			);
-		}
+				data: {
+					code: token,
+					time: "48 hours",
+				},
+			},
+		);
 	}
 
 	async verifyEmail(token: string): Promise<void> {
@@ -53,6 +48,15 @@ export class SendEmailMessage implements ISendEmailMessage {
 		if (!response.code) {
 			throw new CustomException("invalid.token");
 		}
-		await this.emailRepository.confirmEmailVerification(response.code);
+		const user = await this.emailRepository.confirmEmailVerification(
+			response.code,
+		);
+
+		this.notification.send(
+			{ email: user },
+			{
+				templatePath: EmailTemplatePath.EMAIL_CONFIRMED,
+			},
+		);
 	}
 }

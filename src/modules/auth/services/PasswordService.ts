@@ -1,6 +1,9 @@
 import httpStatus from "http-status";
 import { inject, singleton } from "tsyringe";
+import { Components } from "../../../shared/constants/Components";
+import { EmailTemplatePath } from "../../../shared/enums/EmailTemplatePath";
 import { CustomException } from "../../../shared/exceptions/CustomException";
+import type { INotificationService } from "../../../shared/services/notification/INotificationService";
 import { decryptPassword, encryptPassword } from "../../../shared/utils/jwt";
 import {
 	expiresInHours,
@@ -25,19 +28,27 @@ export class PasswordService implements IPasswordService {
 		private authRepository: IAuthRepository,
 		@inject(AuthComponents.TokenRepository)
 		private tokenRepository: ITokenRepository,
+		@inject(Components.NotificationService)
+		private notification: INotificationService,
 	) {}
 
 	async forgotPasswordRequest(email: ForgotPasswordDTO): Promise<void> {
-		const e = email as unknown as string;
-		const user = await this.user.findByEmail(e);
+		const user = await this.user.findByEmail(email.email);
 		if (!user) {
 			throw new CustomException("User not found", httpStatus.NOT_FOUND);
 		}
-
+		const resetToken = generatePasswordResetToken();
 		await this.authRepository.createPasswordResetRequest(
 			user.id,
-			generatePasswordResetToken(),
+			resetToken,
 			expiresInHours(1),
+		);
+		this.notification.send(
+			{ email: email.email },
+			{
+				templatePath: EmailTemplatePath.FORGOT_PASSWORD_BY_EMAIL,
+				data: { code: resetToken },
+			},
 		);
 	}
 
@@ -51,6 +62,13 @@ export class PasswordService implements IPasswordService {
 		}
 		const hashedPassword = await encryptPassword(data.newPassword);
 		this.authRepository.updatePassword(validateToken.userId, hashedPassword);
+		const user = await this.user.findById(validateToken.userId);
+		this.notification.send(
+			{ email: user?.email },
+			{
+				templatePath: EmailTemplatePath.PASSWORD_CHANGED,
+			},
+		);
 	}
 
 	async updatePassword(data: UpdatePasswordDTO): Promise<void> {
@@ -64,5 +82,11 @@ export class PasswordService implements IPasswordService {
 		}
 		const hashedPassword = await encryptPassword(data.newPassword);
 		await this.authRepository.updatePasswordDirectly(data.id, hashedPassword);
+		this.notification.send(
+			{ email: existingUser?.email },
+			{
+				templatePath: EmailTemplatePath.PASSWORD_CHANGED,
+			},
+		);
 	}
 }
