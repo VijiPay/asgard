@@ -4,7 +4,7 @@ import { Components } from "../../../shared/constants/Components";
 import { EmailTemplatePath } from "../../../shared/enums/EmailTemplatePath";
 import { CustomException } from "../../../shared/exceptions/CustomException";
 import type { INotificationService } from "../../../shared/services/notification/INotificationService";
-import { decryptPassword, encryptPassword } from "../../../shared/utils/jwt";
+import { encryptPassword } from "../../../shared/utils/jwt";
 import {
 	expiresInHours,
 	generatePasswordResetToken,
@@ -47,7 +47,7 @@ export class PasswordService implements IPasswordService {
 			{ email: email.email },
 			{
 				templatePath: EmailTemplatePath.FORGOT_PASSWORD_BY_EMAIL,
-				data: { code: resetToken },
+				data: { code: resetToken, time: "1 hour" },
 			},
 		);
 	}
@@ -72,18 +72,10 @@ export class PasswordService implements IPasswordService {
 	}
 
 	async updatePassword(data: UpdatePasswordDTO): Promise<void> {
-		const existingUser = await this.user.findRaw(data.id);
-		if (
-			existingUser &&
-			(await decryptPassword(data.oldPassword, existingUser?.password)) &&
-			data.oldPassword === data.newPassword
-		) {
-			throw new CustomException("cannot use existing password");
-		}
 		const hashedPassword = await encryptPassword(data.newPassword);
 		await this.authRepository.updatePasswordDirectly(data.id, hashedPassword);
 		this.notification.send(
-			{ email: existingUser?.email },
+			{ email: data.email },
 			{
 				templatePath: EmailTemplatePath.PASSWORD_CHANGED,
 			},

@@ -430,6 +430,9 @@
 						"type": "number",
 						"format": "double"
 					},
+					"email": {
+						"type": "string"
+					},
 					"oldPassword": {
 						"type": "string"
 					},
@@ -442,6 +445,7 @@
 				},
 				"required": [
 					"id",
+					"email",
 					"oldPassword",
 					"newPassword",
 					"confirmNewPassword"

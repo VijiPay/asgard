@@ -202,6 +202,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"double","required":true},
+            "email": {"dataType":"string","required":true},
             "oldPassword": {"dataType":"string","required":true},
             "newPassword": {"dataType":"string","required":true},
             "confirmNewPassword": {"dataType":"string","required":true},

@@ -1,4 +1,4 @@
-import { validateOrReject } from "class-validator";
+
 import {
 	Body,
 	Controller,
@@ -33,7 +33,6 @@ export class RegisterController extends Controller {
 	@Post("register")
 	@Middlewares([ValidateBody(CreateUserDTO)])
 	async register(@Body() payload: CreateUserDTO) {
-		validateOrReject(payload);
 		const response = await this.user.register(payload);
 		if (response) {
 			return ResponseDTO.success({

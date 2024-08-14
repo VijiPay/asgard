@@ -1,5 +1,6 @@
 import {
 	IsDefined,
+	IsEmail,
 	IsNotEmpty,
 	IsNumber,
 	IsString,
@@ -13,6 +14,10 @@ export class UpdatePasswordDTO {
 	@IsNotEmpty()
 	@IsNumber()
 	id: number;
+
+	@IsDefined()
+	@IsEmail()
+	email: string;
 
 	@IsDefined()
 	@IsNotEmpty()
