@@ -38,7 +38,7 @@ export class LoginService implements ILoginService {
 		await this.tokenRepository.saveRefreshToken(
 			user.id,
 			accessToken,
-			generateRefreshToken(user.id),
+			refreshToken,
 			expiresInHours(1),
 		);
 		const authenticatedUser: IAuthenticatedUser = {

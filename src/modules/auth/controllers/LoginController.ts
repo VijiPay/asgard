@@ -1,4 +1,3 @@
-import { validateOrReject } from "class-validator";
 import {
 	Body,
 	Controller,
@@ -10,12 +9,12 @@ import {
 	type TsoaResponse,
 } from "tsoa";
 import { inject, injectable } from "tsyringe";
+import { ValidateBody } from "../../../shared/middleware/ValidateBody";
 import { SaveToCookie } from "../../../shared/responses/SaveToCookie";
 import { AuthComponents } from "../constants/AuthComponents";
 import { AuthDTO } from "../dtos/AuthDTO";
 import type { IAuthenticatedUser } from "../interfaces/IAuthenticatedUser";
 import type { ILoginService } from "../interfaces/ILoginService";
-import { ValidateBody } from "../../../shared/middleware/ValidateBody";
 
 @injectable()
 @Tags("Authentication")
@@ -36,7 +35,6 @@ export class LoginController extends Controller {
 			{ message: string; data: Partial<IAuthenticatedUser> }
 		>,
 	) {
-		await validateOrReject(payload);
 		const response = await this.auth.loginWithEmail(payload);
 		if (response !== null) {
 			const saveToCookie = new SaveToCookie(res);

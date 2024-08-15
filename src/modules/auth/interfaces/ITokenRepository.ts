@@ -1,3 +1,5 @@
+import type { Session } from "@prisma/client";
+
 export interface ITokenRepository {
 	saveRefreshToken(
 		userId: number,
@@ -15,11 +17,7 @@ export interface ITokenRepository {
 		expires: Date;
 	}>;
 
-	getRefreshToken(refreshToken: string): Promise<{
-		accessToken: string;
-		refreshToken: string;
-		expires: Date;
-	} | null>;
+	getRefreshToken(refreshToken: string): Promise<Session | null>;
 
 	verifyPasswordResetToken(token: string): Promise<{
 		userId: number;
@@ -28,7 +26,7 @@ export interface ITokenRepository {
 		expiry: Date | null;
 	}>;
 
-	revokeRefreshToken(token: string): Promise<void>;
+	revokeRefreshToken(tokenId: number): Promise<void>;
 
 	invalidateUserSessions(userId: number): Promise<void>;
 }

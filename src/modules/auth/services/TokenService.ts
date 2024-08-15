@@ -20,7 +20,7 @@ export class TokenService implements ITokenService {
 	async refreshAccessToken(
 		refreshToken: string,
 	): Promise<{ accessToken: string }> {
-		this.logger.info("thesession token", refreshToken);
+		this.logger.info("the session token", refreshToken);
 		if (!refreshToken) {
 			throw new CustomException(
 				"authorization.required",
@@ -40,8 +40,19 @@ export class TokenService implements ITokenService {
 		return { accessToken: newAccessToken };
 	}
 
-	async revokeRefreshToken(token: string): Promise<void> {
-		await this.tokenRepository.revokeRefreshToken(token);
+	async getSession(
+		token: string,
+	): Promise<{ refreshToken: string; sessionId: number } | null> {
+		const session = await this.tokenRepository.getRefreshToken(token);
+
+		if (!session) {
+			throw new CustomException("Session not found", httpStatus.NOT_FOUND);
+		}
+		return { refreshToken: session.refreshToken, sessionId: session.id };
+	}
+
+	async revokeRefreshToken(tokenId: number): Promise<void> {
+		await this.tokenRepository.revokeRefreshToken(tokenId);
 	}
 
 	async invalidateUserSessions(userId: number): Promise<void> {
