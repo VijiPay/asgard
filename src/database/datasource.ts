@@ -1,3 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-export const dataSource = new PrismaClient();
+const dataSource = new PrismaClient();
+
+export default dataSource;
