@@ -1,4 +1,4 @@
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient, Session } from "@prisma/client";
 import { injectable } from "tsyringe";
 import type { ITokenRepository } from "../interfaces/ITokenRepository";
 
@@ -34,11 +34,7 @@ export class TokenRepository implements ITokenRepository {
 			data: { accessToken },
 		});
 	}
-	async getRefreshToken(refreshToken: string): Promise<{
-		accessToken: string;
-		refreshToken: string;
-		expires: Date;
-	} | null> {
+	async getRefreshToken(refreshToken: string): Promise<Session | null> {
 		return await this.connection.session.findUnique({
 			where: { refreshToken },
 		});
@@ -64,9 +60,9 @@ export class TokenRepository implements ITokenRepository {
 		};
 	}
 
-	async revokeRefreshToken(token: string): Promise<void> {
+	async revokeRefreshToken(tokenId: number): Promise<void> {
 		await this.connection.session.delete({
-			where: { refreshToken: token },
+			where: { id: tokenId },
 		});
 	}
 	async invalidateUserSessions(userId: number): Promise<void> {

@@ -22,8 +22,10 @@ export class SaveToCookie implements ISaveToCookie {
 			`accessToken=${accessToken}`,
 			"HttpOnly",
 			accessTokenOptions.secure ? "Secure" : "",
-			"SameSite=Strict",
+			`SameSite=${accessTokenOptions.sameSite || "Strict"}`,
 			`Max-Age=${accessTokenOptions.maxAge}`,
+			accessTokenOptions.domain ? `Domain=${accessTokenOptions.domain}` : "",
+			accessTokenOptions.path ? `Path=${accessTokenOptions.path}` : "",
 		]
 			.filter(Boolean)
 			.join("; ");
@@ -32,8 +34,10 @@ export class SaveToCookie implements ISaveToCookie {
 			`refreshToken=${refreshToken}`,
 			"HttpOnly",
 			refreshTokenOptions.secure ? "Secure" : "",
-			"SameSite=Strict",
+			`SameSite=${refreshTokenOptions.sameSite || "Strict"}`,
 			`Max-Age=${refreshTokenOptions.maxAge}`,
+			refreshTokenOptions.domain ? `Domain=${refreshTokenOptions.domain}` : "",
+			refreshTokenOptions.path ? `Path=${refreshTokenOptions.path}` : "",
 		]
 			.filter(Boolean)
 			.join("; ");
@@ -44,10 +48,9 @@ export class SaveToCookie implements ISaveToCookie {
 				message: "login.ok",
 				data: responseData,
 			},
-			[
-				["Set-Cookie", accessTokenCookie],
-				["Set-Cookie", refreshTokenCookie],
-			],
+			{
+				"Set-Cookie": [accessTokenCookie, refreshTokenCookie],
+			},
 		);
 	}
 }

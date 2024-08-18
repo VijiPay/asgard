@@ -789,6 +789,28 @@
 				}
 			}
 		},
+		"/ag/v1/token/logout": {
+			"get": {
+				"operationId": "Logout",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResponseDTO_unknown_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/ag/v1/auth/register": {
 			"post": {
 				"operationId": "Register",

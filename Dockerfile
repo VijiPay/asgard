@@ -11,7 +11,7 @@ RUN pnpm prisma generate --schema=./prisma/
 RUN pnpm build
 COPY . .
 
-FROM --platform=arm64 node:20-slim AS install
+FROM node:20-slim AS install
 RUN apt-get update && apt-get install -y openssl
 RUN npm i -g pnpm
 WORKDIR /asgard
