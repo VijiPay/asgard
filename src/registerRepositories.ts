@@ -1,4 +1,4 @@
-import dataSource from "./database/dataSource";
+import dataSource from "./database/datasource";
 import { registerAuthRepositories } from "./modules/auth/registerAuthRepositories";
 import { registerUserRepositories } from "./modules/user/registerUserRepositories";
 import type { ILogger } from "./shared/services/logger/ILogger";
