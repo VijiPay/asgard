@@ -2,5 +2,7 @@
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
 		"outDir": "./dist"
-	}
+	},
+	"include": ["./src", "types"],
+	"exclude": ["node_modules", "**/*.ispec.ts", "dist"]
 }

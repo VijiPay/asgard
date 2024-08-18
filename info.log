@@ -1919,3 +1919,5 @@
 {"level":"info","message":"db.connection.success"}
 {"level":"info","message":"server.running"}
 {"level":"info","message":"db.connection.success"}
+{"level":"info","message":"server.running"}
+{"level":"info","message":"db.connection.success"}
