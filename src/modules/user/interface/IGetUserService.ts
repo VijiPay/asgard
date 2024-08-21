@@ -9,5 +9,7 @@ export interface IGetUserService {
 	) => Promise<IUserProfile | undefined | null>;
 	findByEmail: (email: string) => Promise<IUserProfile | null>;
 	findById: (id: number) => Promise<IUserProfile | null>;
+	findByGoogleId(googleId: string): Promise<IUser | null>;
+	findByFacebookId(facebookId: string): Promise<IUser | null>;
 	all: () => Promise<IUserProfile[]>;
 }

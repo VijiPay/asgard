@@ -5,6 +5,7 @@ import {
 	IsString,
 	IsStrongPassword,
 	MinLength,
+	IsOptional
 } from "class-validator";
 
 export class CreateUserDTO {
@@ -43,4 +44,8 @@ export class CreateUserDTO {
 	@IsNotEmpty()
 	@IsString()
 	countryCode: string;
+
+	@IsOptional()
+	@IsString()
+	authId: string
 }

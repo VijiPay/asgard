@@ -21,6 +21,8 @@ model Profile {
   userLockedBy         String?   @map("user_locked_by")
   authyId              Int?      @map("authy_id")
   platformId           String?   @map("platform_id")
+  googleId             String?   @map("google_id")
+  facebookId           String?   @map("facebok_id")
   loginIp              String?   @map("login_ip")
   lastLogin            DateTime? @map("last_login")
   metadata             Json?

@@ -2,6 +2,9 @@ name: Pull Request Workflow
 
 on:
   pull_request:
+    branches:
+      - develop
+      - main
 
 concurrency:
   group: "${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
@@ -32,9 +35,6 @@ jobs:
       
       - name: Generate Prisma Client
         run: pnpm prisma generate --schema=./prisma/
-
-      - name: List files in the src/database directory
-        run: ls -R src/database
       
       - name: Lint
         run: pnpm lint

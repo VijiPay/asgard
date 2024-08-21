@@ -31,7 +31,7 @@ export class RegisterService implements IRegisterService {
 		if (userExists) {
 			throw new CustomException("user.already.exists", httpStatus.FORBIDDEN);
 		}
-
+		const oauth = this.oauth(data.authId);
 		const encryptedPassword = await encryptPassword(data.password);
 		const userData: ICreateUser = {
 			...data,
@@ -39,6 +39,8 @@ export class RegisterService implements IRegisterService {
 			profile: {
 				create: {
 					tradeName: `${data.firstName} ${data.lastName}`,
+					googleId: oauth?.type === "google" ? oauth.id : null,
+					facebookId: oauth?.type === "facebook" ? oauth.id : null,
 				},
 			},
 		};
@@ -46,9 +48,23 @@ export class RegisterService implements IRegisterService {
 		const user = await this.registerRepository.create(userData);
 		this.notification.send(
 			{ email: data.email },
-			{ templatePath: EmailTemplatePath.REGISTRATION, },
+			{ templatePath: EmailTemplatePath.REGISTRATION },
 		);
 
 		return { name: user.firstName, email: user.email };
+	}
+
+	oauth(input: string): { type: string; id: string } | null {
+		let type: string;
+		if (input.startsWith("google")) {
+			type = "google";
+		} else if (input.startsWith("facebook")) {
+			type = "facebook";
+		} else {
+			return null;
+		}
+		const id = input.replace(`${type}$`, "");
+
+		return { type, id };
 	}
 }

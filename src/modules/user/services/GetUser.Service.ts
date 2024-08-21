@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { UserComponents } from "../constants/UserComponents";
 import type { IGetUserRepository } from "../interface/IGetUserRepository";
 import type { IGetUserService } from "../interface/IGetUserService";
+import type { IUser } from "../interface/IUser";
 import type { IUserProfile } from "../interface/IUserProfile";
 
 @injectable()
@@ -26,6 +27,14 @@ export class GetUserService implements IGetUserService {
 			this.getUser.findByEmail(email);
 		}
 		return Promise.resolve(null);
+	}
+
+	findByFacebookId(facebookId: string): Promise<IUser | null> {
+		return this.getUser.findByFacebookId(facebookId);
+	}
+
+	findByGoogleId(googleId: string): Promise<IUser | null> {
+		return this.getUser.findByGoogleId(googleId);
 	}
 
 	async findById(id: number): Promise<IUserProfile | null> {
