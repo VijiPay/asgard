@@ -3,12 +3,14 @@ import type { UserType } from "@prisma/client";
 interface IProfile {
 	role?: string;
 	tradeName?: string;
-	phoneNumber: string | null;
+	phoneNumber?: string | null;
 	platformId?: string | null;
-	address: string | null;
+	address?: string | null;
 	lastLogin?: Date | null;
 	phoneVerified?: boolean;
 	emailVerified?: boolean;
+	googleId?: string | null;
+	facebookId?: string | null;
 }
 
 interface IPaymentMethod {

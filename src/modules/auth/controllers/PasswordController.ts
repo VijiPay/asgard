@@ -55,7 +55,7 @@ export class PasswordController extends Controller {
 
 		const isOldPasswordCorrect = await decryptPassword(
 			payload.oldPassword,
-			existingUser.password,
+			existingUser.password ? existingUser.password : "",
 		);
 		if (!isOldPasswordCorrect) {
 			throw new CustomException(

@@ -5,6 +5,8 @@ export class UpdateUserDTO {
 	profile?: {
 		address?: string | null;
 		phoneNumber?: string | null;
+		googleId?: string | null;
+		facebookId?: string | null;
 	};
 
 	constructor(user: Partial<IUserProfile>) {
@@ -13,6 +15,8 @@ export class UpdateUserDTO {
 			? {
 					address: user.profile.address,
 					phoneNumber: user.profile.phoneNumber,
+					googleId: user.profile.googleId,
+					facebookId: user.profile.facebookId,
 				}
 			: undefined;
 	}

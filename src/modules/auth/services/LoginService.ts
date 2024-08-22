@@ -26,15 +26,39 @@ export class LoginService implements ILoginService {
 
 	async loginWithEmail(authDTO: AuthDTO): Promise<IAuthenticatedUser> {
 		const user = await this.userRepository.findByEmail(authDTO.email);
+
 		if (!user) {
 			throw new CustomException("invalid.credentials", httpStatus.NOT_FOUND);
 		}
+
+		if (
+			user.password === null ||
+			(user.password === "" && user.profile?.googleId)
+		) {
+			throw new CustomException(
+				"This account is linked to Google. Please use Google to log in.",
+				httpStatus.UNAUTHORIZED,
+			);
+		}
+
+		if (
+			user.password === null ||
+			(user.password === "" && user.profile?.facebookId)
+		) {
+			throw new CustomException(
+				"This account is linked to Facebook. Please use Facebook to log in.",
+				httpStatus.UNAUTHORIZED,
+			);
+		}
+
 		const decrypt = await decryptPassword(authDTO.password, user.password);
 		if (!decrypt) {
 			throw new CustomException("invalid.credentials", httpStatus.UNAUTHORIZED);
 		}
+
 		const accessToken = generateAccessToken(user.id, user.email);
 		const refreshToken = generateRefreshToken(user.id);
+
 		await this.tokenRepository.saveRefreshToken(
 			user.id,
 			accessToken,
@@ -47,17 +71,16 @@ export class LoginService implements ILoginService {
 			status: user.status,
 			name: user.profile?.tradeName as string,
 			role: user.profile?.role as string,
-			countryCode: user.countryCode,
+			countryCode: user.countryCode ? user.countryCode : "",
 			accessToken,
 			refreshToken,
 		};
 		return authenticatedUser;
 	}
 
-	loginWithGmail(authDTO: AuthDTO): Promise<IAuthenticatedUser | null> {
+	loginWithGoogle(): Promise<IAuthenticatedUser | null> {
 		return Promise.resolve(null);
 	}
-
 	loginWithFacebook(authDTO: AuthDTO): Promise<IAuthenticatedUser | null> {
 		return Promise.resolve(null);
 	}

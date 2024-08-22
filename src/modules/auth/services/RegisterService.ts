@@ -31,16 +31,17 @@ export class RegisterService implements IRegisterService {
 		if (userExists) {
 			throw new CustomException("user.already.exists", httpStatus.FORBIDDEN);
 		}
-		const oauth = this.oauth(data.authId);
-		const encryptedPassword = await encryptPassword(data.password);
+
+		const encryptedPassword =
+			data.password !== null ? await encryptPassword(data.password) : null;
 		const userData: ICreateUser = {
 			...data,
 			password: encryptedPassword,
 			profile: {
 				create: {
 					tradeName: `${data.firstName} ${data.lastName}`,
-					googleId: oauth?.type === "google" ? oauth.id : null,
-					facebookId: oauth?.type === "facebook" ? oauth.id : null,
+					googleId: data.profile?.googleId,
+					facebookId: data.profile?.facebookId,
 				},
 			},
 		};
@@ -52,19 +53,5 @@ export class RegisterService implements IRegisterService {
 		);
 
 		return { name: user.firstName, email: user.email };
-	}
-
-	oauth(input: string): { type: string; id: string } | null {
-		let type: string;
-		if (input.startsWith("google")) {
-			type = "google";
-		} else if (input.startsWith("facebook")) {
-			type = "facebook";
-		} else {
-			return null;
-		}
-		const id = input.replace(`${type}$`, "");
-
-		return { type, id };
 	}
 }

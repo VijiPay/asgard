@@ -4,6 +4,7 @@ import { container } from "tsyringe";
 import { UserComponents } from "../../modules/user/constants/UserComponents";
 import { UserStatus } from "../../modules/user/constants/UserStatus";
 import type { IGetUserService } from "../../modules/user/interface/IGetUserService";
+import type { IUser } from "../../modules/user/interface/IUser";
 import { CustomException } from "../exceptions/CustomException";
 import type { TokenPayload } from "../interfaces/TokenPayload";
 import { decodeToken } from "../utils/jwt";
@@ -40,4 +41,18 @@ export const Auth = async (
 		role: user.profile?.role as string,
 	};
 	next();
+};
+
+export const redirectAfterAuth = (
+	req: Request & { user: IUser },
+	res: Response,
+	next: NextFunction,
+) => {
+	const user = req.user as IUser;
+
+	if (user) {
+		Response.redirect(`/ag/v1/user/find-by-id?id=${user.id}`, 302);
+	} else {
+		Response.redirect("/login", 302);
+	}
 };

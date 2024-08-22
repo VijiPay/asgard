@@ -13,6 +13,7 @@ import { AuthComponents } from "../modules/auth/constants/AuthComponents";
 import type { IRegisterService } from "../modules/auth/interfaces/IRegisterService";
 import { UserComponents } from "../modules/user/constants/UserComponents";
 import type { IGetUserService } from "../modules/user/interface/IGetUserService";
+import type { IUpdateUserService } from "../modules/user/interface/IUpdateUserService";
 import type { IUser } from "../modules/user/interface/IUser";
 import { OAuthClient } from "./config";
 
@@ -23,25 +24,14 @@ export class PassportStrategies {
 		private getUserService: IGetUserService,
 		@inject(AuthComponents.RegisterService)
 		private registerUserService: IRegisterService,
+		@inject(UserComponents.UpdateUserService)
+		private updateUserService: IUpdateUserService,
 	) {
 		this.initializeGoogleStrategy();
 		this.initializeFacebookStrategy();
 		this.serializeUser();
 		this.deserializeUser();
 	}
-	private userProfile = (profile: GoogleProfile | FacebookProfile) => {
-		const data = {
-			firstName: profile.name?.givenName as string,
-			lastName: profile.name?.familyName as string,
-			email: profile.emails?.[0].value as string,
-			password: "string",
-			countryCode: "N/A",
-			authId: `google${profile.id}`,
-		};
-
-		return data;
-	};
-
 	private initializeGoogleStrategy() {
 		passport.use(
 			new GoogleStrategy(
@@ -57,21 +47,36 @@ export class PassportStrategies {
 					accessToken: string,
 					refreshToken: string,
 					profile: GoogleProfile,
-					callback,
+					done,
 				) => {
-					let user = this.getUserService.findByGoogleId(profile.id);
+					const userData = {
+						firstName: profile.name?.givenName as string,
+						lastName: profile.name?.familyName as string,
+						email: profile.emails?.[0].value as string,
+						password: null,
+						countryCode: null,
+						profile: {
+							googleId: profile.id,
+							emailVerified: profile.emails?.[0].verified as boolean,
+						},
+					};
+					let user = await this.getUserService.findByGoogleId(profile.id);
 					if (!user) {
-						await this.registerUserService.register({
-							firstName: profile.name?.givenName as string,
-							lastName: profile.name?.familyName as string,
-							email: profile.emails?.[0].value as string,
-							password: "",
-							countryCode: "N/A",
-							authId: `google${profile.id}`,
-						});
+						const existingUser = await this.getUserService.findByEmail(
+							profile.emails?.[0].value as string,
+						);
+
+						if (existingUser) {
+							await this.updateUserService.update(existingUser.id, {
+								profile: { googleId: profile.id },
+							});
+							return existingUser;
+						}
+						await this.registerUserService.register(userData);
 					}
-					user = user = this.getUserService.findByGoogleId(profile.id);
-					callback(null, this.userProfile(profile));
+
+					user = await this.getUserService.findByGoogleId(profile.id);
+					return done(null, user as IUser);
 				},
 			),
 		);
@@ -86,53 +91,58 @@ export class PassportStrategies {
 					callbackURL: OAuthClient.FACEBOOK_CALLBACK_URL,
 					profileFields: ["id", "name", "emails"],
 					passReqToCallback: true,
+					enableProof: true,
 				},
 				async (
 					req: Request,
 					accessToken: string,
 					refreshToken: string,
 					profile: FacebookProfile,
-					callback,
+					done,
 				) => {
-					let user = this.getUserService.findByFacebookId(profile.id);
+					const userData = {
+						firstName: profile.name?.givenName as string,
+						lastName: profile.name?.familyName as string,
+						email: profile.emails?.[0].value as string,
+						password: null,
+						countryCode: null,
+						profile: {
+							facebookId: profile.id,
+						},
+					};
+					let user = await this.getUserService.findByFacebookId(profile.id);
 					if (!user) {
-						await this.registerUserService.register({
-							firstName: profile.name?.givenName as string,
-							lastName: profile.name?.familyName as string,
-							email: profile.emails?.[0].value as string,
-							password: "",
-							countryCode: "N/A",
-							authId: `facebook${profile.id}`,
-						});
+						const existingUser = await this.getUserService.findByEmail(
+							profile.emails?.[0].value as string,
+						);
+
+						if (existingUser) {
+							await this.updateUserService.update(existingUser.id, {
+								profile: { facebookId: profile.id },
+							});
+							return existingUser;
+						}
+						await this.registerUserService.register(userData);
 					}
-					user = user = this.getUserService.findByFacebookId(profile.id);
-					callback(null, this.userProfile(profile));
+
+					user = await this.getUserService.findByFacebookId(profile.id);
+					return done(null, user as IUser);
 				},
 			),
 		);
 	}
 
 	private serializeUser() {
-		passport.serializeUser(
-			(
-				user: Partial<IUser>,
-				done: (err: Error | null, id?: unknown) => void,
-			) => {
-				const passportUser: Partial<IUser> = { id: user.id };
-				done(null, passportUser.id);
-			},
-		);
+		passport.serializeUser((user, done) => {
+			console.log("serializing", user);
+			done(null, (user as IUser).id);
+		});
 	}
 
 	private deserializeUser() {
-		passport.deserializeUser(
-			async (
-				id: number,
-				done: (err: Error | null, user?: IUser | null) => void,
-			) => {
-				const user = await this.getUserService.findRaw(id);
-				done(null, user);
-			},
-		);
+		passport.deserializeUser(async (id: number, done) => {
+			const user = await this.getUserService.findRaw(id);
+			done(null, user);
+		});
 	}
 }

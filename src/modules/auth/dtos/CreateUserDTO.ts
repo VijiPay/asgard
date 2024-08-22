@@ -2,10 +2,10 @@ import {
 	IsDefined,
 	IsEmail,
 	IsNotEmpty,
+	IsOptional,
 	IsString,
 	IsStrongPassword,
 	MinLength,
-	IsOptional
 } from "class-validator";
 
 export class CreateUserDTO {
@@ -39,13 +39,18 @@ export class CreateUserDTO {
 				"The password must contain at least 1 symbol lowercase and uppercase",
 		},
 	)
-	password: string;
+	password: string | null;
 
 	@IsNotEmpty()
 	@IsString()
-	countryCode: string;
+	countryCode: string | null;
 
 	@IsOptional()
 	@IsString()
-	authId: string
+	authId?: string | null;
+
+	profile?: {
+		googleId?: string;
+		facebookId?: string;
+	};
 }

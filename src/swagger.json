@@ -38,6 +38,14 @@
 					},
 					"profile": {
 						"properties": {
+							"facebookId": {
+								"type": "string",
+								"nullable": true
+							},
+							"googleId": {
+								"type": "string",
+								"nullable": true
+							},
 							"phoneNumber": {
 								"type": "string",
 								"nullable": true
@@ -95,12 +103,16 @@
 					},
 					"emailVerified": {
 						"type": "boolean"
+					},
+					"googleId": {
+						"type": "string",
+						"nullable": true
+					},
+					"facebookId": {
+						"type": "string",
+						"nullable": true
 					}
 				},
-				"required": [
-					"phoneNumber",
-					"address"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -371,10 +383,27 @@
 						"type": "string"
 					},
 					"password": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"countryCode": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
+					},
+					"authId": {
+						"type": "string",
+						"nullable": true
+					},
+					"profile": {
+						"properties": {
+							"facebookId": {
+								"type": "string"
+							},
+							"googleId": {
+								"type": "string"
+							}
+						},
+						"type": "object"
 					}
 				},
 				"required": [

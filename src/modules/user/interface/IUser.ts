@@ -8,12 +8,12 @@ interface IPartialTransaction {
 export interface IUser {
 	id: number;
 	email: string;
-	password: string;
+	password: string | null;
 	firstName: string;
 	lastName: string;
 	type: UserType;
 	status: number;
-	countryCode: string;
+	countryCode: string | null;
 	createdDate: Date;
 	lastModifiedDate: Date;
 	profile: IProfile | null;
@@ -46,6 +46,8 @@ export interface IProfile {
 	userLockedDate: Date | null;
 	userLockedBy: string | null;
 	authyId: number | null;
+	googleId: string | null;
+	facebookId: string | null;
 	phoneVerifyCode: string | null;
 	phoneVerifyExpires: Date | null;
 	phoneVerifyDate: Date | null;

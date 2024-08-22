@@ -29,4 +29,5 @@ export class UpdateUserService implements IUpdateUserService {
 		};
 		return this.user.update(update);
 	}
+
 }

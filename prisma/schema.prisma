@@ -11,12 +11,12 @@ datasource db {
 model User {
   id               Int      @id @default(autoincrement())
   email            String   @unique
-  password         String
+  password         String?
   firstName        String
   lastName         String
   type             UserType @default(INDIVIDUAL)
   status           Int      @default(0)
-  countryCode      String   @map("country_code")
+  countryCode      String?   @map("country_code")
   createdDate      DateTime @default(now()) @map("created_date")
   lastModifiedDate DateTime @updatedAt @map("last_modified_date")
 

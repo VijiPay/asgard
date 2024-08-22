@@ -15,7 +15,6 @@ import { Http } from "./shared/services/http/Http";
 import type { IHttpClient } from "./shared/services/http/IHttpClient";
 import type { INotificationService } from "./shared/services/notification/INotificationService";
 import { NotificationService } from "./shared/services/notification/NotificationService";
-import { PassportStrategies } from "./strategies/passportStrategies";
 
 const config = container.resolve(Config);
 
@@ -50,10 +49,6 @@ container.register<IEmail>(Components.Email, {
 	useValue: new Email(
 		container.resolve<IEmailProvider>(Components.EmailProvider),
 	),
-});
-
-container.register<PassportStrategies>("PassportStrategies", {
-	useClass: PassportStrategies,
 });
 
 container.register<INotificationService>(Components.NotificationService, {
