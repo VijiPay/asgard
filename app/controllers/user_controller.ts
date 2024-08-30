@@ -1,25 +1,29 @@
-import type { UserService } from "#services/user_service";
-import ResponseDTO from "#shared/dtos/response_dto";
 import { inject } from "@adonisjs/core";
 import type { HttpContext } from "@adonisjs/core/http";
+import type { UserService } from "#services/user_service";
+import ResponseDTO from "#shared/dtos/response_dto";
 
 @inject()
 export default class UserController {
 	constructor(private userService: UserService) {}
 
 	public async getAllUsers() {
-		const users = await this.userService.getAll();
-		return ResponseDTO.success("Users retrieved successfully", users);
+		const data = await this.userService.getAll();
+		return ResponseDTO.success({
+			message: "Users retrieved successfully",
+			data,
+		});
 	}
 
-	public async getUser({ params, response }: HttpContext) {
-		const user = await this.userService.getById(params.id);
-		return response.json(
-			ResponseDTO.success("User retrieved successfully", user),
-		);
+	public async getUser({ params }: HttpContext) {
+		const data = await this.userService.getById(params.id);
+		return ResponseDTO.success({
+			message: "User retrieved successfully",
+			data,
+		});
 	}
 
-	public async create({ request, response }: HttpContext) {
+	public async create({ request }: HttpContext) {
 		console.log("creating");
 		const userData = request.only([
 			"email",
@@ -28,13 +32,14 @@ export default class UserController {
 			"lastName",
 			"countryCode",
 		]);
-		const user = await this.userService.create(userData);
-		return response
-			.status(201)
-			.json(ResponseDTO.created("User created successfully", user));
+		const data = await this.userService.create(userData);
+		return ResponseDTO.success({
+			message: "User created successfully",
+			data,
+		});
 	}
 
-	public async oauthSignUp({ request, response }: HttpContext) {
+	public async oauthSignUp({ request }: HttpContext) {
 		const userData = request.only([
 			"email",
 			"firstName",
@@ -44,52 +49,53 @@ export default class UserController {
 			"facebookId",
 			"loginIp",
 		]);
-		const user = await this.userService.create(userData);
-		return response
-			.status(201)
-			.json(ResponseDTO.created("User registered successfully", user));
+		const data = await this.userService.create(userData);
+		return ResponseDTO.success({
+			message: "User registered successfully",
+			data,
+		});
 	}
 
-	public async update({ params, request, response }: HttpContext) {
+	public async update({ params, request }: HttpContext) {
 		const userData = request.only([
 			"email",
 			"firstName",
 			"lastName",
 			"countryCode",
 		]);
-		const user = await this.userService.update(params.id, userData);
-		return response.json(
-			ResponseDTO.success("User updated successfully", user),
-		);
+		const data = await this.userService.update(params.id, userData);
+		return ResponseDTO.success({
+			message: "User updated successfully",
+			data,
+		});
 	}
 
-	public async delete({ params, response }: HttpContext) {
+	public async delete({ params }: HttpContext) {
 		await this.userService.delete(params.id);
-		return response.json(ResponseDTO.success("User deleted successfully"));
+		return ResponseDTO.success({ message: "User deleted successfully" });
 	}
 
-	public async changePassword({ params, request, response }: HttpContext) {
+	public async changePassword({ params, request }: HttpContext) {
 		const { newPassword } = request.only(["newPassword"]);
-		const user = await this.userService.changePassword(params.id, newPassword);
-		return response.json(
-			ResponseDTO.success("Password changed successfully", user),
-		);
+		const data = await this.userService.changePassword(params.id, newPassword);
+		return ResponseDTO.success({
+			message: "Password changed successfully",
+			data,
+		});
 	}
 
-	public async lockUser({ params, request, response }: HttpContext) {
+	public async lockUser({ params, request }: HttpContext) {
 		const { reason, lockingUserId } = request.only(["reason", "lockingUserId"]);
-		const user = await this.userService.lockUser(
+		const data = await this.userService.lockUser(
 			params.id,
 			reason,
 			lockingUserId,
 		);
-		return response.json(ResponseDTO.success("User locked successfully", user));
+		return ResponseDTO.success({ message: "User locked successfully", data });
 	}
 
-	public async unlockUser({ params, response }: HttpContext) {
-		const user = await this.userService.unlockUser(params.id);
-		return response.json(
-			ResponseDTO.success("User unlocked successfully", user),
-		);
+	public async unlockUser({ params }: HttpContext) {
+		const data = await this.userService.unlockUser(params.id);
+		return ResponseDTO.success({ message: "User unlocked successfully", data });
 	}
 }

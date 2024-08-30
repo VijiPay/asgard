@@ -1,8 +1,9 @@
-import app from "@adonisjs/core/services/app";
-import { type HttpContext, ExceptionHandler } from "@adonisjs/core/http";
 import type { Exception } from "@adonisjs/core/exceptions";
-import { CustomException } from "#shared/exceptions/CustomException";
+import { ExceptionHandler, type HttpContext } from "@adonisjs/core/http";
+import app from "@adonisjs/core/services/app";
+import { ResponseStatus } from "#interface/i_response";
 import ResponseDTO from "#shared/dtos/response_dto";
+import { CustomException } from "#shared/exceptions/CustomException";
 
 export default class HttpExceptionHandler extends ExceptionHandler {
 	/**
@@ -19,7 +20,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 			status = error.status,
 		} = error;
 
-		const resObj = new ResponseDTO(status, message);
+		const resObj = new ResponseDTO(ResponseStatus.ERROR, message);
 		return ctx.response.status(status).json(resObj);
 	}
 
