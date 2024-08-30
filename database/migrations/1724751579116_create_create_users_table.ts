@@ -37,6 +37,7 @@ export default class extends BaseSchema {
 			table.string("google_id").nullable();
 			table.string("facebook_id").nullable();
 			table.string("login_ip").nullable();
+			table.json("metadata").nullable();
 			table.timestamp("last_login", { useTz: true }).nullable();
 			table.boolean("accept_terms").defaultTo(true);
 

@@ -1,18 +1,19 @@
-import type { DateTime } from "luxon";
-import hash from "@adonisjs/core/services/hash";
-import { compose } from "@adonisjs/core/helpers";
-import { BaseModel, column, hasOne, hasMany } from "@adonisjs/lucid/orm";
-import { withAuthFinder } from "@adonisjs/auth/mixins/lucid";
-import type { HasOne, HasMany } from "@adonisjs/lucid/types/relations";
 import { DbAccessTokensProvider } from "@adonisjs/auth/access_tokens";
-import ApiKey from "./developer.js";
-import Transaction from "./transaction.js";
-import BusinessAssociate from "./business_associate.js";
+import { withAuthFinder } from "@adonisjs/auth/mixins/lucid";
+import { compose } from "@adonisjs/core/helpers";
+import hash from "@adonisjs/core/services/hash";
+import { BaseModel, column, hasMany, hasOne } from "@adonisjs/lucid/orm";
+import type { HasMany, HasOne } from "@adonisjs/lucid/types/relations";
+import type { DateTime } from "luxon";
+import type { UserMetadata } from "#interface/i_user_metadata";
 import Business from "./business.js";
-import Payout from "./payout.js";
+import BusinessAssociate from "./business_associate.js";
+import ApiKey from "./developer.js";
 import Fraudscore from "./fraudscore.js";
-import PaymentMethod from "./payment_method.js";
 import Payment from "./payment.js";
+import PaymentMethod from "./payment_method.js";
+import Payout from "./payout.js";
+import Transaction from "./transaction.js";
 
 const AuthFinder = withAuthFinder(() => hash.use("scrypt"), {
 	uids: ["email"],
@@ -115,6 +116,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
 	@column()
 	declare loginIp: string | null;
+
+	@column()
+	declare metadata: UserMetadata | null;
 
 	@column.dateTime()
 	declare lastLogin: DateTime | null;
