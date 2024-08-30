@@ -2,7 +2,6 @@
 	"$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
 	"formatter": {
 		"enabled": true,
-		"ignore": ["**/*.ispec.ts"],
 		"formatWithErrors": false,
 		"indentStyle": "tab",
 		"indentWidth": 2,
@@ -11,7 +10,7 @@
 		"attributePosition": "auto"
 	},
 	"files": {
-		"ignore": ["./src/routes.ts", "dist/**"]
+		"ignore": ["node_modules/**", "build/**"]
 	},
 	"organizeImports": {
 		"enabled": true
