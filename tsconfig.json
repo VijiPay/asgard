@@ -1,9 +1,7 @@
 {
-	"extends": "./tsconfig.base.json",
-	"compilerOptions": {
-		"noEmit": false,
-		"types": ["node"]
-	},
-	"include": ["./src", "types", "src/modules/auth/services/PasswordService.ts"],
-	"exclude": ["node_modules", "**/*.ispec.ts", "templates", "dist"]
+  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./build"
+  }
 }

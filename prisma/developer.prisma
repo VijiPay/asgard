@@ -1,9 +1,0 @@
-model ApiKey {
-  id        Int      @default(autoincrement())
-  key       String
-  createdAt DateTime @default(now()) @map("created_at")
-  lastUsed  DateTime @updatedAt
-  userId    Int      @unique
-
-  user User @relation(fields: [userId], references: [id])
-}
