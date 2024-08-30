@@ -1,46 +1,55 @@
 services:
+  asgard:
+    container_name: asgard
+    build: .
+    ports:
+      - "4343:4343"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+    depends_on:
+      asgard_db:
+        condition: service_healthy
+      asgard_cache:
+        condition: service_started
+    networks:
+      - asgard-net
+
   asgard_db:
     container_name: asgard_db
     image: postgres:15-alpine
-    env_file:
-      - .env
     ports:
       - 5800:5432
-    networks:
-      - asgard_net
+    volumes:
+      - db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - asgard-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  asgard:
-    container_name: asgard
-    build: .
-    depends_on:
-      asgard_db:
-        condition: service_healthy
+  asgard_cache:
+    container_name: asgard_cache
+    image: redis:7-alpine
     ports:
-      - 4343:4343
+      - 6385:6379
     volumes:
-      - .:/asgard
-      - /asgard/.pnpm-store
-      - /asgard/node_modules
-    command: ["pnpm", "start"]
+      - cache-data:/data
     networks:
-      - asgard_net
-    environment:
-      DB_URL: ${DATABASE_URL}
-      DB_PORT: ${DB_PORT}
-    stdin_open: true
-    tty: true
-    env_file:
-      - .env
+      - asgard-net
 
 networks:
-  asgard_net:
+  asgard-net:
     driver: bridge
+
+volumes:
+  db-data:
+  cache-data:
