@@ -44,7 +44,7 @@ jobs:
       - name: Set outputs
         id: vars
         run: |
-            echo "::set-output name=GIT_SHA::$(git rev-parse --short HEAD)"
+            echo "GIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       
       - name: Login to Amazon ECR
         id: login-ecr
@@ -55,12 +55,17 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           GIT_SHA: ${{ steps.vars.outputs.GIT_SHA }}
-          REPOSITORY: asgard
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         run: |
+          if [ -z "$ECR_REPOSITORY" ]; then
+            echo "ECR_REPOSITORY is not set. Please check your workflow configuration."
+            exit 1
+          fi
           docker build --build-arg GIT_SHA=$GIT_SHA -t $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA .
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA" >> $GITHUB_OUTPUT          
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
