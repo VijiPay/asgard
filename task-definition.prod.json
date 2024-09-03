@@ -1,0 +1,87 @@
+{
+	"taskDefinitionArn": "arn:aws:ecs:eu-central-1:324037293753:task-definition/task-definition-dev:1",
+	"containerDefinitions": [
+		{
+			"name": "asgard",
+			"image": "324037293753.dkr.ecr.eu-central-1.amazonaws.com/asgard:latest",
+			"cpu": 0,
+			"portMappings": [
+				{
+					"name": "asgard-fargate",
+					"containerPort": 4343,
+					"hostPort": 4343,
+					"protocol": "tcp",
+					"appProtocol": "http"
+				}
+			],
+			"essential": true,
+			"environment": [],
+			"environmentFiles": [
+				{
+					"value": "arn:aws:s3:::asgard-dev-env/.env",
+					"type": "s3"
+				}
+			],
+			"mountPoints": [],
+			"volumesFrom": [],
+			"ulimits": [],
+			"logConfiguration": {
+				"logDriver": "awslogs",
+				"options": {
+					"awslogs-create-group": "true",
+					"awslogs-group": "/ecs/nebula-service-dev",
+					"awslogs-region": "eu-west-1",
+					"awslogs-stream-prefix": "ecs"
+				},
+				"secretOptions": []
+			}
+		}
+	],
+	"family": "task-definition-dev",
+	"executionRoleArn": "arn:aws:iam::324037293753:role/ecsTaskExecutionRole",
+	"networkMode": "awsvpc",
+	"revision": 1,
+	"volumes": [],
+	"status": "ACTIVE",
+	"requiresAttributes": [
+		{
+			"name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+		},
+		{
+			"name": "ecs.capability.execution-role-awslogs"
+		},
+		{
+			"name": "com.amazonaws.ecs.capability.ecr-auth"
+		},
+		{
+			"name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+		},
+		{
+			"name": "com.amazonaws.ecs.capability.task-iam-role"
+		},
+		{
+			"name": "ecs.capability.execution-role-ecr-pull"
+		},
+		{
+			"name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+		},
+		{
+			"name": "ecs.capability.task-eni"
+		},
+		{
+			"name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+		}
+	],
+	"placementConstraints": [],
+	"compatibilities": ["EC2", "FARGATE"],
+	"requiresCompatibilities": ["FARGATE"],
+	"cpu": "256",
+	"memory": "512",
+	"runtimePlatform": {
+		"cpuArchitecture": "X86_64",
+		"operatingSystemFamily": "LINUX"
+	},
+	"registeredAt": "2024-01-29T11:52:24.476Z",
+	"registeredBy": "arn:aws:iam::073680014884:user/ibiniyi",
+	"tags": []
+}

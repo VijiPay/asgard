@@ -8,10 +8,9 @@ on:
 env:
   AWS_REGION: ${{vars.AWS_REGION}}
   ECR_REPOSITORY: ${{vars.ECR_REPOSITORY}}
-  ECS_SERVICE: ${{vars.ECS_SERVICE}}
-  ECS_CLUSTER: ${{vars.ECS_CLUSTER}}
-  ECS_TASK_DEFINITION: ./task-definition.json
   CONTAINER_NAME: ${{vars.CONTAINER_NAME}}
+  ECS_SERVICE:  ${{ vars.ECS_SERVICE }}
+  ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
   
 jobs:
   deploy:
@@ -65,12 +64,32 @@ jobs:
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA" >> $GITHUB_OUTPUT          
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA" >> $GITHUB_OUTPUT
+
+      - name: Set environment-specific variables
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            echo "ECS_TASK_DEFINITION=./task-definition-prod.json" >> $GITHUB_ENV
+            echo "ECS_SERVICE=asgard-service-prod" >> $GITHUB_ENV
+            echo "ECS_CLUSTER=asgard-ecs-cluster-prod" >> $GITHUB_ENV
+          else
+            echo "ECS_TASK_DEFINITION=./task-definition-dev.json" >> $GITHUB_ENV
+            echo "ECS_SERVICE=asgard-service-dev" >> $GITHUB_ENV
+            echo "ECS_CLUSTER=asgard-ecs-cluster-dev" >> $GITHUB_ENV
+          fi
+          
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: render-container
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ vars.ECS_TASK_DEFINITION }}
+          task-definition: ${{ steps.render-container.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
