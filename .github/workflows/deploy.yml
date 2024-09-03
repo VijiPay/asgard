@@ -10,19 +10,20 @@ env:
   ECR_REPOSITORY: ${{vars.ECR_REPOSITORY}}
   ECS_SERVICE: ${{vars.ECS_SERVICE}}
   ECS_CLUSTER: ${{vars.ECS_CLUSTER}}
+  ECS_TASK_DEFINITION: ./task-definition.json
   CONTAINER_NAME: ${{vars.CONTAINER_NAME}}
   
 jobs:
   deploy:
-    name: Lint, Test and Deploy 🚀
+    name: Build, Test and Deploy 🚀
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
@@ -38,26 +39,33 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          
+      - name: Set outputs
+        id: vars
+        run: |
+            echo "::set-output name=GIT_SHA::$(git rev-parse --short HEAD)"
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          GIT_SHA: ${{ steps.vars.outputs.GIT_SHA }}
+          REPOSITORY: asgard
+        run: |
+          docker build --build-arg GIT_SHA=$GIT_SHA -t $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      - name: Setup pnpm and Project Dependencies
-        uses: pnpm/action-setup@v4
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          version: 9
-          run_install: |
-            - recursive: true
-              args: [--frozen-lockfile, --strict-peer-dependencies]
-            - args: [--global, typescript]
-      
-      - name: Generate Prisma Client
-        run: pnpm prisma generate --schema=./prisma/
-      
-      - name: Lint
-        run: pnpm lint
-
-      - name: Build Project
-        run: pnpm build
-      
-      - name: Build Image
-        run: docker build -t asgard .   
+          task-definition: ${{ vars.ECS_TASK_DEFINITION }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
