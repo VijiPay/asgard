@@ -93,3 +93,12 @@ jobs:
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
+          wait-for-minutes: 10
+        timeout-minutes: 15
+      
+      - name: Check deployment status
+        if: failure()
+        run: |
+          echo "Deployment failed or timed out. Check your ECS service for more details."
+          # You can add additional diagnostic commands here, such as:
+          # aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }}
