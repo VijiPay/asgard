@@ -71,11 +71,11 @@ jobs:
           if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
             echo "ECS_TASK_DEFINITION=./task-definition.prod.json" >> $GITHUB_ENV
             echo "ECS_SERVICE=asgard-service-prod" >> $GITHUB_ENV
-            echo "ECS_CLUSTER=asgard-ecs-cluster-prod" >> $GITHUB_ENV
+            echo "ECS_CLUSTER=AsgardCluster" >> $GITHUB_ENV
           else
             echo "ECS_TASK_DEFINITION=./task-definition.dev.json" >> $GITHUB_ENV
             echo "ECS_SERVICE=asgard-service-dev" >> $GITHUB_ENV
-            echo "ECS_CLUSTER=asgard-ecs-cluster-dev" >> $GITHUB_ENV
+            echo "ECS_CLUSTER=AsgardCluster" >> $GITHUB_ENV
           fi
           
       - name: Fill in the new image ID in the Amazon ECS task definition

@@ -1,5 +1,5 @@
 {
-	"taskDefinitionArn": "arn:aws:ecs:eu-central-1:324037293753:task-definition/task-definition-dev:1",
+	"taskDefinitionArn": "arn:aws:ecs:eu-central-1:324037293753:task-definition/task-definition-prod:1",
 	"containerDefinitions": [
 		{
 			"name": "asgard",
@@ -29,15 +29,15 @@
 				"logDriver": "awslogs",
 				"options": {
 					"awslogs-create-group": "true",
-					"awslogs-group": "/ecs/nebula-service-dev",
-					"awslogs-region": "eu-west-1",
+					"awslogs-group": "/ecs/asgard-service-prod",
+					"awslogs-region": "eu-central-1",
 					"awslogs-stream-prefix": "ecs"
 				},
 				"secretOptions": []
 			}
 		}
 	],
-	"family": "task-definition-dev",
+	"family": "task-definition-prod",
 	"executionRoleArn": "arn:aws:iam::324037293753:role/ecsTaskExecutionRole",
 	"networkMode": "awsvpc",
 	"revision": 1,
