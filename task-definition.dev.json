@@ -44,8 +44,9 @@
 			"logConfiguration": {
 				"logDriver": "awslogs",
 				"options": {
+					"mode": "non-blocking",
 					"awslogs-create-group": "true",
-					"awslogs-group": "/ecs/asgard-service-dev",
+					"awslogs-group": "/ecs/task-definition.dev",
 					"awslogs-region": "eu-central-1",
 					"awslogs-stream-prefix": "ecs"
 				},
