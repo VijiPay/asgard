@@ -14,13 +14,30 @@
 				}
 			],
 			"essential": true,
-			"environment": [],
-			"environmentFiles": [
-				{
-					"value": "arn:aws:s3:::asgard-dev-env/.env",
-					"type": "s3"
-				}
+			"environment": [
+				{ "name": "TZ", "value": "UTC" },
+				{ "name": "PORT", "value": "4343" },
+				{ "name": "HOST", "value": "0.0.0.0" },
+				{ "name": "LOG_LEVEL", "value": "info" },
+				{ "name": "NODE_ENV", "value": "development" },
+				{ "name": "ENV_FILE", "value": ".env" },
+				{ "name": "DB_HOST", "value": "asgard_db" },
+				{ "name": "DB_PORT", "value": "5432" },
+				{ "name": "DB_USER", "value": "postgres" },
+				{ "name": "DB_DATABASE", "value": "asgard_db" },
+				{ "name": "RUN_MIGRATIONS", "value": "false" },
+				{ "name": "REDIS_HOST", "value": "127.0.0.1" },
+				{ "name": "REDIS_PORT", "value": "6379" },
+				{ "name": "MAIL_PROVIDER", "value": "nodemailer" },
+				{ "name": "NODEMAILER_DRIVER", "value": "smtp" },
+				{ "name": "NODEMAILER_ENCRYPTION", "value": "ssl" },
+				{ "name": "NODEMAILER_HOST", "value": "smtp.gmail.com" },
+				{ "name": "NODEMAILER_NAME", "value": "VijiPay" },
+				{ "name": "NODEMAILER_USERNAME", "value": "vijipay.africa@gmail.com" },
+				{ "name": "NODEMAILER_PORT", "value": "587" },
+				{ "name": "AWS_REGION", "value": "eu-central-1" }
 			],
+			"environmentFiles": [],
 			"mountPoints": [],
 			"volumesFrom": [],
 			"ulimits": [],
