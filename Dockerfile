@@ -21,7 +21,7 @@ EXPOSE 4343
 
 RUN ln -s build/ace.js ace
 
-COPY start.sh .
-RUN chmod +x start.sh
+COPY start.sh /asgard/start.sh
+RUN chmod +x /asgard/start.sh
 
 CMD ["./start.sh"]
