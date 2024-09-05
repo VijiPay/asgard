@@ -53,19 +53,19 @@
 				},
 				{
 					"name": "GOOGLE_CLIENT_ID",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/google/client.id"
+				},
+				{
+					"name": "GOOGLE_CLIENT_SECRET",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/google/client.secret"
+				},
+				{
+					"name": "FACEBOOK_CLIENT_ID",
 					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/facebook/client.id"
 				},
 				{
 					"name": "FACEBOOK_CLIENT_SECRET",
 					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/facebook/client.secret"
-				},
-				{
-					"name": "FACEBOOK_CLIENT_ID",
-					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/google/client.id"
-				},
-				{
-					"name": "FACEBOOK_CLIENT_SECRET",
-					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/google/client.secret"
 				}
 			],
 			"environmentFiles": [],
