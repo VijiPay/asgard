@@ -19,12 +19,9 @@
 				{ "name": "PORT", "value": "4343" },
 				{ "name": "HOST", "value": "0.0.0.0" },
 				{ "name": "LOG_LEVEL", "value": "info" },
-				{ "name": "NODE_ENV", "value": "development" },
-				{ "name": "ENV_FILE", "value": ".env" },
-				{ "name": "DB_HOST", "value": "asgard_db" },
+				{ "name": "NODE_ENV", "value": "staging" },
+				{ "name": "ENV_FILE", "value": ".env.staging" },
 				{ "name": "DB_PORT", "value": "5432" },
-				{ "name": "DB_USER", "value": "postgres" },
-				{ "name": "DB_DATABASE", "value": "asgard_db" },
 				{ "name": "RUN_MIGRATIONS", "value": "false" },
 				{ "name": "REDIS_HOST", "value": "127.0.0.1" },
 				{ "name": "REDIS_PORT", "value": "6379" },
@@ -36,6 +33,40 @@
 				{ "name": "NODEMAILER_USERNAME", "value": "vijipay.africa@gmail.com" },
 				{ "name": "NODEMAILER_PORT", "value": "587" },
 				{ "name": "AWS_REGION", "value": "eu-central-1" }
+			],
+			"secrets": [
+				{
+					"name": "DB_HOST",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/dev/asgard/db.host"
+				},
+				{
+					"name": "DB_USER",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/dev/datasource.user"
+				},
+				{
+					"name": "DB_DATABASE",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/dev/asgard/db.database"
+				},
+				{
+					"name": "DB_PASSWORD",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/dev/datasource.password"
+				},
+				{
+					"name": "GOOGLE_CLIENT_ID",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/facebook/client.id"
+				},
+				{
+					"name": "FACEBOOK_CLIENT_SECRET",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/facebook/client.secret"
+				},
+				{
+					"name": "FACEBOOK_CLIENT_ID",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/google/client.id"
+				},
+				{
+					"name": "FACEBOOK_CLIENT_SECRET",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/google/client.secret"
+				}
 			],
 			"environmentFiles": [],
 			"mountPoints": [],

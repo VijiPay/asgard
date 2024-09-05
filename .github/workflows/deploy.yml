@@ -71,11 +71,9 @@ jobs:
           if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
             echo "ECS_TASK_DEFINITION=./task-definition.prod.json" >> $GITHUB_ENV
             echo "ECS_SERVICE=asgard-service-prod" >> $GITHUB_ENV
-            echo "ECS_CLUSTER=AsgardCluster" >> $GITHUB_ENV
           else
             echo "ECS_TASK_DEFINITION=./task-definition.dev.json" >> $GITHUB_ENV
             echo "ECS_SERVICE=asgard-service-dev" >> $GITHUB_ENV
-            echo "ECS_CLUSTER=AsgardCluster" >> $GITHUB_ENV
           fi
           
       - name: Fill in the new image ID in the Amazon ECS task definition
@@ -85,16 +83,16 @@ jobs:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
-          environment-variables: |
-            APP_KEY=${{ secrets.APP_KEY }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
-            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
-            FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}
-            FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}
-            NODEMAILER_PASSWORD=${{ secrets.NODEMAILER_PASSWORD }}
-            DB_URL=postgres://postgres:${{ secrets.DB_PASSWORD }}@asgard_db:5432/asgard_db
+          # environment-variables: |
+          #   APP_KEY=${{ secrets.APP_KEY }}
+          #   DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          #   REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+          #   GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          #   GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          #   FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}
+          #   FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}
+          #   NODEMAILER_PASSWORD=${{ secrets.NODEMAILER_PASSWORD }}
+          #   DB_URL=postgres://postgres:${{ secrets.DB_PASSWORD }}@asgard_db:5432/asgard_db
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1

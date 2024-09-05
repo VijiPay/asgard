@@ -5,7 +5,7 @@ services:
     ports:
       - "4343:4343"
     env_file:
-      - .env
+      - ${ENV_FILE:-.noenv}
     environment:
       - NODE_ENV=production
       - HOST=0.0.0.0

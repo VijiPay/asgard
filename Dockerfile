@@ -1,8 +1,8 @@
 FROM node:20-slim AS build
 RUN apt-get update && apt-get install -y openssl
-COPY package.json package-lock.json start.sh tsoa.json asgard/
-COPY . ./asgard
 WORKDIR /asgard
+COPY package.json package-lock.json start.sh asgard/
+COPY . ./asgard
 RUN npm install --frozen-lockfile
 RUN node ace build
 
