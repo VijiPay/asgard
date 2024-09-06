@@ -32,7 +32,9 @@
 				{ "name": "NODEMAILER_NAME", "value": "VijiPay" },
 				{ "name": "NODEMAILER_USERNAME", "value": "vijipay.africa@gmail.com" },
 				{ "name": "NODEMAILER_PORT", "value": "587" },
-				{ "name": "AWS_REGION", "value": "eu-central-1" },
+				{ "name": "AWS_REGION", "value": "eu-central-1" }
+			],
+			"secrets": [
 				{
 					"name": "DB_HOST",
 					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/dev/asgard/db.host"
