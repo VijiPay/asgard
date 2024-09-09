@@ -1,51 +1,55 @@
 services:
-  postgres:
+  asgard:
+    container_name: asgard
+    build: .
+    ports:
+      - "4343:4343"
+    env_file:
+      - ${ENV_FILE:-.noenv}
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+    depends_on:
+      asgard_db:
+        condition: service_healthy
+      asgard_cache:
+        condition: service_started
+    networks:
+      - asgard-net
+
+  asgard_db:
     container_name: asgard_db
     image: postgres:15-alpine
     ports:
       - 5800:5432
-    networks:
-      - asgard_net
-    environment:
-      POSTGRES_DB: asgard_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: "123456de"
-
-  # pgadmin:
-  #   container_name: pgadmin
-  #   image: dpage/pgadmin4
-  #   ports:
-  #     - 5050:80
-  #   networks:
-  #     - asgard_net
-  #   restart: always
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: davidshemang@gmail.com
-  #     PGADMIN_DEFAULT_PASSWORD: 123456de
-
-  asgard:
-    container_name: asgard
-    build: .
-    depends_on:
-      - postgres
-    ports:
-      - 4343:4343
-      - 9229:9229
     volumes:
-      - .:/asgard
-      - /asgard/.pnpm-store
-      - /asgard/node_modules
-    command: ["pnpm", "start"]
-    networks:
-      - asgard_net
+      - db-data:/var/lib/postgresql/data
     environment:
-      DB_HOST: postgres
-      DB_USER: postgres
-      DB_PASSWORD: "123456de"
-      DB_NAME: asgard_db
-      DB_PORT: 5432
-      PORT: 4343
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - asgard-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  asgard_cache:
+    container_name: asgard_cache
+    image: redis:7-alpine
+    ports:
+      - 6385:6379
+    volumes:
+      - cache-data:/data
+    networks:
+      - asgard-net
 
 networks:
-  asgard_net:
+  asgard-net:
     driver: bridge
+
+volumes:
+  db-data:
+  cache-data:

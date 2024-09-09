@@ -2,6 +2,13 @@ name: Pull Request Workflow
 
 on:
   pull_request:
+    branches:
+      - develop
+      - main
+
+concurrency:
+  group: "${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -12,22 +19,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      - name: Install pnpm
-        run: pnpm install
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-      
-      - name: Lint
-        run: pnpm lint
-
-      - name: Build Project
-        run: pnpm build
+      - name: Run Tests
+        run: |
+            npm ci --frozen-lockfile
+            node ace build
+            npm run lint
       
       - name: Build Image
         run: docker build -t asgard .

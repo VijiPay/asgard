@@ -1,0 +1,105 @@
+{
+	"containerDefinitions": [
+		{
+			"name": "asgard",
+			"image": "324037293753.dkr.ecr.eu-central-1.amazonaws.com/asgard:latest",
+			"cpu": 0,
+			"portMappings": [
+				{
+					"name": "asgard-fargate",
+					"containerPort": 4343,
+					"hostPort": 4343,
+					"protocol": "tcp",
+					"appProtocol": "http"
+				}
+			],
+			"essential": true,
+			"environment": [
+				{ "name": "TZ", "value": "UTC" },
+				{ "name": "PORT", "value": "4343" },
+				{ "name": "HOST", "value": "0.0.0.0" },
+				{ "name": "LOG_LEVEL", "value": "info" },
+				{ "name": "NODE_ENV", "value": "production" },
+				{ "name": "ENV_FILE", "value": ".env.production" },
+				{ "name": "DB_PORT", "value": "5432" },
+				{ "name": "RUN_MIGRATIONS", "value": "false" },
+				{ "name": "REDIS_HOST", "value": "127.0.0.1" },
+				{ "name": "REDIS_PORT", "value": "6379" },
+				{ "name": "MAIL_PROVIDER", "value": "nodemailer" },
+				{ "name": "NODEMAILER_DRIVER", "value": "smtp" },
+				{ "name": "NODEMAILER_ENCRYPTION", "value": "ssl" },
+				{ "name": "NODEMAILER_HOST", "value": "smtp.gmail.com" },
+				{ "name": "NODEMAILER_NAME", "value": "VijiPay" },
+				{ "name": "NODEMAILER_USERNAME", "value": "vijipay.africa@gmail.com" },
+				{ "name": "NODEMAILER_PORT", "value": "587" },
+				{ "name": "AWS_REGION", "value": "eu-central-1" }
+			],
+			"secrets": [
+				{
+					"name": "APP_KEY",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/app/app.key"
+				},
+				{
+					"name": "DB_HOST",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/dev/asgard/db.host"
+				},
+				{
+					"name": "DB_USER",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/dev/datasource.user"
+				},
+				{
+					"name": "DB_DATABASE",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/dev/asgard/db.database"
+				},
+				{
+					"name": "DB_PASSWORD",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/dev/datasource.password"
+				},
+				{
+					"name": "GOOGLE_CLIENT_ID",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/google/client.id"
+				},
+				{
+					"name": "GOOGLE_CLIENT_SECRET",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/google/client.secret"
+				},
+				{
+					"name": "FACEBOOK_CLIENT_ID",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/facebook/client.id"
+				},
+				{
+					"name": "FACEBOOK_CLIENT_SECRET",
+					"valueFrom": "arn:aws:ssm:eu-central-1:324037293753:parameter/asgard/facebook/client.secret"
+				}
+			],
+			"environmentFiles": [],
+			"mountPoints": [],
+			"volumesFrom": [],
+			"ulimits": [],
+			"logConfiguration": {
+				"logDriver": "awslogs",
+				"options": {
+					"mode": "non-blocking",
+					"awslogs-create-group": "true",
+					"awslogs-group": "/ecs/task-definition.prod",
+					"awslogs-region": "eu-central-1",
+					"awslogs-stream-prefix": "ecs"
+				},
+				"secretOptions": []
+			}
+		}
+	],
+	"family": "task-definition-prod",
+	"executionRoleArn": "arn:aws:iam::324037293753:role/ecsTaskExecutionRole",
+	"networkMode": "awsvpc",
+	"volumes": [],
+	"placementConstraints": [],
+	"requiresCompatibilities": ["FARGATE"],
+	"cpu": "256",
+	"memory": "512",
+	"runtimePlatform": {
+		"cpuArchitecture": "X86_64",
+		"operatingSystemFamily": "LINUX"
+	},
+	"tags": []
+}

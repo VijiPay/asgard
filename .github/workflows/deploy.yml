@@ -2,54 +2,93 @@ name: CICD
 
 on:
   push:
-    branches: [ develop ]
-
+    branches:
+      - develop
+      - main
+env:
+  AWS_REGION: ${{vars.AWS_REGION}}
+  ECR_REPOSITORY: ${{vars.ECR_REPOSITORY}}
+  CONTAINER_NAME: ${{vars.CONTAINER_NAME}}
+  ECS_SERVICE:  ${{ vars.ECS_SERVICE }}
+  ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+  
 jobs:
-  build-and-deploy:
-    runs-on: [ubuntu-latest]
+  deploy:
+    name: Build, Test and Deploy 🚀
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+
     steps:
-      - name: Checkout source
+      - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Run Tests
+        run: |
+            npm ci --frozen-lockfile
+            node ace build
+            npm run lint
+            
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'us-east-1'
+          aws-region: ${{ secrets.AWS_REGION }}
           
+      - name: Set outputs
+        id: vars
+        run: |
+            echo "GIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: 'true'
-          
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: latest
-          REPOSITORY: asgard
+          GIT_SHA: ${{ steps.vars.outputs.GIT_SHA }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         run: |
-          # Build a docker container and
-          # push it to ECR so that it can
-          # be deployed to ECS.
-          docker build -t $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
-          echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT    
+          if [ -z "$ECR_REPOSITORY" ]; then
+            echo "ECR_REPOSITORY is not set. Please check your workflow configuration."
+            exit 1
+          fi
+          docker build --build-arg GIT_SHA=$GIT_SHA -t $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$GIT_SHA" >> $GITHUB_OUTPUT
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: asgard-task-definition.json 
-          container-name: asgard
-          image: ${{ steps.build-image.outputs.image }}
+      - name: Set environment-specific variables
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            echo "ECS_TASK_DEFINITION=./task-definition.prod.json" >> $GITHUB_ENV
+            echo "ECS_SERVICE=asgard-service-prod" >> $GITHUB_ENV
+          else
+            echo "ECS_TASK_DEFINITION=./task-definition.dev.json" >> $GITHUB_ENV
+            echo "ECS_SERVICE=asgard-service-dev" >> $GITHUB_ENV
+          fi
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: asgard-service
-          cluster: asgardCluster
-          wait-for-service-stability: true    
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+          wait-for-minutes: 10
+        timeout-minutes: 15
+      
+      - name: Check deployment status
+        if: failure()
+        run: |
+          echo "Deployment failed or timed out. Check your ECS service for more details."
+          # You can add additional diagnostic commands here, such as:
+          # aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }}

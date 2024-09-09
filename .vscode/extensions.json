@@ -3,6 +3,7 @@
 		"dbaeumer.vscode-eslint",
 		"esbenp.prettier-vscode",
 		"gruntfuggly.triggertaskonsave",
-		"prisma.prisma"
+		"gruntfuggly.triggertaskonsave",
+		"biomejs.biome"
 	]
 }

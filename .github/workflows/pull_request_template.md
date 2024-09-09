@@ -3,7 +3,7 @@
 ### Images
 
 ### Ticket(s)
-- [NEB-XXXX](https://front-edge.atlassian.net/browse/NEB-XXXX)
+- [ASG-XXXX](https://vijipay.atlassian.net/browse/ASG-XXXX)
 
 ### Linked PRs
 

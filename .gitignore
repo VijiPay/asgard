@@ -1,3 +1,14 @@
-dist
 node_modules
+build
+tmp
+
 .env
+.env.dev
+
+npm-debug.log
+yarn-error.log
+
+.fleet
+.idea
+
+.DS_Store
