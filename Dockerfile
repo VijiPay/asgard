@@ -24,4 +24,4 @@ RUN ln -s build/ace.js ace
 COPY start.sh /asgard/start.sh
 RUN chmod +x /asgard/start.sh
 
-CMD ["./start.sh"]
+CMD ["node", "./bin/server.js"]

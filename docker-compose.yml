@@ -7,7 +7,7 @@ services:
     env_file:
       - ${ENV_FILE:-.noenv}
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV}
       - HOST=0.0.0.0
     depends_on:
       asgard_db:
@@ -16,6 +16,19 @@ services:
         condition: service_started
     networks:
       - asgard-net
+    volumes:
+      - .:/asgard
+      - /asgard/node_modules
+    command: >
+      sh -c "
+      if [ \"$RUN_MIGRATIONS\" = \"true\" ]; then
+          echo 'Running migrations...';
+          node ace migration:run --force;
+      else
+          echo 'Skipping migrations.';
+      fi &&
+      npm start
+      " 
 
   asgard_db:
     container_name: asgard_db
@@ -25,6 +38,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
+      DB_HOST: asgard_db
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
