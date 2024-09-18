@@ -1,6 +1,6 @@
 FROM node:20-slim AS build
 RUN apt-get update && apt-get install -y openssl
-COPY package.json package-lock.json start.sh tsoa.json asgard/
+COPY package.json package-lock.json asgard/
 COPY . ./asgard
 WORKDIR /asgard
 RUN npm install --frozen-lockfile
@@ -18,10 +18,5 @@ ARG GIT_SHA
 ENV GIT_SHA $GIT_SHA
 
 EXPOSE 4343
-
-RUN ln -s build/ace.js ace
-
-COPY start.sh /asgard/start.sh
-RUN chmod +x /asgard/start.sh
 
 CMD ["node", "./bin/server.js"]

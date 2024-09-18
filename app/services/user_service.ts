@@ -1,9 +1,10 @@
+import { inject } from "@adonisjs/core";
 import { AbstractUserService } from "#abstracts//abstract_user_service";
-import type { CreateUserData, UpdateUserData } from "#interface/i_user_service";
+import type { CreateUserData, UpdateUserData } from "#interfaces/i_user_service";
 import User from "#models/user";
 import type { UserRepository } from "#repositories/user_repository";
-import { CustomException } from "#shared/exceptions/CustomException";
-import { inject } from "@adonisjs/core";
+import { CustomException } from "#shared/exceptions/custom_exception";
+
 
 @inject()
 export class UserService extends AbstractUserService {

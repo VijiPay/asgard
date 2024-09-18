@@ -1,10 +1,10 @@
 export interface IResponse<T> {
-  status: ResponseStatus;
-  message?: string;
-  data: T;
+	status: ResponseStatus;
+	message?: string;
+	data: T;
 }
 
 export enum ResponseStatus {
-  SUCCESS = 'success',
-  ERROR = 'error',
+	SUCCESS = "success",
+	ERROR = "error",
 }

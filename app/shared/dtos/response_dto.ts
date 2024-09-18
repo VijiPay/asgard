@@ -1,4 +1,4 @@
-import { ResponseStatus } from "#interface/i_response";
+import { ResponseStatus } from "#interfaces/i_response";
 
 export default class ResponseDTO<T = null> {
 	status: ResponseStatus;
