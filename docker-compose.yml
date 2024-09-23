@@ -2,7 +2,7 @@ services:
   app:
     container_name: server
     image: asgard-app:latest
-    # restart: always
+    restart: always
     build: .
     ports:
       - "4343:4343"
@@ -23,9 +23,6 @@ services:
     volumes:
       - ./package.json:/asgard/package.json
       - ./tsconfig.json:/asgard/tsconfig.json
-      # - ./start:/asgard/start
-      # - ./config:/asgard/config
-      # - ./app:/asgard/app
       - /asgard/node_modules
     command: >
       sh -c "
