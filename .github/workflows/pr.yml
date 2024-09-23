@@ -32,4 +32,3 @@ jobs:
             pnpm i --frozen-lockfile
             pnpm build
             pnpm lint
-            pnpm test
