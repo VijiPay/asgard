@@ -1,7 +1,14 @@
-import userRoutes from "./user_routes.js";
-import authRoutes from "./auth_routes.js";
+import router from "@adonisjs/core/services/router";
+import adminRoutes from "#routes/admin";
+import authRoutes from "#routes/auth";
+import userRoutes from "#routes/user";
 
 export default function registerRoutes() {
-	userRoutes();
-	authRoutes();
+	router
+		.group(() => {
+			adminRoutes();
+			userRoutes();
+			authRoutes();
+		})
+		.prefix("/v1");
 }

@@ -2,7 +2,7 @@ import { inject } from "@adonisjs/core";
 import type { HttpContext } from "@adonisjs/core/http";
 import type { AuthService } from "#services/auth_service";
 import ResponseDTO from "#shared/dtos/response_dto";
-import { CustomException } from "#shared/exceptions/CustomException";
+import { CustomException } from "#shared/exceptions/custom_exception";
 import { loginValidator, registerValidator } from "#validators/auth";
 
 @inject()
@@ -30,6 +30,26 @@ export default class AuthController {
 				token,
 			},
 		});
+	}
+
+	async platform({ ally, params }: HttpContext) {
+		const driverInstance = ally.use(params.platform);
+		driverInstance.redirect();
+	}
+
+	async platformCallback({ ally, params }: HttpContext) {
+		const platform = ally.use(params.platform);
+		if (platform.accessDenied()) {
+			return "You have cancelled the login process";
+		}
+		if (platform.stateMisMatch()) {
+			return "We are unable to verify the request. Please try again";
+		}
+		if (platform.hasError()) {
+			return platform.getError();
+		}
+		const user = await platform.user();
+		return user;
 	}
 
 	async logout({ auth }: HttpContext) {

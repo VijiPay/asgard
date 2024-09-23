@@ -1,9 +1,9 @@
+import type User from "#models/user";
 import type {
 	CreateUserData,
 	IUserService,
 	UpdateUserData,
-} from "#interface/i_user_service";
-import type User from "#models/user";
+} from "../../types/i_user_service.js";
 
 export abstract class AbstractUserService implements IUserService {
 	abstract create(data: CreateUserData): Promise<User>;

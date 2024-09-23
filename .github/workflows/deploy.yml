@@ -25,13 +25,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '22.x'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Run Tests
         run: |
-            npm ci --frozen-lockfile
-            node ace build
-            npm run lint
+            pnpm i --frozen-lockfile
+            pnpm build
+            pnpm lint
             
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
