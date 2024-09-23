@@ -16,10 +16,10 @@ export default class UserController {
 	// constructor(protected uService: UserService) {}
 
 	public async getAllUsers() {
-		// const data = await this.uService.getAll();
+		const data = await this.uService.getAll();
 		return ResponseDTO.success({
 			message: "Users retrieved successfully",
-			// data,
+			data,
 		});
 	}
 

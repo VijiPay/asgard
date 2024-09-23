@@ -1,6 +1,6 @@
-import env from "#start/env";
-import app from "@adonisjs/core/services/app";
 import { defineConfig, targets } from "@adonisjs/core/logger";
+import app from "@adonisjs/core/services/app";
+import env from "#start/env";
 
 const loggerConfig = defineConfig({
 	default: "app",
@@ -16,7 +16,7 @@ const loggerConfig = defineConfig({
 			level: env.get("LOG_LEVEL"),
 			transport: {
 				targets: targets()
-					.pushIf(!app.inProduction, targets.pretty())
+					.pushIf(app.inDev, targets.pretty())
 					.pushIf(app.inProduction, targets.file({ destination: 1 }))
 					.toArray(),
 			},

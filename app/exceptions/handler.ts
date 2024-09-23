@@ -1,9 +1,9 @@
 import type { Exception } from "@adonisjs/core/exceptions";
 import { ExceptionHandler, type HttpContext } from "@adonisjs/core/http";
 import app from "@adonisjs/core/services/app";
-import { ResponseStatus } from "#interfaces/i_response";
 import ResponseDTO from "#shared/dtos/response_dto";
 import { CustomException } from "#shared/exceptions/custom_exception";
+import { ResponseStatus } from "../../types/i_response.js";
 
 export default class HttpExceptionHandler extends ExceptionHandler {
 	/**

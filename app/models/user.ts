@@ -5,7 +5,7 @@ import hash from "@adonisjs/core/services/hash";
 import { BaseModel, column, hasMany, hasOne } from "@adonisjs/lucid/orm";
 import type { HasMany, HasOne } from "@adonisjs/lucid/types/relations";
 import type { DateTime } from "luxon";
-import type { UserMetadata } from "#interfaces/i_user_metadata";
+import type { UserMetadata } from "../../types/i_user_metadata.js";
 import Business from "./business.js";
 import BusinessAssociate from "./business_associate.js";
 import ApiKey from "./developer.js";

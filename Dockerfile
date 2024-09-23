@@ -1,22 +1,34 @@
-FROM node:20-slim AS build
-RUN apt-get update && apt-get install -y openssl
-COPY package.json package-lock.json asgard/
-COPY . ./asgard
+FROM node:22.8.0-alpine3.20 AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable pnpm && corepack install -g pnpm@latest-9 && npm install -g typescript
 WORKDIR /asgard
-RUN npm install --frozen-lockfile
-RUN node ace build
+COPY package.json pnpm-lock.yaml tsconfig.json ./
+COPY /types asgard/types
 
-FROM node:20-slim AS install
-RUN apt-get update && apt-get install -y openssl
+FROM base AS deps
 WORKDIR /asgard
-COPY --from=build /asgard/package.json .
-COPY --from=build /asgard/build ./build
-COPY package*.json ./
-RUN npm ci
+RUN pnpm install --frozen-lockfile
+
+FROM base AS production-deps
+WORKDIR /asgard
+RUN pnpm install --frozen-lockfile --prod
+
+FROM base AS build
+COPY --from=deps /asgard/node_modules /asgard/node_modules
+ADD . .
+RUN node ace build
+RUN node ace docs:generate
+COPY swagger.yml build/
+
+FROM base
+ENV NODE_ENV=production
+WORKDIR /asgard
+COPY --from=production-deps /asgard/node_modules /asgard/node_modules
+COPY --from=build /asgard/build /asgard
 
 ARG GIT_SHA
-ENV GIT_SHA $GIT_SHA
+ENV GIT_SHA=$GIT_SHA
 
-EXPOSE 4343
-
+EXPOSE ${PORT}
 CMD ["node", "./bin/server.js"]

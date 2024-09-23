@@ -1,23 +1,31 @@
 services:
-  asgard:
-    container_name: asgard
+  app:
+    container_name: server
+    image: asgard-app:latest
+    # restart: always
     build: .
     ports:
       - "4343:4343"
+    links:
+      - "database"
     env_file:
       - ${ENV_FILE:-.noenv}
     environment:
       - NODE_ENV=${NODE_ENV}
       - HOST=0.0.0.0
     depends_on:
-      asgard_db:
+      database:
         condition: service_healthy
-      asgard_cache:
+      cache:
         condition: service_started
     networks:
       - asgard-net
     volumes:
-      - .:/asgard
+      - ./package.json:/asgard/package.json
+      - ./tsconfig.json:/asgard/tsconfig.json
+      # - ./start:/asgard/start
+      # - ./config:/asgard/config
+      # - ./app:/asgard/app
       - /asgard/node_modules
     command: >
       sh -c "
@@ -27,16 +35,14 @@ services:
       else
           echo 'Skipping migrations.';
       fi &&
-      npm start
+      pnpm start
       " 
 
-  asgard_db:
-    container_name: asgard_db
-    image: postgres:15-alpine
+  database:
+    container_name: postgres
+    image: postgres:16-alpine
     ports:
       - 5800:5432
-    volumes:
-      - db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USER}
@@ -49,8 +55,8 @@ services:
       timeout: 5s
       retries: 5
 
-  asgard_cache:
-    container_name: asgard_cache
+  cache:
+    container_name: redis
     image: redis:7-alpine
     ports:
       - 6385:6379
