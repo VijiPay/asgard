@@ -32,3 +32,6 @@ jobs:
             pnpm i --frozen-lockfile
             pnpm build
             pnpm lint
+      
+      - name: Build Image
+        run: docker build -t asgard .
