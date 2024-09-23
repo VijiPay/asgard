@@ -10,6 +10,7 @@
 		"build": "node ace build",
 		"dev": "node ace serve --hmr",
 		"test": "node ace test",
+		"docs": "node ace docs:generate",
 		"lint": "biome lint .",
 		"lint:fix": "biome format --write .",
 		"knip": "knip",

@@ -179,7 +179,7 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 444
+            "example": 697
           },
           "name": {
             "type": "string",
@@ -203,7 +203,7 @@
           },
           "user_id": {
             "type": "number",
-            "example": 996
+            "example": 310
           },
           "user": {
             "$ref": "#/components/schemas/User",
@@ -232,15 +232,15 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 543
+            "example": 237
           },
           "user_id": {
             "type": "number",
-            "example": 179
+            "example": 98
           },
           "business_id": {
             "type": "number",
-            "example": 415
+            "example": 688
           },
           "role": {
             "type": "string",
@@ -263,7 +263,7 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 905
+            "example": 216
           },
           "key": {
             "type": "string",
@@ -281,7 +281,7 @@
           },
           "user_id": {
             "type": "number",
-            "example": 607
+            "example": 355
           },
           "user": {
             "$ref": "#/components/schemas/User",
@@ -296,11 +296,11 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 633
+            "example": 309
           },
           "score": {
             "type": "number",
-            "example": 246
+            "example": 866
           },
           "reason": {
             "type": "string",
@@ -312,11 +312,11 @@
           },
           "user_id": {
             "type": "number",
-            "example": 607
+            "example": 551
           },
           "transaction_id": {
             "type": "number",
-            "example": 437
+            "example": 149
           },
           "user": {
             "$ref": "#/components/schemas/User",
@@ -345,7 +345,7 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 73
+            "example": 635
           },
           "title": {
             "type": "string",
@@ -382,11 +382,11 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 400
+            "example": 338
           },
           "amount": {
             "type": "number",
-            "example": 945
+            "example": 888
           },
           "method": {
             "type": "string",
@@ -398,11 +398,11 @@
           },
           "user_id": {
             "type": "number",
-            "example": 583
+            "example": 541
           },
           "transaction_id": {
             "type": "number",
-            "example": 83
+            "example": 884
           },
           "user": {
             "$ref": "#/components/schemas/User",
@@ -431,7 +431,7 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 32
+            "example": 403
           },
           "name": {
             "type": "string",
@@ -447,7 +447,7 @@
           },
           "user_id": {
             "type": "number",
-            "example": 569
+            "example": 597
           },
           "user": {
             "$ref": "#/components/schemas/User",
@@ -462,11 +462,11 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 422
+            "example": 409
           },
           "amount": {
             "type": "number",
-            "example": 526
+            "example": 186
           },
           "status": {
             "type": "string",
@@ -474,7 +474,7 @@
           },
           "user_id": {
             "type": "number",
-            "example": 191
+            "example": 430
           },
           "user": {
             "$ref": "#/components/schemas/User",
@@ -499,11 +499,11 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 222
+            "example": 331
           },
           "amount": {
             "type": "number",
-            "example": 55
+            "example": 434
           },
           "status": {
             "type": "string",
@@ -515,15 +515,15 @@
           },
           "initiator_id": {
             "type": "number",
-            "example": 629
+            "example": 36
           },
           "receiver_id": {
             "type": "number",
-            "example": 501
+            "example": 175
           },
           "business_id": {
             "type": "number",
-            "example": 976
+            "example": 566
           },
           "initiator": {
             "$ref": "#/components/schemas/User",
@@ -570,7 +570,7 @@
         "properties": {
           "id": {
             "type": "number",
-            "example": 537
+            "example": 112
           },
           "email": {
             "type": "string",
@@ -591,7 +591,7 @@
           },
           "status": {
             "type": "number",
-            "example": 13
+            "example": 256
           },
           "country_code": {
             "type": "string",
@@ -681,7 +681,7 @@
           },
           "authy_id": {
             "type": "number",
-            "example": 23
+            "example": 771
           },
           "platform_id": {
             "type": "string",
