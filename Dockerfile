@@ -18,7 +18,6 @@ FROM base AS build
 COPY --from=deps /asgard/node_modules /asgard/node_modules
 ADD . .
 RUN node ace build
-RUN node ace docs:generate
 COPY swagger.yml build/
 
 FROM base
