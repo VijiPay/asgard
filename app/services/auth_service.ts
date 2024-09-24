@@ -1,13 +1,12 @@
-import Hash from "@adonisjs/core/services/hash";
-import { DateTime } from "luxon";
-import { v4 as uuidv4 } from "uuid";
 // import Mail from '@adonisjs/mail/services/main'
 // import Env from '@adonisjs/core/services/env'
 import { inject } from "@adonisjs/core";
-import { CustomException } from "#shared/exceptions/CustomException";
+import Hash from "@adonisjs/core/services/hash";
+import { DateTime } from "luxon";
+import { v4 as uuidv4 } from "uuid";
 import User from "#models/user";
 import type { UserRepository } from "#repositories/user_repository";
-import type { OAuthProfile } from "#interface/i_oauthProfile";
+import { CustomException } from "#shared/exceptions/custom_exception";
 
 @inject()
 export class AuthService {
@@ -88,7 +87,10 @@ export class AuthService {
 
 	async resetPassword(token: string, newPassword: string): Promise<User> {
 		const user = await User.findBy("passwordResetToken", token);
-		if (!user || (user.passwordResetExpires ?? DateTime.now()) < DateTime.now()) {
+		if (
+			!user ||
+			(user.passwordResetExpires ?? DateTime.now()) < DateTime.now()
+		) {
 			throw new CustomException("Invalid or expired reset token", 403);
 		}
 
@@ -102,7 +104,10 @@ export class AuthService {
 
 	async verifyEmail(token: string): Promise<User> {
 		const user = await User.findBy("emailVerifyCode", token);
-		if (!user || (user.passwordResetExpires ?? DateTime.now()) < DateTime.now()) {
+		if (
+			!user ||
+			(user.passwordResetExpires ?? DateTime.now()) < DateTime.now()
+		) {
 			throw new CustomException("Invalid or expired reset token", 403);
 		}
 
@@ -121,7 +126,7 @@ export class AuthService {
 		newPassword: string,
 	): Promise<User> {
 		const user = await User.findOrFail(userId);
-		if (!(await Hash.verify(user.password ?? '', currentPassword))) {
+		if (!(await Hash.verify(user.password ?? "", currentPassword))) {
 			throw new CustomException("Current password is incorrect", 403);
 		}
 
@@ -133,7 +138,15 @@ export class AuthService {
 
 	async oauthLogin(
 		provider: "google" | "facebook",
-		profile: OAuthProfile,
+		profile: {
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			id: any;
+			email: string;
+			given_name: string;
+			first_name: string;
+			family_name: string;
+			last_name: string;
+		},
 	): Promise<User> {
 		let user = await User.findBy(`${provider}Id`, profile.id);
 

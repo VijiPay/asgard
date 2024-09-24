@@ -1,6 +1,6 @@
-import type { IUserRepository } from "#interface/i_user_repository";
-import User from "#models/user";
 import { DateTime } from "luxon";
+import type { IUserRepository } from "#interfaces/i_user_repository";
+import User from "#models/user";
 
 export class UserRepository implements IUserRepository {
 	async create(data: Partial<User>): Promise<User> {

@@ -2,7 +2,7 @@ import type {
 	CreateUserData,
 	IUserService,
 	UpdateUserData,
-} from "#interface/i_user_service";
+} from "#interfaces/i_user_service";
 import type User from "#models/user";
 
 export abstract class AbstractUserService implements IUserService {

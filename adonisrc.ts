@@ -3,27 +3,44 @@ import { defineConfig } from "@adonisjs/core/app";
 export default defineConfig({
 	/*
   |--------------------------------------------------------------------------
-  | Commands
+  | Directories
   |--------------------------------------------------------------------------
   |
-  | List of ace commands to register from packages. The application commands
-  | will be scanned automatically from the "./commands" directory.
+  | Here we define where our directories live. The typehint for the
+  | directories must be strictly typed to avoid the miss-configurations.
   |
   */
+	directories: {
+		controllers: "app/controllers",
+		abstracts: "app/abstracts",
+		shared: "app/shared",
+		repositories: "app/repositories",
+		interfaces: "app/interfaces",
+		routes: "app/routes",
+	},
+	/*
+|--------------------------------------------------------------------------
+| Commands
+|--------------------------------------------------------------------------
+|
+| List of ace commands to register from packages. The application commands
+| will be scanned automatically from the "./commands" directory.
+|
+*/
 	commands: [
 		() => import("@adonisjs/core/commands"),
 		() => import("@adonisjs/lucid/commands"),
 	],
 
 	/*
-  |--------------------------------------------------------------------------
-  | Service providers
-  |--------------------------------------------------------------------------
-  |
-  | List of service providers to import and register when booting the
-  | application
-  |
-  */
+|--------------------------------------------------------------------------
+| Service providers
+|--------------------------------------------------------------------------
+|
+| List of service providers to import and register when booting the
+| application
+|
+*/
 	providers: [
 		() => import("@adonisjs/core/providers/app_provider"),
 		() => import("@adonisjs/core/providers/hash_provider"),
@@ -40,28 +57,29 @@ export default defineConfig({
 	],
 
 	/*
-  |--------------------------------------------------------------------------
-  | Preloads
-  |--------------------------------------------------------------------------
-  |
-  | List of modules to import before starting the application.
-  |
-  */
+|--------------------------------------------------------------------------
+| Preloads
+|--------------------------------------------------------------------------
+|
+| List of modules to import before starting the application.
+|
+*/
 	preloads: [
 		() => import("#start/routes"),
 		() => import("#start/kernel"),
 		() => import("#start/events"),
+		() => import("#start/interfaces"),
 	],
 
 	/*
-  |--------------------------------------------------------------------------
-  | Tests
-  |--------------------------------------------------------------------------
-  |
-  | List of test suites to organize tests by their type. Feel free to remove
-  | and add additional suites.
-  |
-  */
+|--------------------------------------------------------------------------
+| Tests
+|--------------------------------------------------------------------------
+|
+| List of test suites to organize tests by their type. Feel free to remove
+| and add additional suites.
+|
+*/
 	tests: {
 		suites: [
 			{
