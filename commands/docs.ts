@@ -23,7 +23,7 @@ export default class Docs extends BaseCommand {
     Router.commit()
     await AutoSwagger.default.writeFile(Router.toJSON(), swagger)
   }
-  async completed(){
+  async completed() {
     this.logger.info('api docs generated 🚀')
   }
 }
