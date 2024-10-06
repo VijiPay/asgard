@@ -4,7 +4,6 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable pnpm && corepack install -g pnpm@latest-9 && npm install -g typescript
 WORKDIR /asgard
 COPY package.json pnpm-lock.yaml tsconfig.json ./
-COPY /types asgard/types
 
 FROM base AS deps
 WORKDIR /asgard

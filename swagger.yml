@@ -1,6 +1,6 @@
 openapi: "3.0.0"
 info:
-  title: "VijiPay Webservice"
+  title: "VijiPay Webservices"
   version: "1.0.0"
   description: "info decr"
 components:
@@ -72,73 +72,13 @@ components:
           type: "string"
           example: "/?page=5"
           nullable: false
-    IResponse<T>: {}
-    UserMetadata: {}
-    IUserRepository: {}
-    CreateUserData:
-      type: "object"
-      properties:
-        email:
-          type: "string"
-          nullable: false
-          example: "johndoe@example.com"
-        password:
-          type: "string"
-          nullable: true
-          example: "S3cur3P4s5word!"
-        firstName:
-          type: "string"
-          nullable: false
-          example: "John"
-        lastName:
-          type: "string"
-          nullable: false
-          example: "Doe"
-        countryCode:
-          type: "string"
-          nullable: true
-          example: "US"
-        googleId:
-          type: "string"
-          nullable: true
-          example: "Lorem Ipsum"
-        facebookId:
-          type: "string"
-          nullable: true
-          example: "Lorem Ipsum"
-        loginIp:
-          type: "string"
-          nullable: true
-          example: "Lorem Ipsum"
-      description: "CreateUserData (Interface)"
-    UpdateUserData:
-      type: "object"
-      properties:
-        email:
-          type: "string"
-          nullable: true
-          example: "johndoe@example.com"
-        firstName:
-          type: "string"
-          nullable: true
-          example: "John"
-        lastName:
-          type: "string"
-          nullable: true
-          example: "Doe"
-        countryCode:
-          type: "string"
-          nullable: true
-          example: "US"
-      description: "UpdateUserData (Interface)"
-    IUserService: {}
     Business:
       type: "object"
       required: []
       properties:
         id:
           type: "number"
-          example: 697
+          example: 859
         name:
           type: "string"
           example: "John Doe"
@@ -156,7 +96,7 @@ components:
           example: "Lorem Ipsum"
         user_id:
           type: "number"
-          example: 310
+          example: 767
         user:
           $ref: "#/components/schemas/User"
           example: null
@@ -177,13 +117,13 @@ components:
       properties:
         id:
           type: "number"
-          example: 237
+          example: 594
         user_id:
           type: "number"
-          example: 98
+          example: 632
         business_id:
           type: "number"
-          example: 688
+          example: 710
         role:
           type: "string"
           example: "Lorem Ipsum"
@@ -200,7 +140,7 @@ components:
       properties:
         id:
           type: "number"
-          example: 216
+          example: 314
         key:
           type: "string"
           example: "Lorem Ipsum"
@@ -214,7 +154,7 @@ components:
           format: "date-time"
         user_id:
           type: "number"
-          example: 355
+          example: 604
         user:
           $ref: "#/components/schemas/User"
           example: null
@@ -225,10 +165,10 @@ components:
       properties:
         id:
           type: "number"
-          example: 309
+          example: 305
         score:
           type: "number"
-          example: 866
+          example: 212
         reason:
           type: "string"
           example: "Lorem Ipsum"
@@ -237,10 +177,10 @@ components:
           example: "Lorem Ipsum"
         user_id:
           type: "number"
-          example: 551
+          example: 509
         transaction_id:
           type: "number"
-          example: 149
+          example: 527
         user:
           $ref: "#/components/schemas/User"
           example: null
@@ -262,7 +202,7 @@ components:
       properties:
         id:
           type: "number"
-          example: 635
+          example: 771
         title:
           type: "string"
           example: "Lorem Ipsum"
@@ -290,10 +230,10 @@ components:
       properties:
         id:
           type: "number"
-          example: 338
+          example: 400
         amount:
           type: "number"
-          example: 888
+          example: 123
         method:
           type: "string"
           example: "Lorem Ipsum"
@@ -302,10 +242,10 @@ components:
           example: "Lorem Ipsum"
         user_id:
           type: "number"
-          example: 541
+          example: 532
         transaction_id:
           type: "number"
-          example: 884
+          example: 162
         user:
           $ref: "#/components/schemas/User"
           example: null
@@ -327,7 +267,7 @@ components:
       properties:
         id:
           type: "number"
-          example: 403
+          example: 657
         name:
           type: "string"
           example: "John Doe"
@@ -339,7 +279,7 @@ components:
           example: "Lorem Ipsum"
         user_id:
           type: "number"
-          example: 597
+          example: 974
         user:
           $ref: "#/components/schemas/User"
           example: null
@@ -350,16 +290,16 @@ components:
       properties:
         id:
           type: "number"
-          example: 409
+          example: 55
         amount:
           type: "number"
-          example: 186
+          example: 447
         status:
           type: "string"
           example: "Lorem Ipsum"
         user_id:
           type: "number"
-          example: 430
+          example: 41
         user:
           $ref: "#/components/schemas/User"
           example: null
@@ -378,10 +318,10 @@ components:
       properties:
         id:
           type: "number"
-          example: 331
+          example: 479
         amount:
           type: "number"
-          example: 434
+          example: 145
         status:
           type: "string"
           example: "Lorem Ipsum"
@@ -390,13 +330,13 @@ components:
           example: "Lorem ipsum dolor sit amet"
         initiator_id:
           type: "number"
-          example: 36
+          example: 929
         receiver_id:
           type: "number"
-          example: 175
+          example: 280
         business_id:
           type: "number"
-          example: 566
+          example: 412
         initiator:
           $ref: "#/components/schemas/User"
           example: null
@@ -431,7 +371,7 @@ components:
       properties:
         id:
           type: "number"
-          example: 112
+          example: 659
         email:
           type: "string"
           example: "johndoe@example.com"
@@ -447,7 +387,7 @@ components:
           example: "Lorem Ipsum"
         status:
           type: "number"
-          example: 256
+          example: 801
         country_code:
           type: "string"
           example: "US"
@@ -516,7 +456,7 @@ components:
           example: "Lorem Ipsum"
         authy_id:
           type: "number"
-          example: 771
+          example: 588
         platform_id:
           type: "string"
           example: "Lorem Ipsum"
@@ -648,10 +588,23 @@ components:
         countryCode: "Lorem Ipsum"
       description: "registerValidator (Validator)"
 paths:
+  /ag/v1/u:
+    get:
+      summary: " (getAllUsers)"
+      description: "\n\n _app/controllers/users_controller.ts_ - **getAllUsers**"
+      parameters: []
+      tags:
+        - "U"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json: {}
+      security: []
   /ag/v1/admin/users/create:
     post:
       summary: " (create)"
-      description: "\n\n _app/controllers/user_controller.ts_ - **create**"
+      description: "\n\n _app/controllers/users_controller.ts_ - **create**"
       parameters: []
       tags:
         - "ADMIN"
@@ -669,7 +622,7 @@ paths:
   /ag/v1/admin/users:
     get:
       summary: " (getAllUsers)"
-      description: "\n\n _app/controllers/user_controller.ts_ - **getAllUsers**"
+      description: "\n\n _app/controllers/users_controller.ts_ - **getAllUsers**"
       parameters: []
       tags:
         - "ADMIN"
@@ -684,7 +637,7 @@ paths:
   /ag/v1/admin/transactions/create:
     post:
       summary: " (create)"
-      description: "\n\n _app/controllers/user_controller.ts_ - **create**"
+      description: "\n\n _app/controllers/users_controller.ts_ - **create**"
       parameters: []
       tags:
         - "ADMIN"
@@ -702,7 +655,7 @@ paths:
   /ag/v1/admin/transactions:
     get:
       summary: " (getAllUsers)"
-      description: "\n\n _app/controllers/user_controller.ts_ - **getAllUsers**"
+      description: "\n\n _app/controllers/users_controller.ts_ - **getAllUsers**"
       parameters: []
       tags:
         - "ADMIN"
@@ -717,7 +670,7 @@ paths:
   /ag/v1/users/create:
     post:
       summary: " (create)"
-      description: "\n\n _app/controllers/user_controller.ts_ - **create**"
+      description: "\n\n _app/controllers/users_controller.ts_ - **create**"
       parameters: []
       tags:
         - "USERS"
@@ -732,8 +685,8 @@ paths:
           application/json: {}
   /ag/v1/users/{id}:
     get:
-      summary: " (getUser)"
-      description: "\n\n _app/controllers/user_controller.ts_ - **getUser**"
+      summary: " (getUserbyId)"
+      description: "\n\n _app/controllers/users_controller.ts_ - **getUserbyId**"
       parameters:
         - in: "path"
           name: "id"
@@ -752,7 +705,7 @@ paths:
             - "access"
     put:
       summary: "Update users (update)"
-      description: "\n\n _app/controllers/user_controller.ts_ - **update**"
+      description: "\n\n _app/controllers/users_controller.ts_ - **update**"
       parameters:
         - in: "path"
           name: "id"
@@ -774,7 +727,7 @@ paths:
           application/json: {}
     delete:
       summary: " (delete)"
-      description: "\n\n _app/controllers/user_controller.ts_ - **delete**"
+      description: "\n\n _app/controllers/users_controller.ts_ - **delete**"
       parameters:
         - in: "path"
           name: "id"
@@ -794,7 +747,7 @@ paths:
   /ag/v1/users/{id}/change-password:
     put:
       summary: " (changePassword)"
-      description: "\n\n _app/controllers/user_controller.ts_ - **changePassword**"
+      description: "\n\n _app/controllers/users_controller.ts_ - **changePassword**"
       parameters:
         - in: "path"
           name: "id"
@@ -848,7 +801,7 @@ paths:
           content:
             application/json: {}
       security: []
-  /ag/v1/auth/auth/{platform}/callback:
+  /ag/v1/auth/{platform}/callback:
     get:
       summary: "route"
       description: "\n\n __ - ****"
@@ -885,6 +838,8 @@ paths:
         content:
           application/json: {}
 tags:
+  - name: "U"
+    description: "Everything related to U"
   - name: "ADMIN"
     description: "Everything related to ADMIN"
   - name: "USERS"

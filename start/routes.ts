@@ -1,8 +1,8 @@
-import router from "@adonisjs/core/services/router";
+import router from '@adonisjs/core/services/router'
+import env from '#start/env';
+import registerRoutes from '#routes/index';
 import AutoSwagger from "adonis-autoswagger";
 import swagger from "#config/swagger";
-import registerRoutes from "#routes/index";
-import env from "#start/env";
 
 const HealthChecksController = () =>
 	import("#controllers/health_checks_controller");
@@ -10,8 +10,8 @@ const HealthChecksController = () =>
 router
 	.group(() => {
 		registerRoutes();
-		router.get("/health", [HealthChecksController, "handle"]);
-		router.get("/swagger", async () => {
+    router.get("/health", [HealthChecksController, "handle"]);
+	router.get("/swagger", async () => {
 			return AutoSwagger.default.docs(router.toJSON(), swagger);
 		});
 

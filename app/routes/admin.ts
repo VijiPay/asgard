@@ -1,8 +1,9 @@
 import router from "@adonisjs/core/services/router";
 import { middleware } from "#start/kernel";
-const UserController = () => import("#controllers/user_controller");
+const UserController = () => import("#controllers/users_controller");
 
 export default function adminRoutes() {
+	router.get("/u", [UserController, "getAllUsers"]);
 	router
 		.group(() => {
 			// ::::::
