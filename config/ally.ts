@@ -5,12 +5,12 @@ const allyConfig = defineConfig({
   facebook: services.facebook({
     clientId: env.get('FACEBOOK_CLIENT_ID'),
     clientSecret: env.get('FACEBOOK_CLIENT_SECRET'),
-    callbackUrl: "http://localhost:4343/ag/v1/auth/facebook/callback",
+    callbackUrl: 'http://localhost:4343/ag/v1/auth/facebook/callback',
   }),
   google: services.google({
     clientId: env.get('GOOGLE_CLIENT_ID'),
     clientSecret: env.get('GOOGLE_CLIENT_SECRET'),
-    callbackUrl: "http://localhost:4343/ag/v1/auth/google/callback",
+    callbackUrl: 'http://localhost:4343/ag/v1/auth/google/callback',
   }),
 })
 

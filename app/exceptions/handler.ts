@@ -1,12 +1,12 @@
 import app from '@adonisjs/core/services/app'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
-import { ICustomException } from '#contracts/ICustomException';
-import httpStatus from 'http-status';
-import { CustomException } from './custom_exception.js';
-import ResponseDTO from '#shared/dtos/response_dto';
-import { ResponseStatus } from '#contracts/i_response';
+import { ICustomException } from '#contracts/ICustomException'
+import httpStatus from 'http-status'
+import { CustomException } from './custom_exception.js'
+import ResponseDTO from '#shared/dtos/response_dto'
+import { ResponseStatus } from '#contracts/i_response'
 import logger from '@adonisjs/core/services/logger'
-
+import { errors } from '@vinejs/vine'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -21,18 +21,28 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    */
   async handle(error: ICustomException, ctx: HttpContext) {
     // return super.handle(error, ctx)
+    if (error instanceof errors.E_VALIDATION_ERROR) {
+      const resObj = new ResponseDTO(ResponseStatus.ERROR, 'Validation failed', error.messages)
+      ctx.response.status(422).send(resObj)
+      logger.error('validator.handled', {
+        messages: error.messages,
+        stack: (error as Error).stack as unknown,
+      })
+      return
+    }
+
     const {
       status = httpStatus.INTERNAL_SERVER_ERROR,
-      fields ={},
-      message = error instanceof CustomException ? error.message : 'Something went wrong'
-    } = error;
+      fields = {},
+      message = error instanceof CustomException ? error.message : 'Something went wrong',
+    } = error
     const resObj = new ResponseDTO(ResponseStatus.ERROR, message, fields)
     logger.error('handler.handled', {
       ...resObj,
       stack: (error as Error).stack as unknown,
-      fields
+      fields,
     })
-    ctx.response.status(status).send(resObj);
+    ctx.response.status(status).send(resObj)
   }
 
   /**
