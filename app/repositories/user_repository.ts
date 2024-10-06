@@ -1,8 +1,9 @@
+import { inject } from "@adonisjs/core";
 import { DateTime } from "luxon";
-import type { IUserRepository } from "#interfaces/i_user_repository";
 import User from "#models/user";
 
-export class UserRepository implements IUserRepository {
+@inject()
+export class UserRepository {
 	async create(data: Partial<User>): Promise<User> {
 		const {
 			email,
@@ -13,8 +14,8 @@ export class UserRepository implements IUserRepository {
 			googleId,
 			facebookId,
 			loginIp,
+			role,
 		} = data;
-		console.log(data);
 
 		const user = await User.create({
 			email,
@@ -24,7 +25,7 @@ export class UserRepository implements IUserRepository {
 			countryCode,
 			tradeName: `${firstName} ${lastName}`.trim(),
 			emailVerified: !!googleId || !!facebookId,
-			role: "user",
+			role,
 			phoneVerified: false,
 			googleId: googleId || null,
 			facebookId: facebookId || null,
@@ -36,18 +37,18 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async findById(id: number): Promise<User | null> {
-		return await User.findOrFail(id);
+		return await User.find(id);
 	}
 
 	async findByEmail(email: string): Promise<User | null> {
-		return await User.findByOrFail({ email });
+		return await User.findBy({ email });
 	}
 
 	async findByAuthProvider(
 		provider: string,
 		providerId: string,
 	): Promise<User | null> {
-		const user = await User.findByOrFail(provider, providerId);
+		const user = await User.findBy(provider, providerId);
 		return user;
 	}
 
@@ -55,15 +56,18 @@ export class UserRepository implements IUserRepository {
 		return await User.all();
 	}
 
-	async update(id: number, data: Partial<User>): Promise<User> {
-		const user = await User.findOrFail(id);
+	async update(id: number, data: Partial<User>): Promise<User | null> {
+		const user = await User.find(id);
+		if(user){
 		user.merge(data);
 		await user.save();
+		}
 		return user;
 	}
 
 	async delete(id: number): Promise<void> {
-		const user = await User.findOrFail(id);
+		const user = await User.find(id);
+		if(user)
 		await user.delete();
 	}
 
@@ -71,27 +75,29 @@ export class UserRepository implements IUserRepository {
 		id: number,
 		reason: string,
 		lockingUserId: number,
-	): Promise<User> {
-		const user = await User.findOrFail(id);
-
+	): Promise<User | null> {
+		const user = await User.find(id);
+		if(user){
 		user.userLocked = true;
 		user.userLockedMessage = reason;
 		user.userLockedDate = DateTime.now();
 		user.userLockedBy = String(lockingUserId);
 
 		await user.save();
+		}
 		return user;
 	}
 
-	async unlockUser(id: number): Promise<User> {
-		const user = await User.findOrFail(id);
-
+	async unlockUser(id: number, unlockingUserId: number): Promise<User | null> {
+		const user = await User.find(id);
+		if(user) {
 		user.userLocked = false;
 		user.userLockedMessage = null;
 		user.userLockedDate = null;
-		user.userLockedBy = null;
+		user.userLockedBy = String(unlockingUserId);
 
 		await user.save();
+		}
 		return user;
 	}
 }

@@ -5,7 +5,7 @@ import hash from "@adonisjs/core/services/hash";
 import { BaseModel, column, hasMany, hasOne } from "@adonisjs/lucid/orm";
 import type { HasMany, HasOne } from "@adonisjs/lucid/types/relations";
 import type { DateTime } from "luxon";
-import type { UserMetadata } from "#interfaces/i_user_metadata";
+import type { UserMetadata } from "#contracts/i_user_metadata";
 import Business from "./business.js";
 import BusinessAssociate from "./business_associate.js";
 import ApiKey from "./developer.js";
@@ -129,7 +129,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
 	@column.dateTime({ autoCreate: true })
 	declare createdDate: DateTime;
 
-	@column.dateTime({ autoCreate: true, autoUpdate: true })
+	@column.dateTime({ autoUpdate: true, autoCreate: false })
 	declare lastModifiedDate: DateTime | null;
 
 	@hasOne(() => ApiKey)

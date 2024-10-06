@@ -10,7 +10,7 @@ export default function authRoutes() {
 			router
 				.get("/:platform", [AuthController, "platform"])
 				.where("platform", /google|facebook/);
-			router.get("auth/:platform/callback", async ({ ally, params }) => {
+			router.get("/:platform/callback", async ({ ally, params }) => {
 				const platform = ally.use(params.platform);
 				if (platform.accessDenied()) {
 					return "You have cancelled the login process";

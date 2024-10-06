@@ -1,34 +1,14 @@
-// import Mail from '@adonisjs/mail/services/main'
-// import Env from '@adonisjs/core/services/env'
 import { inject } from "@adonisjs/core";
 import Hash from "@adonisjs/core/services/hash";
 import { DateTime } from "luxon";
 import { v4 as uuidv4 } from "uuid";
 import User from "#models/user";
-import type { UserRepository } from "#repositories/user_repository";
-import { CustomException } from "#shared/exceptions/custom_exception";
+import { UserRepository } from "#repositories/user_repository";
+import { CustomException } from "#exceptions/custom_exception";
 
 @inject()
 export class AuthService {
-	constructor(private userRepository: UserRepository) {}
-
-	async register(data: {
-		email: string;
-		password: string;
-		firstName: string;
-		lastName: string;
-		countryCode?: string;
-	}): Promise<User> {
-		const user = await this.userRepository.create({
-			...data,
-			emailVerifyCode: uuidv4(),
-			emailVerifyExpires: DateTime.now().plus({ hours: 24 }),
-		});
-
-		// await this.sendVerificationEmail(user)
-
-		return user;
-	}
+	constructor(protected userRepository: UserRepository) {}
 
 	async login(email: string, password: string): Promise<User> {
 		const user = await User.findBy("email", email);
@@ -139,7 +119,6 @@ export class AuthService {
 	async oauthLogin(
 		provider: "google" | "facebook",
 		profile: {
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			id: any;
 			email: string;
 			given_name: string;
