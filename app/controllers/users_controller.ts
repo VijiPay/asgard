@@ -1,14 +1,19 @@
 import { CustomException } from '#exceptions/custom_exception'
+import { Email } from '#services/email_service'
 import UserService from '#services/user_service'
 import ResponseDTO from '#shared/dtos/response_dto'
 import { registerValidator } from '#validators/auth'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import httpStatus from 'http-status'
+import { EmailTemplatePath } from '#shared/email/template_path'
 
 @inject()
 export default class UsersController {
-  constructor(protected uService: UserService) {}
+  constructor(
+    protected uService: UserService,
+    protected email: Email
+  ) {}
 
   async getAllUsers() {
     const data = await this.uService.getAll()
@@ -41,6 +46,13 @@ export default class UsersController {
     const userData = await request.validateUsing(registerValidator)
 
     const data = await this.uService.create(userData)
+    if (data) {
+      this.email.send({
+        recipient: userData.email,
+        templatePath: EmailTemplatePath.REGISTRATION,
+        data: { name: `${userData.firstName} ${userData.lastName}` },
+      })
+    }
     return ResponseDTO.success('User created successfully', data)
   }
 

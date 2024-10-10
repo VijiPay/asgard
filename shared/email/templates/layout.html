@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f6f6f6;
+            font-family: Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        img {
+            border: none;
+            -ms-interpolation-mode: bicubic;
+            max-width: 100%;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #04591b;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #777777;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .footer a {
+            color: #04591b;
+            text-decoration: none;
+        }
+
+        @media only screen and (max-width: 620px) {
+            .container {
+                width: 100% !important;
+                padding: 0 !important;
+            }
+
+            .header h1 {
+                font-size: 20px !important;
+            }
+
+            .content {
+                padding: 15px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table class="body">
+        <tr>
+            <td>&nbsp;</td>
+            <td class="container">
+                <div class="header">
+                    <h1>Welcome to VijiPay</h1>
+                </div>
+                <div class="content">
+                    {{{ content }}}
+                </div>
+                <div class="footer">
+                    <p>&copy; {{ currentYear }} VijiPay. All rights reserved.</p>
+                    <p>
+                        <a href="https://vijipay.ng/privacy">Privacy Policy</a> |
+                        <a href="https://vijipay.ng/terms">Terms of Service</a>
+                    </p>
+                </div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</body>
+
+</html>
