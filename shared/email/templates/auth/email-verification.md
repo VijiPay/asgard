@@ -1,7 +1,14 @@
-# Verify your email
+# Verify Your Email Address
 
-Dear User,
+Dear {{ name }},
 
-**{{ code }}** is your code for Email Verification. Please enter the code to verify your email.
+Thank you for registering with VijiPay! 
 
-Note that this code is valid for {{ time }} only. If you didn't make this request, please ignore this email.
+To complete your registration, please verify your email address using the code below:
+
+**Verification Code:** {{ code }}
+
+This code is valid for **{{ time }}**. If you did not request this verification, please ignore this email.
+
+Best,  
+The VijiPay Team

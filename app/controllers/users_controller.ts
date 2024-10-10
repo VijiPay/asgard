@@ -47,14 +47,11 @@ export default class UsersController {
 
     const data = await this.uService.create(userData)
     if (data) {
-      const emailReq = {
+      this.email.send({
         recipient: userData.email,
         templatePath: EmailTemplatePath.REGISTRATION,
-        bcc: ['davidshemang@gmail.com'],
         data: { name: `${userData.firstName} ${userData.lastName}` },
-      }
-      console.log(emailReq)
-      this.email.send(emailReq)
+      })
     }
     return ResponseDTO.success('User created successfully', data)
   }

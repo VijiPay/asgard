@@ -1,311 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f6f6f6;
+            font-family: Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
         img {
             border: none;
             -ms-interpolation-mode: bicubic;
             max-width: 100%;
         }
 
-        body {
-            background-color: #f6f6f6;
-            font-family: sans-serif;
-            -webkit-font-smoothing: antialiased;
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            -ms-text-size-adjust: 100%;
-            -webkit-text-size-adjust: 100%;
-        }
-
-        table {
-            border-collapse: separate;
-            width: 100%;
-        }
-
-        table td {
-            font-family: sans-serif;
-            font-size: 14px;
-            vertical-align: top;
-        }
-
-        .body {
-            background-color: #f6f6f6;
-            width: 100%;
-        }
-
         .container {
-            display: block;
-            margin: 0 auto !important;
-            max-width: 580px;
-            padding: 10px;
-            width: 580px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
         }
 
         .content {
-            box-sizing: border-box;
-            display: block;
-            margin: 0 auto;
-            max-width: 580px;
-            padding: 10px;
-        }
-
-        .main {
-            background: #fff;
-            border-radius: 3px;
-            width: 100%;
-        }
-
-        .wrapper {
-            box-sizing: border-box;
             padding: 20px;
         }
 
-        .content-block {
-            padding-bottom: 10px;
-            padding-top: 10px;
-        }
-
         .footer {
-            clear: both;
-            margin-top: 10px;
+            background-color: #f1f1f1;
             text-align: center;
-            width: 100%;
-        }
-
-        .footer a,
-        .footer p,
-        .footer span,
-        .footer td {
-            color: #999;
+            padding: 10px;
             font-size: 12px;
-            text-align: center;
+            color: #777777;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
 
-        h1,
-        h2,
-        h3,
-        h4 {
-            color: #000;
-            font-family: sans-serif;
-            font-weight: 400;
-            line-height: 1;
-            margin: 0 0 30px 0;
-        }
-
-        h1 {
-            font-size: 35px;
-            font-weight: 300;
-            text-align: center;
-            text-transform: capitalize;
-        }
-
-        ol,
-        p,
-        ul {
-            font-family: sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            margin: 0 0 15px 0;
-        }
-
-        ol li,
-        p li,
-        ul li {
-            list-style-position: inside;
-            margin-left: 5px;
-        }
-
-        a {
-            color: #3498db;
-            text-decoration: underline;
-        }
-
-        .btn {
-            box-sizing: border-box;
-            display: inline-block;
-            margin: 5px 0 20px 0;
-            background-color: #fff;
-            border: solid 1px #3498db;
-            border-radius: 5px;
-            box-sizing: border-box;
-            color: #3498db;
-            cursor: pointer;
-            display: inline-block;
-            font-size: 14px;
-            font-weight: 700;
-            padding: 12px 25px;
+        .footer a {
+            color: #007bff;
             text-decoration: none;
-            text-transform: capitalize;
-        }
-
-        .btn-primary {
-            background-color: #3498db;
-            border-color: #3498db;
-            color: #fff;
-        }
-
-        .last {
-            margin-bottom: 0;
-        }
-
-        .first {
-            margin-top: 0;
-        }
-
-        .align-center {
-            text-align: center;
-        }
-
-        .align-right {
-            text-align: right;
-        }
-
-        .align-left {
-            text-align: left;
-        }
-
-        .clear {
-            clear: both;
-        }
-
-        .mt0 {
-            margin-top: 0;
-        }
-
-        .mb0 {
-            margin-bottom: 0;
-        }
-
-        .preheader {
-            color: transparent;
-            display: none;
-            height: 0;
-            max-height: 0;
-            max-width: 0;
-            opacity: 0;
-            overflow: hidden;
-            visibility: hidden;
-            width: 0;
-        }
-
-        .powered-by a {
-            text-decoration: none;
-        }
-
-        hr {
-            border: 0;
-            border-bottom: 1px solid #f6f6f6;
-            margin: 20px 0;
         }
 
         @media only screen and (max-width: 620px) {
-            table[class='body'] h1 {
-                font-size: 28px !important;
-                margin-bottom: 10px !important;
-            }
-
-            table[class='body'] a,
-            table[class='body'] ol,
-            table[class='body'] p,
-            table[class='body'] span,
-            table[class='body'] td,
-            table[class='body'] ul {
-                font-size: 16px !important;
-            }
-
-            table[class='body'] .article,
-            table[class='body'] .wrapper {
-                padding: 10px !important;
-            }
-
-            table[class='body'] .content {
+            .container {
+                width: 100% !important;
                 padding: 0 !important;
             }
 
-            table[class='body'] .container {
-                padding: 0 !important;
-                width: 100% !important;
+            .header h1 {
+                font-size: 20px !important;
             }
 
-            table[class='body'] .main {
-                border-left-width: 0 !important;
-                border-radius: 0 !important;
-                border-right-width: 0 !important;
-            }
-
-            table[class='body'] .btn table {
-                width: 100% !important;
-            }
-
-            table[class='body'] .btn a {
-                width: 100% !important;
-            }
-
-            table[class='body'] .img-responsive {
-                height: auto !important;
-                max-width: 100% !important;
-                width: auto !important;
-            }
-        }
-
-        @media all {
-            .ExternalClass {
-                width: 100%;
-            }
-
-            .ExternalClass,
-            .ExternalClass div,
-            .ExternalClass font,
-            .ExternalClass p,
-            .ExternalClass span,
-            .ExternalClass td {
-                line-height: 100%;
-            }
-
-            .apple-link a {
-                color: inherit !important;
-                font-family: inherit !important;
-                font-size: inherit !important;
-                font-weight: inherit !important;
-                line-height: inherit !important;
-                text-decoration: none !important;
-            }
-
-            .btn-primary table td:hover {
-                background-color: #34495e !important;
-            }
-
-            .btn-primary a:hover {
-                background-color: #34495e !important;
-                border-color: #34495e !important;
+            .content {
+                padding: 15px !important;
             }
         }
     </style>
 </head>
 
-<body class="">
-    <table border="0" cellpadding="0" cellspacing="0" class="body">
+<body>
+    <table class="body">
         <tr>
             <td>&nbsp;</td>
             <td class="container">
+                <div class="header">
+                    <h1>Welcome to VijiPay</h1>
+                </div>
                 <div class="content">
-                    <table class="main">
-                        <tr>
-                            <td class="wrapper">
-                                <table border="0" cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <td>{{{ content }}}</td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
+                    {{{ content }}}
+                </div>
+                <div class="footer">
+                    <p>&copy; {{ currentYear }} VijiPay. All rights reserved.</p>
+                    <p>
+                        <a href="https://vijipay.ng/privacy">Privacy Policy</a> |
+                        <a href="https://vijipay.ng/terms">Terms of Service</a>
+                    </p>
                 </div>
             </td>
             <td>&nbsp;</td>

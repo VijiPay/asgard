@@ -1,13 +1,14 @@
-# Reset your password
+# Password Reset Request
 
-Dear User,
+Dear {{ name }},
 
-Need to reset your password? No problem! Just click the link below and you'll be on your way.
+We received a request to reset your password. 
 
-### Token:
+To reset your password, please use the following code:
 
-{{ code }}
+**Reset Code:** {{ code }}
 
-Please send the code to reset your password.
+This code is valid for **{{ time }}**. If you did not request a password reset, please ignore this email.
 
-Note that this link is valid for {{ time }} only. If you didn't make this request, please ignore this email.
+Best,  
+The VijiPay Team
