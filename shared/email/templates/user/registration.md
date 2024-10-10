@@ -1,5 +1,5 @@
 # Welcome to VijiPay
 
-Dear {{ firstName }},
+Dear {{ name }},
 
 We're happy you signed up for our app.

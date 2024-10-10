@@ -1,23 +1,5 @@
 import env from '#start/env'
-import { defineConfig, transports, Message } from '@adonisjs/mail'
-import fs from 'node:fs'
-import path from 'node:path'
-import { marked } from 'marked'
-
-export const customTemplateEngine = {
-  async render(templatePath: string, data: Record<string, unknown>) {
-    const fullPath = path.join(
-      import.meta.dirname,
-      '../shared/email/templates',
-      `${templatePath}.md`
-    )
-    const template = fs.readFileSync(fullPath, 'utf-8')
-    const renderedTemplate = template.replace(/\{\{(\w+)\}\}/g, (_, key) =>
-      data[key] ? data[key].toString() : ''
-    )
-    return marked.parse(renderedTemplate)
-  },
-}
+import { defineConfig, transports } from '@adonisjs/mail'
 
 const mailConfig = defineConfig({
   default: 'resend',
@@ -26,24 +8,15 @@ const mailConfig = defineConfig({
     name: 'VijiPay',
   },
 
-  /**
-   * The mailers object can be used to configure multiple mailers
-   * each using a different transport or same transport with different
-   * options.
-   */
   mailers: {
     smtp: transports.smtp({
       host: env.get('SMTP_HOST'),
       port: env.get('SMTP_PORT'),
-      /**
-       * Uncomment the auth block if your SMTP
-       * server needs authentication
-       */
-      /* auth: {
+      auth: {
         type: 'login',
         user: env.get('SMTP_USERNAME'),
         pass: env.get('SMTP_PASSWORD'),
-      }, */
+      },
     }),
 
     mailgun: transports.mailgun({
@@ -58,8 +31,6 @@ const mailConfig = defineConfig({
     }),
   },
 })
-
-Message.templateEngine = customTemplateEngine
 
 export default mailConfig
 
