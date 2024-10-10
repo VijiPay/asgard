@@ -15,7 +15,7 @@ export class Email implements IEmail {
     if (!html) {
       throw new CustomException('HTML Layout is required', httpStatus.EXPECTATION_FAILED)
     }
-    await mail.send((message) => {
+    await mail.sendLater((message) => {
       message.to(recipient).subject(subject).html(html)
       if (bcc) {
         message.bcc(bcc)

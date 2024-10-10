@@ -14,15 +14,9 @@ const mailConfig = defineConfig({
       port: env.get('SMTP_PORT'),
       auth: {
         type: 'login',
-        user: env.get('SMTP_USERNAME'),
-        pass: env.get('SMTP_PASSWORD'),
+        user: env.get('SMTP_USERNAME') as string,
+        pass: env.get('SMTP_PASSWORD') as string,
       },
-    }),
-
-    mailgun: transports.mailgun({
-      key: env.get('MAILGUN_API_KEY'),
-      baseUrl: 'https://api.mailgun.net/v3',
-      domain: env.get('MAILGUN_DOMAIN'),
     }),
 
     resend: transports.resend({
